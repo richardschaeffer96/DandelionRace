@@ -38,6 +38,9 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
         for(tube in tubes){
             if(cam.position.x - (cam.viewportWidth/2) > tube.posTopTube.x + tube.topTube.width)
                 tube.reposition(tube.posTopTube.x + ((Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT))
+            if(tube.collides(bird.getBound()))
+                gsm.set(PlayState(gsm))
+
         }
 
         cam.update()
