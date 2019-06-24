@@ -6,10 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/text_view_id"
-        android:layout_height="wrap_content"
+
+    <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
-        android:text="TEST!" />
+        android:layout_height="wrap_content"
+        android:text="Switch to Game"
+        tools:layout_editor_absoluteX="202dp"
+        tools:layout_editor_absoluteY="134dp"
+        android:onClick="switchToGame"
+        />
 
 </android.support.constraint.ConstraintLayout>
