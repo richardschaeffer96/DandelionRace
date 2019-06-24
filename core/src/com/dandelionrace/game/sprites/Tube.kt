@@ -1,6 +1,7 @@
 package com.dandelionrace.game.sprites
 
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 
 import java.util.Random
@@ -12,6 +13,8 @@ class Tube(x: Float) {
     val bottomTube: Texture
     val posTopTube: Vector2
     val posBotTube: Vector2
+    private val boundsTop: Rectangle
+    private val boundsBot: Rectangle
     private val rand: Random
 
     init {
@@ -21,6 +24,10 @@ class Tube(x: Float) {
 
         posTopTube = Vector2(x + 400, (rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING + 900).toFloat())
         posBotTube = Vector2(x + 400, posTopTube.y - TUBE_GAP.toFloat() - bottomTube.height.toFloat())
+
+        boundsTop = Rectangle(posTopTube.x, posTopTube.y, topTube.width.toFloat(), topTube.height.toFloat())
+        boundsBot = Rectangle(posBotTube.x,posBotTube.y, bottomTube.width.toFloat(), bottomTube.height.toFloat())
+
     }
 
     companion object {
@@ -34,5 +41,12 @@ class Tube(x: Float) {
     fun reposition(x: Float){
         posTopTube.set(x + 400, (rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING + 900).toFloat())
         posBotTube.set(x + 400, posTopTube.y - TUBE_GAP.toFloat() - bottomTube.height.toFloat())
+        boundsTop.setPosition(posTopTube.x,posBotTube.y)
+        boundsBot.setPosition(posBotTube.x,posBotTube.y)
+
+    }
+
+    fun collides(player: Rectangle):Boolean{
+        return player.overlaps(boundsTop) || player.overlaps(boundsBot)
     }
 }
