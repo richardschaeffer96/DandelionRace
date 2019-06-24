@@ -26,9 +26,10 @@ class Tube(x: Float) {
     companion object {
         val TUBE_WIDTH : Int = 52
         private val FLUCTUATION = 130
-        val TUBE_GAP = 400
-        val LOWEST_OPENING = 120
+        val TUBE_GAP = 1000
+        val LOWEST_OPENING = -400
     }
+
 
     fun reposition(x: Float){
         posTopTube.set(x + 400, (rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING + 900).toFloat())
