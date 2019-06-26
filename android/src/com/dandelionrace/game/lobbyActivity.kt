@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.EditText
 import android.widget.TextView
 import com.google.firebase.database.*
@@ -11,7 +12,7 @@ import com.google.firebase.database.*
 
 class lobbyActivity : AppCompatActivity() {
     val database = FirebaseDatabase.getInstance()
-    val myRef = database.getReference("message")
+    val myRef = database.getReference("chat")
     lateinit var txtView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +36,8 @@ class lobbyActivity : AppCompatActivity() {
 
     fun writeData(view: View) {
         val msg = findViewById<EditText>(R.id.editText)
-        myRef.setValue(msg.getText().toString())
+        val old = txtView.getText().toString() +"\n" + msg.getText().toString()
+        myRef.setValue(old)
     }
 
 }
