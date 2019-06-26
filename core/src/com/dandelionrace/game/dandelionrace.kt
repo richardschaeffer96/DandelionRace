@@ -8,10 +8,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.dandelionrace.game.States.GameStateManager
 import com.dandelionrace.game.States.MenuState
 
+
 class dandelionrace : ApplicationAdapter() {
     internal lateinit var gsm: GameStateManager
     internal lateinit var batch: SpriteBatch
-
 
     override fun create() {
 
@@ -33,9 +33,9 @@ class dandelionrace : ApplicationAdapter() {
 
     companion object {
         //TO-DO: Get screen sizes of device!!!
-        val WIDTH = 1080  //480;
+        val WIDTH =  1080  //480;
         val HEIGHT = 2240
-
+        val SCALE = 0.5f
         val TITLE = "Dandelion Race"
     }
 }

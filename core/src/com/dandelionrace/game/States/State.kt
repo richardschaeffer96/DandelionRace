@@ -12,6 +12,7 @@ abstract class State protected constructor(protected var gsm: GameStateManager) 
 
     init {
         cam = OrthographicCamera()
+        cam.setToOrtho(false, 1080f, 2240f)
         mouse = Vector3()
 
 

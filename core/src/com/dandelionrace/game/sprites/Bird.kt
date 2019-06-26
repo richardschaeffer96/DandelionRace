@@ -1,11 +1,13 @@
 package com.dandelionrace.game.sprites
 
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector3
 
 class Bird(x: Int, y: Int) {
     val position: Vector3
     private val velocity: Vector3
+    private val bound: Rectangle
 
     val bird: Texture
 
@@ -13,6 +15,7 @@ class Bird(x: Int, y: Int) {
         position = Vector3(x.toFloat(), y.toFloat(), 0f)
         velocity = Vector3(0f, 0f, 0f)
         bird = Texture("bird.png")
+        bound = Rectangle(x.toFloat(), y.toFloat(), bird.width.toFloat(), bird.height.toFloat())
     }
 
     fun update(dt: Float) {
@@ -24,6 +27,8 @@ class Bird(x: Int, y: Int) {
             position.y = 0f
 
         velocity.scl(1 / dt)
+        bound.setPosition(position.x,position.y)
+
     }
 
     companion object {
@@ -33,5 +38,8 @@ class Bird(x: Int, y: Int) {
 
     fun jump(){
         velocity.y = 800f;
+    }
+    fun getBound():Rectangle{
+        return bound
     }
 }

@@ -10,10 +10,14 @@ class MenuState(gsm: GameStateManager) : State(gsm) {
 
     private val background: Texture
     private val playBtn: Texture
+    val app_width: Float
+    val app_height: Float
 
     init {
         background = Texture("bg.png")
         playBtn = Texture("playBtn.png")
+        app_height = Gdx.app.graphics.height.toFloat()
+        app_width = Gdx.app.graphics.width.toFloat()
     }
 
     override fun handleInput() {
@@ -29,8 +33,8 @@ class MenuState(gsm: GameStateManager) : State(gsm) {
 
     override fun render(sb: SpriteBatch) {
         sb.begin()
-        sb.draw(background, 0f, 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
-        sb.draw(playBtn, (dandelionrace.WIDTH / 2 - playBtn.width / 2).toFloat(), (dandelionrace.HEIGHT / 2).toFloat())
+        sb.draw(background, 0f, 0f, app_width, app_height)
+        sb.draw(playBtn, (app_width / 2 - playBtn.width / 2).toFloat(), (app_height / 2).toFloat())
         println("I DREW IT")
         sb.end()
     }

@@ -13,10 +13,15 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
     private val TUBE_COUNT: Int = 4
     private val bird: Bird
     private val bg: Texture
+    val app_width: Float
+    val app_height: Float
 
     private val tubes: ArrayList<Tube>
 
     init {
+        app_height = Gdx.app.graphics.height.toFloat()
+        app_width = Gdx.app.graphics.width.toFloat()
+        cam.setToOrtho(false, app_width, app_height)
         bird = Bird(100,500)
         bg = Texture("bg.png")
         tubes = ArrayList<Tube>()
@@ -38,15 +43,19 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
         for(tube in tubes){
             if(cam.position.x - (cam.viewportWidth/2) > tube.posTopTube.x + tube.topTube.width)
                 tube.reposition(tube.posTopTube.x + ((Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT))
+            if(tube.collides(bird.getBound()))
+                gsm.set(PlayState(gsm))
+
         }
 
         cam.update()
     }
 
     override fun render(sb: SpriteBatch) {
-        //sb.projectionMatrix.set(cam.combined)
+        sb.projectionMatrix.set(cam.combined)
+        //test
         sb.begin()
-        sb.draw(bg, cam.position.x - (cam.viewportWidth / 2 ), 0f)
+        sb.draw(bg, cam.position.x - (cam.viewportWidth / 2 ), 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
 
         for(tube in tubes) {
             sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
