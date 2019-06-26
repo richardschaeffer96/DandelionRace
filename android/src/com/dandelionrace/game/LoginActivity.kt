@@ -9,6 +9,12 @@ import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import android.support.annotation.NonNull
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.UserProfileChangeRequest
+
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -47,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
                     mAuth?.createUserWithEmailAndPassword(email, password)?.addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
                             val user = mAuth?.getCurrentUser()
-                            println("Success")
+                            addUserNameToUser(user!!)
                             updateUI(user)
                         } else {
                             Toast.makeText(
@@ -122,5 +128,19 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
+    private fun addUserNameToUser(user: FirebaseUser) {
+        val et_username = findViewById(R.id.et_username) as EditText
+        val username = et_username.text.toString()
 
+        val profileUpdates = UserProfileChangeRequest.Builder()
+                .setDisplayName(username).build()
+
+        user.updateProfile(profileUpdates)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        println("Success")
+                    }
+                }
+    }
 }
+
