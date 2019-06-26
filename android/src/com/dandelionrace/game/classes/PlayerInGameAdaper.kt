@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.badlogic.gdx.Game
 import com.dandelionrace.game.R
 
-class GameAdapter (val context: Context, private val dataSource: ArrayList<DandelionGame>) : BaseAdapter() {
+class PlayerInGameAdapter (val context: Context, private val dataSource: ArrayList<PlayerOnServer>) : BaseAdapter() {
     //1
     override fun getCount(): Int {
         return dataSource.size
@@ -28,13 +28,18 @@ class GameAdapter (val context: Context, private val dataSource: ArrayList<Dande
     //4
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         // Get view for row item
-        val rowView = inflater.inflate(R.layout.game_view_list_item, parent, false)
-        val titleTextView = rowView.findViewById(R.id.gameviewlistname) as TextView
-        val hostTextView = rowView.findViewById(R.id.gameviewlisthost) as TextView
-        val game = getItem(position) as DandelionGame
+        val rowView = inflater.inflate(R.layout.players_in_game_list_item, parent, false)
+        val playername = rowView.findViewById(R.id.playerInGameName) as TextView
+        val playerready = rowView.findViewById(R.id.playerInGameReady) as TextView
+        val player = getItem(position) as PlayerOnServer
 
-        titleTextView.text = game.name + "  - Anzahl Spieler: " + game.numberOfPlayers
-        hostTextView.text = "Host: " + game.host
+        playername.text = player.name
+        if (player.ready) {
+            playerready.text = "Spieler bereit"
+        } else {
+            playerready.text = "Spieler nicht bereit"
+        }
+
 
         return rowView
     }

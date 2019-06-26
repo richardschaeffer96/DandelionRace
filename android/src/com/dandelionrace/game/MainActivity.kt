@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.content.Intent
 import android.view.View
 import android.widget.TextView
+import com.dandelionrace.game.lobby.lobbyActivity
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
