@@ -9,8 +9,15 @@
         android:isGame="true"
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat">
-        <activity android:name=".lobbyActivity"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"></activity>
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".lobbyActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
