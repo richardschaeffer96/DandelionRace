@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun switchToLobby(view: View) {
-       // val intent = Intent(this@MainActivity, this@chat)
+        val intent = Intent(this@MainActivity, lobbyActivity::class.java)
         startActivity(intent)
     }
 }
