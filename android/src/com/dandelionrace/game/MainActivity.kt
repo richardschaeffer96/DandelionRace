@@ -18,4 +18,9 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this@MainActivity, AndroidLauncher::class.java)
         startActivity(intent)
     }
+
+    fun switchToLobby(view: View) {
+       // val intent = Intent(this@MainActivity, this@chat)
+        startActivity(intent)
+    }
 }
