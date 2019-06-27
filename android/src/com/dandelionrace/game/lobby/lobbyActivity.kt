@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.DataSnapshot
 
-//TODO: Anzahl der Spieler im Spiel überarbeiten
 
 
 class lobbyActivity : AppCompatActivity() {
@@ -41,7 +40,7 @@ class lobbyActivity : AppCompatActivity() {
         gameList.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 games.clear()
-
+                //List games for join list
                 for (child in dataSnapshot.children) {
                     val snap = child as DataSnapshot
                     val s = snap.children
@@ -50,10 +49,7 @@ class lobbyActivity : AppCompatActivity() {
                         list.add(c.value.toString())
                     }
                     val o = DandelionGame(list[1],list[5].toInt(),list[4],list[3].toBoolean(), list[0])
-                    playersInGame = list[4]
-                    val count = playersInGame.split(",")
-                    val counter = count.size
-                    o.numberOfPlayers = counter
+                    o.numberOfPlayers = list[2].toInt()
                     games.add(o)
                 }
 
@@ -80,10 +76,15 @@ class lobbyActivity : AppCompatActivity() {
 
                     // Join game
                     val path = "games/" + gamename + "/player"
+                    val pathforCount = "games/" + gamename + "/numberOfPlayers"
+                    val numberOfPlayer = selectedItem.numberOfPlayers + 1
                     val newGame = database.getReference(path)
+                    val newGameIncrementPlayer = database.getReference(pathforCount)
 
                     // fuegt den eigenen Namen der spielerliste hinzu
                     newGame.setValue(playersInGame + "," + myname)
+                    //increments playernumber
+                    newGameIncrementPlayer.setValue(numberOfPlayer)
 
                     //erstellt fuer den eigenen Spieler einen Player auf dem Server
                     var player = PlayerOnServer(myname, mymail, gamename)
