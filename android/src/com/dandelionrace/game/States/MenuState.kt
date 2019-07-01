@@ -3,6 +3,8 @@ package com.dandelionrace.game.States
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.dandelionrace.game.dandelionrace
+
 
 
 class MenuState(gsm: GameStateManager) : State(gsm) {
@@ -43,6 +45,4 @@ class MenuState(gsm: GameStateManager) : State(gsm) {
        background.dispose()
        playBtn.dispose()
     }
-
-
 }

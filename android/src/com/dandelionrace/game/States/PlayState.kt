@@ -1,26 +1,26 @@
 package com.dandelionrace.game.States
 
-
+import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.dandelionrace.game.dandelionrace
 import com.dandelionrace.game.sprites.Bird
 import com.dandelionrace.game.sprites.Tube
-import android.os.AsyncTask
-import android.hardware.SensorManager.GRAVITY_EARTH
-import com.badlogic.gdx.math.Vector3
-
 
 class PlayState(gsm: GameStateManager) : State(gsm) {
 
-
     private val TUBE_SPACING: Float = 125f
-    private val TUBE_COUNT: Int = 4
+    private val TUBE_COUNT: Int = 2
+
     private val bird: Bird
     private val bg: Texture
+    private val win: Texture
+    private var rout_length: Int =0
+    private var count: Int =0
     val app_width: Float
     val app_height: Float
+
 
     private val tubes: ArrayList<Tube>
 
@@ -28,40 +28,33 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
         app_height = Gdx.app.graphics.height.toFloat()
         app_width = Gdx.app.graphics.width.toFloat()
         cam.setToOrtho(false, app_width, app_height)
-        bird = Bird(100, 500)
+        bird = Bird(100,500)
         bg = Texture("bg.png")
+        win = Texture("win.jpg")
         tubes = ArrayList<Tube>()
+
         for (i in 1..TUBE_COUNT) {
             //vielleicht kleiner als noch setzen
-            tubes.add(Tube(i * (TUBE_SPACING + Tube.TUBE_WIDTH)))
-        }
+            tubes.add(Tube(i*(TUBE_SPACING+Tube.TUBE_WIDTH)))
 
+        }
     }
 
-
-
     override fun handleInput() {
-        if(Gdx.input.justTouched()){
-
-        }
+        if(Gdx.input.justTouched())
+            bird.jump()
     }
 
     override fun update(dt: Float) {
-        someTask(bird).execute()
-        //val blow_string: String = someTask().execute().get()
-        //val blow_value = blow_string.toInt()
         handleInput()
         bird.update(dt)
         cam.position.set(bird.position.x + 80, cam.viewportHeight/2,0f)
         for(tube in tubes){
             if(cam.position.x - (cam.viewportWidth/2) > tube.posTopTube.x + tube.topTube.width)
                 tube.reposition(tube.posTopTube.x + ((Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT))
-            if(tube.collides(bird.getBound())){
-                bird.status = "trapped"
-            }
-                //gsm.set(PlayState(gsm))
-            //To-Do: Befreien aus Spinnennetz
-
+            if(tube.collides(bird.getBound()))
+               // gsm.set(PlayState(gsm))
+                gsm.set(MenuState(gsm))
         }
 
         cam.update()
@@ -76,6 +69,11 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
         for(tube in tubes) {
             sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
             sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
+            rout_length = rout_length+1
+            println("Anzahl:"+rout_length)
+            if(rout_length==1730){
+                gsm.set(WinGame(gsm))
+            }
         }
         //sb.draw(bg, 0f, 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
         sb.draw(bird.bird, bird.position.x, bird.position.y)
@@ -86,70 +84,5 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
 
     override fun dispose() {
 
-    }
-
-    class someTask(bird: Bird) : AsyncTask<Void, Void, String>(){
-
-        val new_bird: Bird
-
-        init {
-            new_bird = bird
-
-        }
-
-        override fun doInBackground(vararg params: Void?): String? {
-            if(new_bird.status=="trapped"){
-
-                val xGrav = Gdx.input.accelerometerX / GRAVITY_EARTH
-                val yGrav = Gdx.input.accelerometerY / GRAVITY_EARTH
-                val zGrav = Gdx.input.accelerometerZ / GRAVITY_EARTH
-
-                // gForce will be close to 1 when there is no movement.
-                val gForce = Math.sqrt((xGrav * xGrav + yGrav * yGrav + zGrav * zGrav).toDouble()).toFloat()
-
-                if (gForce>1.7) {
-                    System.out.println("SHAKE DETECTED")
-                    new_bird.status = "free"
-                    new_bird.position = Vector3(new_bird.position.x, new_bird.position.y + 100f, 0f)
-                }
-
-                return "Free"
-            } else {
-                val audioBuffer = ShortArray(44100 * 1)
-
-                val recorder = Gdx.audio.newAudioRecorder(44100, true)
-                var blow_value: Int = 0
-                var blow_string: String
-
-                recorder.read(audioBuffer, 0, audioBuffer.size);
-                for (s in audioBuffer) {
-                    if (Math.abs(s.toInt()) > 500) {
-                        blow_value = Math.abs(s.toInt());
-                        //System.out.println("Blow Value= "+blow_value);
-                    }
-                }
-                //val audioDevice = Gdx.audio.newAudioDevice(44100, true)
-                //audioDevice.writeSamples(audioBuffer, 0, audioBuffer.size)
-                //audioDevice.dispose()
-                if (blow_value > 550) {
-                    new_bird.jump()
-                    //System.out.println("JUMP!!!!!!!!!!!!!!!!")
-                }
-                recorder.dispose()
-                blow_string = blow_value.toString()
-                //System.out.println("Blow STRING= "+blow_string);
-                return blow_string
-            }
-        }
-
-        override fun onPreExecute() {
-            super.onPreExecute()
-            // ...
-        }
-
-        override fun onPostExecute(result: String?) {
-            super.onPostExecute(result)
-            // ...
-        }
     }
 }
