@@ -27,13 +27,14 @@ class EntryHallActivity : AppCompatActivity() {
     //If this Player is ready, changes the buttontext of ready
     var ready: Boolean = false
     var allPlayersReady: Boolean = false
+    lateinit var thisgame: DandelionGame
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        thisgame = DandelionGame("DUMMY", 0, "0", true, "o", true)
         setContentView(R.layout.activity_entry_hall)
         val game = intent.getStringExtra("game")
         val playerList = database.getReference("playersInGame/"+game)
-        var thisgame: DandelionGame? = null
         val readybutton = findViewById<Button>(R.id.readybutton)
 
         //get the game i joint
@@ -47,12 +48,16 @@ class EntryHallActivity : AppCompatActivity() {
                 }
 
                 //initialize game one time at launch
-                if (thisgame == null) {
-                    thisgame = DandelionGame(list[1], list[5].toInt(), list[5], list[4].toBoolean(), list[0])
+                if (thisgame.dummy) {
+                    thisgame = DandelionGame(list[1], list[5].toInt(), list[5], list[4].toBoolean(), list[0], false)
+                    thisgame.numberOfPlayers = list[2].toInt()
                     val gamenameforlabel = list[1]
                     findViewById<TextView>(R.id.gamename).setText("Du befindest dich im Spiel " + gamenameforlabel)
 
 
+                } else {
+                    println("------------" + list[5] )
+                    thisgame.numberOfPlayers = list[2].toInt()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -141,5 +146,35 @@ class EntryHallActivity : AppCompatActivity() {
             readybutton.text = "doch nicht bereit"
         }
 
+    }
+
+    //When back key is pressed return to lobby and unregister from game
+    override fun onBackPressed (){
+        super.onBackPressed()
+        if (myName == thisgame.host + "###") {
+            //Player is host, game needs to be ended and everyone should be thrown out of entry hall
+        } else {
+
+            val path = "games/" + thisgame.name + "/numberOfPlayers"
+            val newNumberOfPlayers = thisgame.numberOfPlayers -1
+            val reducePlayer = database.getReference(path)
+            reducePlayer.setValue(newNumberOfPlayers)
+            val nameToDelete = createPlayerNameForDatabase(mymail)
+            val pathdelete = "playersInGame/" + thisgame.name + "/" +nameToDelete
+            val deletePlayer = database.getReference(pathdelete)
+            deletePlayer.removeValue()
+        }
+
+
+    }
+
+    fun createPlayerNameForDatabase(mymail: String) : String {
+        //Use the mail for playeridentification, eliminate . for database reasons
+        val nameForPlayerDatabaseArr = mymail.split(".");
+        var nameForPlayerDatabase = ""
+        for (na in nameForPlayerDatabaseArr) {
+            nameForPlayerDatabase = nameForPlayerDatabase + na
+        }
+        return nameForPlayerDatabase
     }
 }
