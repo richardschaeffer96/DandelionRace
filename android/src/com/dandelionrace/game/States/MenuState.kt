@@ -35,8 +35,10 @@ class MenuState(gsm: GameStateManager) : State(gsm) {
     }
 
     override fun render(sb: SpriteBatch) {
+        sb.projectionMatrix.set(cam.combined)
         sb.begin()
         sb.draw(background, 0f, 0f, app_width, app_height)
+        sb.draw(background, cam.position.x - (cam.viewportWidth / 2 ), 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
         sb.draw(playBtn, (app_width / 2 - playBtn.width / 2).toFloat(), (app_height / 2).toFloat())
         sb.end()
     }
