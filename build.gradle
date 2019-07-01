@@ -108,7 +108,7 @@ project(":html") {
         implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
         implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion:sources"
         implementation "com.badlogicgames.gdx:gdx-box2d-gwt:$gdxVersion:sources"
-        
+        implementation "org.jetbrains.anko:anko-commons:0.10.4"
     }
 }
 
@@ -126,3 +126,4 @@ project(":core") {
 tasks.eclipse.doLast {
     delete ".project"
 }
+

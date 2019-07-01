@@ -1,17 +1,19 @@
 package com.dandelionrace.game
 
+import android.content.Context
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.dandelionrace.game.States.GameStateManager
 import com.dandelionrace.game.States.MenuState
 
 
-class dandelionrace : ApplicationAdapter() {
+class dandelionrace(mContext: Context) : ApplicationAdapter() {
     internal lateinit var gsm: GameStateManager
     internal lateinit var batch: SpriteBatch
+    val game_Context: Context = mContext
+
 
     override fun create() {
 
@@ -19,6 +21,7 @@ class dandelionrace : ApplicationAdapter() {
         gsm = GameStateManager()
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
         gsm!!.push(MenuState(gsm))
+
     }
 
     override fun render() {

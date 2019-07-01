@@ -18,8 +18,8 @@ class Tube(x: Float) {
     private val rand: Random
 
     init {
-        topTube = Texture("toptube.png")
-        bottomTube = Texture("bottomtube.png")
+        topTube = Texture("spidertop.png")
+        bottomTube = Texture("spiderbottom.png")
         rand = Random()
 
         posTopTube = Vector2(x + 400, (rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING + 900).toFloat())

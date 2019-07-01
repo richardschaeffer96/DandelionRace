@@ -3,8 +3,7 @@ package com.dandelionrace.game.States
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.dandelionrace.game.dandelionrace
-import sun.rmi.runtime.Log
+
 
 class MenuState(gsm: GameStateManager) : State(gsm) {
 
@@ -18,6 +17,8 @@ class MenuState(gsm: GameStateManager) : State(gsm) {
         playBtn = Texture("playBtn.png")
         app_height = Gdx.app.graphics.height.toFloat()
         app_width = Gdx.app.graphics.width.toFloat()
+
+
     }
 
     override fun handleInput() {
@@ -35,7 +36,6 @@ class MenuState(gsm: GameStateManager) : State(gsm) {
         sb.begin()
         sb.draw(background, 0f, 0f, app_width, app_height)
         sb.draw(playBtn, (app_width / 2 - playBtn.width / 2).toFloat(), (app_height / 2).toFloat())
-        println("I DREW IT")
         sb.end()
     }
 
@@ -43,4 +43,6 @@ class MenuState(gsm: GameStateManager) : State(gsm) {
        background.dispose()
        playBtn.dispose()
     }
+
+
 }
