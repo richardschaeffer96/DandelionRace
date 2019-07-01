@@ -63,16 +63,10 @@ class lobbyActivity : AppCompatActivity() {
                     val mymail = mAuth?.currentUser?.email.toString()
                     val gamename = selectedItem.name
 
-                    //Use the mail for playeridentification, eliminate . for database reasons
-                    val nameForPlayerDatabaseArr = mymail.split(".");
-                    var nameForPlayerDatabase = ""
-                    for (na in nameForPlayerDatabaseArr) {
-                        nameForPlayerDatabase = nameForPlayerDatabase + na
-                    }
+                    val nameForPlayerDatabase = createPlayerNameForDatabase(mymail!!)
 
 
-                    val newplayerpath = "playersInGame/"+ gamename+"/" + nameForPlayerDatabase
-                    val newplayerRef = database.getReference(newplayerpath)
+
 
                     // Join game
                     val path = "games/" + gamename + "/player"
@@ -86,24 +80,43 @@ class lobbyActivity : AppCompatActivity() {
                     //increments playernumber
                     newGameIncrementPlayer.setValue(numberOfPlayer)
 
-                    //erstellt fuer den eigenen Spieler einen Player auf dem Server
-                    var player = PlayerOnServer(myname, mymail, gamename)
-                    newplayerRef.setValue(player)
 
-                    //switch to Entry hall
-                    val intent = Intent(this@lobbyActivity, EntryHallActivity::class.java)
-                    intent.putExtra("game", gamename);
-                    intent.putExtra("nameForPlayerDatabase", nameForPlayerDatabase)
-                    startActivity(intent)
 
+
+                    registratePlayerInGame(gamename, nameForPlayerDatabase, myname!!, mymail!!)
                 }
 
             }
             override fun onCancelled(error: DatabaseError) {
             }
         })
+    }
+
+    fun registratePlayerInGame(gamename: String, nameForPlayerDatabase: String, myname: String, mymail: String) {
 
 
+        val newplayerpath = "playersInGame/"+ gamename+"/" + nameForPlayerDatabase
+        val newplayerRef = database.getReference(newplayerpath)
+
+        //erstellt fuer den eigenen Spieler einen Player auf dem Server
+        var player = PlayerOnServer(myname, mymail, gamename)
+        newplayerRef.setValue(player)
+
+        //switch to Entry hall
+        val intent = Intent(this@lobbyActivity, EntryHallActivity::class.java)
+        intent.putExtra("game", gamename);
+        intent.putExtra("nameForPlayerDatabase", nameForPlayerDatabase)
+        startActivity(intent)
+    }
+
+    fun createPlayerNameForDatabase(mymail: String) : String {
+        //Use the mail for playeridentification, eliminate . for database reasons
+        val nameForPlayerDatabaseArr = mymail.split(".");
+        var nameForPlayerDatabase = ""
+        for (na in nameForPlayerDatabaseArr) {
+            nameForPlayerDatabase = nameForPlayerDatabase + na
+        }
+        return nameForPlayerDatabase
     }
 
     fun createNewGame(view: View) {
@@ -113,8 +126,11 @@ class lobbyActivity : AppCompatActivity() {
         val path = "games/" + n
         val newGame = database.getReference(path)
         val g = DandelionGame(n,0,""+mail,true, ""+name )
+        val nameForPlayerDatabase = createPlayerNameForDatabase(mail!!)
         newGame.setValue(g)
         findViewById<EditText>(R.id.editText).setText("")
+
+        registratePlayerInGame(n, nameForPlayerDatabase!!, name!!, mail!!)
     }
 
 }
