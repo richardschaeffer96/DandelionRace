@@ -3,6 +3,7 @@ package com.dandelionrace.game.sprites
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
+import com.dandelionrace.game.States.WinGame
 
 import java.util.Random
 
@@ -16,6 +17,7 @@ class Tube(x: Float) {
     private val boundsTop: Rectangle
     private val boundsBot: Rectangle
     private val rand: Random
+    var rout_length: Int =0
 
     init {
         topTube = Texture("spidertop.png")
@@ -43,6 +45,9 @@ class Tube(x: Float) {
         posBotTube.set(x + 400, posTopTube.y - TUBE_GAP.toFloat() - bottomTube.height.toFloat())
         boundsTop.setPosition(posTopTube.x,posBotTube.y)
         boundsBot.setPosition(posBotTube.x,posBotTube.y)
+
+        rout_length = rout_length+1
+        println("Anzahl:"+rout_length)
 
     }
 
