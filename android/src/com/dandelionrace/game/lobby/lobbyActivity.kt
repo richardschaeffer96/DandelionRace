@@ -48,8 +48,8 @@ class lobbyActivity : AppCompatActivity() {
                     for (c in s) {
                         list.add(c.value.toString())
                     }
-                    val o = DandelionGame(list[1],list[5].toInt(),list[4],list[3].toBoolean(), list[0], false)
-                    o.numberOfPlayers = list[2].toInt()
+                    val o = DandelionGame(list[2],list[6].toInt(),list[5],list[4].toBoolean(), list[1], false)
+                    o.numberOfPlayers = list[3].toInt()
                     games.add(o)
                 }
 
