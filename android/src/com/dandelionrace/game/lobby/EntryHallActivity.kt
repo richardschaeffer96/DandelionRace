@@ -49,15 +49,14 @@ class EntryHallActivity : AppCompatActivity() {
 
                 //initialize game one time at launch
                 if (thisgame.dummy) {
-                    thisgame = DandelionGame(list[1], list[5].toInt(), list[5], list[4].toBoolean(), list[0], false)
-                    thisgame.numberOfPlayers = list[2].toInt()
-                    val gamenameforlabel = list[1]
+                    thisgame = DandelionGame(list[2], list[6].toInt(), list[5], list[4].toBoolean(), list[1], false)
+                    thisgame.numberOfPlayers = list[3].toInt()
+                    val gamenameforlabel = list[2]
                     findViewById<TextView>(R.id.gamename).setText("Du befindest dich im Spiel " + gamenameforlabel)
 
 
                 } else {
-                    println("------------" + list[5] )
-                    thisgame.numberOfPlayers = list[2].toInt()
+                    thisgame.numberOfPlayers = list[6].toInt()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
