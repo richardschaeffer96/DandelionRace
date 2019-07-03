@@ -48,7 +48,7 @@ class lobbyActivity : AppCompatActivity() {
                     for (c in s) {
                         list.add(c.value.toString())
                     }
-                    val o = DandelionGame(list[2],list[6].toInt(),list[5],list[4].toBoolean(), list[1], false)
+                    val o = DandelionGame(list[2],list[6],list[5],list[4].toBoolean(), list[1], false)
                     o.numberOfPlayers = list[3].toInt()
                     games.add(o)
                 }
@@ -65,9 +65,6 @@ class lobbyActivity : AppCompatActivity() {
 
                     val nameForPlayerDatabase = createPlayerNameForDatabase(mymail!!)
 
-
-
-
                     // Join game
                     val path = "games/" + gamename + "/player"
                     val pathforCount = "games/" + gamename + "/numberOfPlayers"
@@ -79,9 +76,6 @@ class lobbyActivity : AppCompatActivity() {
                     newGame.setValue(playersInGame + "," + myname)
                     //increments playernumber
                     newGameIncrementPlayer.setValue(numberOfPlayer)
-
-
-
 
                     registratePlayerInGame(gamename, nameForPlayerDatabase, myname!!, mymail!!)
                 }
@@ -123,7 +117,7 @@ class lobbyActivity : AppCompatActivity() {
         val n = findViewById<EditText>(R.id.editText).getText().toString()
         val path = "games/" + n
         val newGame = database.getReference(path)
-        val g = DandelionGame(n,0,""+mail,true, ""+name, false)
+        val g = DandelionGame(n,"0",""+mail,true, ""+name, false)
         val nameForPlayerDatabase = createPlayerNameForDatabase(mail!!)
         newGame.setValue(g)
         findViewById<EditText>(R.id.editText).setText("")

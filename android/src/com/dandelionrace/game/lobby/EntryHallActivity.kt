@@ -36,7 +36,7 @@ class EntryHallActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        thisgame = DandelionGame("DUMMY", 0, "0", true, "o", true)
+        thisgame = DandelionGame("DUMMY", "0", "0", true, "o", true)
         setContentView(R.layout.activity_entry_hall)
         val game = intent.getStringExtra("game")
         val readybutton = findViewById<Button>(R.id.readybutton)
@@ -54,19 +54,25 @@ class EntryHallActivity : AppCompatActivity() {
 
                 //initialize game one time at launch
                 if (thisgame.dummy) {
-                    thisgame = DandelionGame(list[2], list[6].toInt(), list[5], list[4].toBoolean(), list[1], false)
+                    thisgame = DandelionGame(list[2], list[6], list[5], list[4].toBoolean(), list[1], false)
                     thisgame.numberOfPlayers = list[3].toInt()
                     val gamenameforlabel = list[2]
                     findViewById<TextView>(R.id.gamename).setText("Du befindest dich im Spiel " + gamenameforlabel)
 
-                    if (list[1] == myName && thisgame.seed == 0) {
+                    //If host == my own name, im host, so i send the seed
+                    //TODO: parse seed to string
+                    if (list[1] == myName && thisgame.seed == "0") {
                         //create TubeList
                         tubeArrayList = arrayListOf<Tube>()
                         for (i in 1..tubeCount){
                             tubeArrayList.add(Tube(i*(tubeSpacing+width)))
                         }
+
+                        //TODO: change val tubeArrayList into the String variant
                         val setSeed = database.getReference("games/" + game + "/seed")
                         setSeed.setValue(tubeArrayList)
+                    } else {
+                        //TODO: Im not host, so i have to download and parse the seed (stored in list[6]
                     }
                 } else {
                     thisgame.numberOfPlayers = list[3].toInt()
