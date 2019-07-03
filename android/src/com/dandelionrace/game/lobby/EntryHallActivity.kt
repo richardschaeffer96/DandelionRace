@@ -41,7 +41,6 @@ class EntryHallActivity : AppCompatActivity() {
         val game = intent.getStringExtra("game")
         val readybutton = findViewById<Button>(R.id.readybutton)
         val playerList = database.getReference("playersInGame/"+game)
-        println("++++++++++++++++++++++++++++++++")
 
         //get the game i joint
         val gameDatabase = database.getReference("games/" + game)
@@ -59,18 +58,13 @@ class EntryHallActivity : AppCompatActivity() {
                     thisgame.numberOfPlayers = list[3].toInt()
                     val gamenameforlabel = list[2]
                     findViewById<TextView>(R.id.gamename).setText("Du befindest dich im Spiel " + gamenameforlabel)
-
-                    //
+                } else {
+                    thisgame.numberOfPlayers = list[3].toInt()
                     if (list[3].toInt() == 0) {
-                        println("####################### Number is 0")
                         unsubscribeFromGame()
                         val intent = Intent(this@EntryHallActivity, lobbyActivity::class.java)
                         startActivity(intent)
                     }
-
-
-                } else {
-                    thisgame.numberOfPlayers = list[6].toInt()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -142,7 +136,6 @@ class EntryHallActivity : AppCompatActivity() {
 
     //Player klicks ready, sets Value in Database and changes Text of Button
     fun setReady(view: View) {
-        println("++++++++++++++++++++++++++++++++++++++++++++++++")
         val game = intent.getStringExtra("game")
         val nameForPlayerDatabase = intent.getStringExtra("nameForPlayerDatabase")
         val path = "playersInGame/" + game + "/" + nameForPlayerDatabase + "/ready"
