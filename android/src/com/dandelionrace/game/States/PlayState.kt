@@ -9,9 +9,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector3
 import com.dandelionrace.game.dandelionrace
 import com.dandelionrace.game.sprites.Bird
+import com.dandelionrace.game.sprites.GameTubes
 import com.dandelionrace.game.sprites.Tube
 
-class PlayState(gsm: GameStateManager) : State(gsm) {
+class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State(gsm) {
 
     private val TUBE_SPACING: Float = 125f
     //TUBE_COUNT: ANZAHL AN TUBES IM LEVEL
@@ -25,8 +26,7 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
     val app_width: Float
     val app_height: Float
 
-
-    private val tubes: ArrayList<Tube>
+    val tubes: ArrayList<GameTubes> = finaltubes
 
     init {
         app_height = Gdx.app.graphics.height.toFloat()
@@ -35,11 +35,6 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
         bird = Bird(100,500)
         bg = Texture("bg.png")
         win = Texture("win.jpg")
-        tubes = ArrayList<Tube>()
-
-        for (i in 1..TUBE_COUNT) {
-            tubes.add(Tube(i*(TUBE_SPACING+Tube.TUBE_WIDTH)))
-        }
 
     }
 
@@ -56,7 +51,7 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
         bird.update(dt)
         cam.position.set(bird.position.x + 80, cam.viewportHeight/2,0f)
 
-        /*
+
         if(cam.position.x - (cam.viewportWidth/2) > tubes[counter].posTopTube.x + tubes[counter].topTube.width){
             counter = counter.inc()
             System.out.println(counter)
@@ -67,7 +62,7 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
                 bird.status = "trapped"
             }
         }
-        */
+
 
         /* !!! CODE FOR REPOSITION OF TUBES FOR DYNAMIC LEVEL !!!
         for(tube in tubes){
