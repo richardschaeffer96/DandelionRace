@@ -131,6 +131,7 @@ class EntryHallActivity : AppCompatActivity() {
 
         for (i in 1..tubeCount){
             tubeArrayList.add(Tube(i*(tubeSpacing+width)))
+            System.out.println("TUBE " + i + " ist: " + tubeArrayList[i-1].posBotTube + " und " + tubeArrayList[i-1].posTopTube)
         }
     }
 

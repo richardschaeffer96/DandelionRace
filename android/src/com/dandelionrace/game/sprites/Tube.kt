@@ -10,25 +10,26 @@ import java.util.Random
 class Tube(x: Float) {
 
 
-    val topTube: Texture
-    val bottomTube: Texture
+    //val topTube: Texture
+    //val bottomTube: Texture
     val posTopTube: Vector2
     val posBotTube: Vector2
-    private val boundsTop: Rectangle
-    private val boundsBot: Rectangle
+    //private val boundsTop: Rectangle
+    //private val boundsBot: Rectangle
     private val rand: Random
     var rout_length: Int =0
 
     init {
-        topTube = Texture("spidertop.png")
-        bottomTube = Texture("spiderbottom.png")
+       //topTube = Texture("spidertop.png")
+       //bottomTube = Texture("spiderbottom.png")
         rand = Random()
 
         posTopTube = Vector2(x + 400, (rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING + 900).toFloat())
-        posBotTube = Vector2(x + 400, posTopTube.y - TUBE_GAP.toFloat() - bottomTube.height.toFloat())
+        posBotTube = Vector2(x + 400, posTopTube.y - TUBE_GAP.toFloat() - 10f)
+        //posBotTube = Vector2(x + 400, posTopTube.y - TUBE_GAP.toFloat() - bottomTube.height.toFloat())
 
-        boundsTop = Rectangle(posTopTube.x, posTopTube.y, topTube.width.toFloat(), topTube.height.toFloat())
-        boundsBot = Rectangle(posBotTube.x,posBotTube.y, bottomTube.width.toFloat(), bottomTube.height.toFloat())
+        //boundsTop = Rectangle(posTopTube.x, posTopTube.y, topTube.width.toFloat(), topTube.height.toFloat())
+        //boundsBot = Rectangle(posBotTube.x,posBotTube.y, bottomTube.width.toFloat(), bottomTube.height.toFloat())
 
     }
 
@@ -39,7 +40,7 @@ class Tube(x: Float) {
         val LOWEST_OPENING = -400
     }
 
-
+    /*
     fun reposition(x: Float){
         posTopTube.set(x + 400, (rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING + 900).toFloat())
         posBotTube.set(x + 400, posTopTube.y - TUBE_GAP.toFloat() - bottomTube.height.toFloat())
@@ -51,7 +52,9 @@ class Tube(x: Float) {
 
     }
 
+
     fun collides(player: Rectangle):Boolean{
         return player.overlaps(boundsTop) || player.overlaps(boundsBot)
     }
+    */
 }
