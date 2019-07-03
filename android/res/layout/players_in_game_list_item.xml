@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Each List Item is displayed as TextView defined below -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="8dp"
+    tools:context=".lobby.lobbyActivity"
+    >
+
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/playerInGameName"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="10dip"
+        android:textSize="16dip"
+        android:textStyle="bold" >
+
+    </TextView>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/playerInGameReady"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_gravity="right"
+        android:textSize="16dip"
+        android:textStyle="bold" >
+
+    </TextView>
+</LinearLayout>
