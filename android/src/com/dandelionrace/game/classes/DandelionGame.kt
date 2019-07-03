@@ -1,6 +1,6 @@
 package com.dandelionrace.game.classes
 
-class DandelionGame (nameIn: String, seedIn: Int, playerIn: String, openIn: Boolean, hostIn: String, dummy: Boolean){
+class DandelionGame (nameIn: String, seedIn: String, playerIn: String, openIn: Boolean, hostIn: String, dummy: Boolean){
     val name = nameIn
     var seed = seedIn
     var player = playerIn
