@@ -42,8 +42,6 @@ class EntryHallActivity : AppCompatActivity() {
         val readybutton = findViewById<Button>(R.id.readybutton)
         val playerList = database.getReference("playersInGame/"+game)
 
-
-
         //get the game i joint
         val gameDatabase = database.getReference("games/" + game)
         gameDatabase.addValueEventListener(object : ValueEventListener {

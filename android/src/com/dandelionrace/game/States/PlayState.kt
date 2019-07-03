@@ -56,6 +56,7 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
         bird.update(dt)
         cam.position.set(bird.position.x + 80, cam.viewportHeight/2,0f)
 
+        /*
         if(cam.position.x - (cam.viewportWidth/2) > tubes[counter].posTopTube.x + tubes[counter].topTube.width){
             counter = counter.inc()
             System.out.println(counter)
@@ -66,6 +67,7 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
                 bird.status = "trapped"
             }
         }
+        */
 
         /* !!! CODE FOR REPOSITION OF TUBES FOR DYNAMIC LEVEL !!!
         for(tube in tubes){
@@ -94,8 +96,8 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
         sb.draw(bg, cam.position.x - (cam.viewportWidth / 2 ), 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
 
         for(tube in tubes) {
-            sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
-            sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
+            //sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
+            //sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
 
         }
         //sb.draw(bg, 0f, 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
