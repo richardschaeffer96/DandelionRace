@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "842350901977",
+    "firebase_url": "https://dandelionrace.firebaseio.com",
+    "project_id": "dandelionrace",
+    "storage_bucket": "dandelionrace.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842350901977:android:5d5179176ab62ef6",
+        "android_client_info": {
+          "package_name": "com.dandelionrace.game"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "842350901977-5d6jepl6gdco0iof7e9anmsn31nlet64.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dandelionrace.game",
+            "certificate_hash": "9445dda7371ca5d065a6eac54766e20afb11c15d"
+          }
+        },
+        {
+          "client_id": "842350901977-ld2a06td7dc16m0kcs8oh8o3eldirage.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIb317QqtMM78r4j_h8N5phae_V6JGCMA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "842350901977-ld2a06td7dc16m0kcs8oh8o3eldirage.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
