@@ -79,9 +79,9 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:text="Start Game"
+        android:onClick="startGame"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/playersInGame"
-        app:layout_constraintEnd_toStartOf="@+id/button5"
         app:layout_constraintStart_toStartOf="@+id/playersInGame"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />

@@ -7,12 +7,15 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.dandelionrace.game.States.GameStateManager
 import com.dandelionrace.game.States.MenuState
+import com.dandelionrace.game.States.PlayState
+import com.dandelionrace.game.sprites.Tube
 
 
-class dandelionrace(mContext: Context) : ApplicationAdapter() {
+class dandelionrace(mContext: Context, array: ArrayList<Tube>) : ApplicationAdapter() {
     internal lateinit var gsm: GameStateManager
     internal lateinit var batch: SpriteBatch
     val game_Context: Context = mContext
+    val tubes: ArrayList<Tube> = array
 
 
     override fun create() {
@@ -20,7 +23,7 @@ class dandelionrace(mContext: Context) : ApplicationAdapter() {
         batch = SpriteBatch()
         gsm = GameStateManager()
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
-        gsm!!.push(MenuState(gsm))
+        gsm!!.push(PlayState(gsm, tubes))
 
     }
 

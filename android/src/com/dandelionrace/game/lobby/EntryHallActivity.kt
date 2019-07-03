@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
+import com.dandelionrace.game.AndroidLauncher
 import com.dandelionrace.game.R
 import com.dandelionrace.game.classes.DandelionGame
 import com.dandelionrace.game.classes.PlayerInGameAdapter
@@ -193,5 +194,11 @@ class EntryHallActivity : AppCompatActivity() {
             nameForPlayerDatabase = nameForPlayerDatabase + na
         }
         return nameForPlayerDatabase
+    }
+
+    fun startGame(v: View){
+        val intent = Intent(this, AndroidLauncher::class.java)
+        intent.putExtra("array", tubeArrayList)
+        startActivity(intent)
     }
 }
