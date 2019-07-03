@@ -1,5 +1,6 @@
 package com.dandelionrace.game.lobby
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,11 +12,9 @@ import com.dandelionrace.game.classes.DandelionGame
 import com.dandelionrace.game.classes.PlayerInGameAdapter
 import com.dandelionrace.game.classes.PlayerOnServer
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_entry_hall.*
+import java.lang.Exception
 
 class EntryHallActivity : AppCompatActivity() {
     val database = FirebaseDatabase.getInstance()
@@ -24,7 +23,7 @@ class EntryHallActivity : AppCompatActivity() {
     val mymail = mAuth?.currentUser?.email.toString()
     val myName = mAuth?.currentUser?.displayName.toString()
     val gamenameforlabel = ""
-    //If this Player is ready, changes the buttontext of ready
+    //to change Button-Text when Player is ready
     var ready: Boolean = false
     var allPlayersReady: Boolean = false
     lateinit var thisgame: DandelionGame
@@ -34,8 +33,9 @@ class EntryHallActivity : AppCompatActivity() {
         thisgame = DandelionGame("DUMMY", 0, "0", true, "o", true)
         setContentView(R.layout.activity_entry_hall)
         val game = intent.getStringExtra("game")
-        val playerList = database.getReference("playersInGame/"+game)
         val readybutton = findViewById<Button>(R.id.readybutton)
+        val playerList = database.getReference("playersInGame/"+game)
+        println("++++++++++++++++++++++++++++++++")
 
         //get the game i joint
         val gameDatabase = database.getReference("games/" + game)
@@ -53,6 +53,14 @@ class EntryHallActivity : AppCompatActivity() {
                     thisgame.numberOfPlayers = list[3].toInt()
                     val gamenameforlabel = list[2]
                     findViewById<TextView>(R.id.gamename).setText("Du befindest dich im Spiel " + gamenameforlabel)
+
+                    //
+                    if (list[3].toInt() == 0) {
+                        println("####################### Number is 0")
+                        unsubscribeFromGame()
+                        val intent = Intent(this@EntryHallActivity, lobbyActivity::class.java)
+                        startActivity(intent)
+                    }
 
 
                 } else {
@@ -80,26 +88,16 @@ class EntryHallActivity : AppCompatActivity() {
                         list.add(c.value.toString())
                     }
                     //creates a new Playerobject and checks if player is already listed
+                    //TODO: remove player when player leaves
+                    var newPlayers = arrayListOf<PlayerOnServer>()
                     val p = PlayerOnServer(list[2], list[1], list[0])
-                    var exists = false
-                    for (pl in players) {
-                        if (pl.mail == p.mail) {
-                            pl.posx = list[3].toInt()
-                            pl.posy = list[4].toInt()
-                            pl.ready = list[5].toBoolean()
-
-
-                            exists = true
-                            break
-                        }
-                    }
-                    if (!exists) {
                         p.posx = list[3].toInt()
                         p.posy = list[4].toInt()
                         p.ready = list[5].toBoolean()
-                        players.add(p)
-                    }
+                        newPlayers.add(p)
 
+
+                    players = newPlayers;
                 }
 
                 adapter.notifyDataSetChanged()
@@ -130,7 +128,9 @@ class EntryHallActivity : AppCompatActivity() {
         })
     }
 
+    //Player klicks ready, sets Value in Database and changes Text of Button
     fun setReady(view: View) {
+        println("++++++++++++++++++++++++++++++++++++++++++++++++")
         val game = intent.getStringExtra("game")
         val nameForPlayerDatabase = intent.getStringExtra("nameForPlayerDatabase")
         val path = "playersInGame/" + game + "/" + nameForPlayerDatabase + "/ready"
@@ -150,24 +150,36 @@ class EntryHallActivity : AppCompatActivity() {
     //When back key is pressed return to lobby and unregister from game
     override fun onBackPressed (){
         super.onBackPressed()
-        if (myName == thisgame.host + "###") {
-            //Player is host, game needs to be ended and everyone should be thrown out of entry hall
+        if (myName == thisgame.host) {
+            //TODO: Player is host, game needs to be ended and everyone should be thrown out of entry hall
+
+            val game = intent.getStringExtra("game")
+            //get the game i joint
+            val gameDatabase = database.getReference("games/" + game + "/numberOfPlayers")
+            gameDatabase.setValue(0)
+
+
         } else {
-
-            val path = "games/" + thisgame.name + "/numberOfPlayers"
-            val newNumberOfPlayers = thisgame.numberOfPlayers -1
-            val reducePlayer = database.getReference(path)
-            reducePlayer.setValue(newNumberOfPlayers)
-            val nameToDelete = createPlayerNameForDatabase(mymail)
-            val pathdelete = "playersInGame/" + thisgame.name + "/" +nameToDelete
-            val deletePlayer = database.getReference(pathdelete)
-            deletePlayer.removeValue()
+            unsubscribeFromGame()
         }
-
-
     }
 
-    fun createPlayerNameForDatabase(mymail: String) : String {
+    fun unsubscribeFromGame() {
+        val path = "games/" + thisgame.name + "/numberOfPlayers"
+        var newNumberOfPlayers = 0
+        if (thisgame.numberOfPlayers > 0) {
+            newNumberOfPlayers = thisgame.numberOfPlayers -1
+        }
+
+        val reducePlayer = database.getReference(path)
+        reducePlayer.setValue(newNumberOfPlayers)
+        val nameToDelete = createPlayerNameForDatabase(mymail)
+        val pathdelete = "playersInGame/" + thisgame.name + "/" +nameToDelete
+        val deletePlayer = database.getReference(pathdelete)
+        deletePlayer.removeValue()
+    }
+
+    private fun createPlayerNameForDatabase(mymail: String) : String {
         //Use the mail for playeridentification, eliminate . for database reasons
         val nameForPlayerDatabaseArr = mymail.split(".");
         var nameForPlayerDatabase = ""
