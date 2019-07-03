@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "842350901977-7urvppa4dtl4olmliql3f8s1e10a2hte.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dandelionrace.game",
+            "certificate_hash": "00b5c45040a513e7a46bdf75ecd56ac7b73d6f1d"
+          }
+        },
+        {
+          "client_id": "842350901977-1n85ominp07urb4n3htb4va7t091cik5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dandelionrace.game",
+            "certificate_hash": "30968a4dd286652bccebc651537c2b4081ce9768"
+          }
+        },
+        {
+          "client_id": "842350901977-kfnbfa2h6ve3i2tfo5b936qmd2sttjja.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dandelionrace.game",
+            "certificate_hash": "4123cc610a22af07f94cb3dc7e2a033021fc4bdf"
+          }
+        },
+        {
           "client_id": "842350901977-5d6jepl6gdco0iof7e9anmsn31nlet64.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
