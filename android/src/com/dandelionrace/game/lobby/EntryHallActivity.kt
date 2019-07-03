@@ -74,7 +74,10 @@ class EntryHallActivity : AppCompatActivity() {
                         //TODO: change val tubeArrayList into the String variant
 
                         for (i in tubeArrayList){
-                            tubeString += "%" + i.posTopTube.x + "$" + i.posTopTube.y + "$" + i.posBotTube.x + "$" + i.posBotTube.y
+                            if(tubeArrayList.indexOf(i)==tubeArrayList.size-1){
+                                tubeString += "" + i.posTopTube.x + "$" + i.posTopTube.y + "$" + i.posBotTube.x + "$" + i.posBotTube.y
+                            }
+                            tubeString += "" + i.posTopTube.x + "$" + i.posTopTube.y + "$" + i.posBotTube.x + "$" + i.posBotTube.y + "%"
                         }
 
                         val setSeed = database.getReference("games/" + game + "/seed")
