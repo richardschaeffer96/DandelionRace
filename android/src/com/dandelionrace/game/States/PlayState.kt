@@ -40,11 +40,12 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
         for (i in 1..TUBE_COUNT) {
             tubes.add(Tube(i*(TUBE_SPACING+Tube.TUBE_WIDTH)))
         }
+
     }
 
     override fun handleInput() {
         if(Gdx.input.justTouched()){
-            //bird.jump()
+            bird.jump()
         }
     }
 
@@ -135,6 +136,10 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
 
                 return "Free"
             } else {
+                /*
+
+                //RECOGNITION OF AUDIO
+
                 val audioBuffer = ShortArray(44100 * 1)
 
                 val recorder = Gdx.audio.newAudioRecorder(44100, true)
@@ -159,6 +164,9 @@ class PlayState(gsm: GameStateManager) : State(gsm) {
                 blow_string = blow_value.toString()
                 //System.out.println("Blow STRING= "+blow_string);
                 return blow_string
+                */
+                return "Free"
+
             }
         }
 
