@@ -11,6 +11,7 @@ import com.dandelionrace.game.R
 import com.dandelionrace.game.classes.DandelionGame
 import com.dandelionrace.game.classes.PlayerInGameAdapter
 import com.dandelionrace.game.classes.PlayerOnServer
+import com.dandelionrace.game.sprites.Tube
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_entry_hall.*
@@ -27,6 +28,11 @@ class EntryHallActivity : AppCompatActivity() {
     var ready: Boolean = false
     var allPlayersReady: Boolean = false
     lateinit var thisgame: DandelionGame
+
+    private val tubeCount: Int = 5
+    private val tubeSpacing: Float = 125f
+    private val width: Int = 300
+    lateinit var tubeArrayList: ArrayList<Tube>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,6 +132,12 @@ class EntryHallActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
             }
         })
+
+        tubeArrayList = ArrayList<Tube>()
+
+        for (i in 1..tubeCount){
+            tubeArrayList.add(Tube(i*(tubeSpacing+width)))
+        }
     }
 
     //Player klicks ready, sets Value in Database and changes Text of Button
