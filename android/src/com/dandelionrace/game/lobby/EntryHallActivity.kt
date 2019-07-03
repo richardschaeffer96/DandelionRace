@@ -42,6 +42,8 @@ class EntryHallActivity : AppCompatActivity() {
         val readybutton = findViewById<Button>(R.id.readybutton)
         val playerList = database.getReference("playersInGame/"+game)
 
+
+
         //get the game i joint
         val gameDatabase = database.getReference("games/" + game)
         gameDatabase.addValueEventListener(object : ValueEventListener {
@@ -58,6 +60,16 @@ class EntryHallActivity : AppCompatActivity() {
                     thisgame.numberOfPlayers = list[3].toInt()
                     val gamenameforlabel = list[2]
                     findViewById<TextView>(R.id.gamename).setText("Du befindest dich im Spiel " + gamenameforlabel)
+
+                    if (list[1] == myName && thisgame.seed == 0) {
+                        //create TubeList
+                        tubeArrayList = arrayListOf<Tube>()
+                        for (i in 1..tubeCount){
+                            tubeArrayList.add(Tube(i*(tubeSpacing+width)))
+                        }
+                        val setSeed = database.getReference("games/" + game + "/seed")
+                        setSeed.setValue(tubeArrayList)
+                    }
                 } else {
                     thisgame.numberOfPlayers = list[3].toInt()
                     if (list[3].toInt() == 0) {
@@ -127,11 +139,7 @@ class EntryHallActivity : AppCompatActivity() {
             }
         })
 
-        tubeArrayList = ArrayList<Tube>()
 
-        for (i in 1..tubeCount){
-            tubeArrayList.add(Tube(i*(tubeSpacing+width)))
-        }
     }
 
     //Player klicks ready, sets Value in Database and changes Text of Button
