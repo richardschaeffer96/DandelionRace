@@ -5,27 +5,43 @@ import android.os.Bundle
 
 import com.badlogic.gdx.backends.android.AndroidApplication
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
+import com.badlogic.gdx.graphics.Texture
 import com.dandelionrace.game.sprites.GameTubes
 import com.dandelionrace.game.sprites.Tube
 
 class AndroidLauncher : AndroidApplication() {
 
+    private val tubeCount: Int = 5
+    private val tubeSpacing: Float = 125f
+    private val width: Int = 300
+
+    lateinit var tubeArrayList: ArrayList<Tube>
+
+    var tubeString: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val config = AndroidApplicationConfiguration()
 
-        var tubeString: String = intent.getStringExtra("tubes")
 
-        var finalTubes: ArrayList<GameTubes>
-        finalTubes = ArrayList<GameTubes>()
-
-        var tubes = tubeString.split("%")
-
-        for(t in tubes){
-            var tubes2: List<String> = t.split("$")
-            finalTubes.add(GameTubes(tubes2[0].toFloat(), tubes2[1].toFloat(), tubes2[2].toFloat(), tubes2[3].toFloat()))
+        tubeArrayList = arrayListOf<Tube>()
+        for (i in 1..tubeCount){
+            tubeArrayList.add(Tube(i*(tubeSpacing+width)))
         }
 
-        initialize(dandelionrace(context, finalTubes), config)
+        for (i in tubeArrayList){
+
+            if(tubeArrayList.indexOf(i)==tubeArrayList.size){
+                tubeString += "" + i.posTopTube.x + "$" + i.posTopTube.y + "$" + i.posBotTube.x + "$" + i.posBotTube.y
+            }
+
+            tubeString += "" + i.posTopTube.x + "$" + i.posTopTube.y + "$" + i.posBotTube.x + "$" + i.posBotTube.y + "%"
+        }
+
+
+        System.out.println("LISTE NACH ERZEUGUNG: " + tubeString)
+
+
+        initialize(dandelionrace(context, tubeString), config)
     }
 }

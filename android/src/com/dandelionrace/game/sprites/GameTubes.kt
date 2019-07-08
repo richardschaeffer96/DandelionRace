@@ -11,17 +11,18 @@ import java.util.Random
 class GameTubes(posTopTubeX: Float, posTopTubeY: Float,posBotTubeX: Float, posBotTubeY: Float) {
 
 
-    val topTube: Texture
-    val bottomTube: Texture
+
     val posTopTube: Vector2
     val posBotTube: Vector2
     private val boundsTop: Rectangle
     private val boundsBot: Rectangle
+    var topTube: Texture
+    var bottomTube: Texture
 
 
     init {
-        topTube = Texture("spidertop.png")
-        bottomTube = Texture("spiderbottom.png")
+        topTube = Texture("spiderbottom.png")
+        bottomTube = Texture("spidertop.png")
 
         posBotTube = Vector2(posBotTubeX, posBotTubeY)
         posTopTube = Vector2(posTopTubeX, posTopTubeY)

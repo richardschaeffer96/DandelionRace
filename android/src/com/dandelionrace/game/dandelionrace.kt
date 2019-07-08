@@ -4,6 +4,7 @@ import android.content.Context
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.dandelionrace.game.States.GameStateManager
 import com.dandelionrace.game.States.MenuState
@@ -11,11 +12,11 @@ import com.dandelionrace.game.States.PlayState
 import com.dandelionrace.game.sprites.GameTubes
 
 
-class dandelionrace(mContext: Context, finalTubes: ArrayList<GameTubes>) : ApplicationAdapter() {
+class dandelionrace(mContext: Context, tubeString: String) : ApplicationAdapter() {
     internal lateinit var gsm: GameStateManager
     internal lateinit var batch: SpriteBatch
     val game_Context: Context = mContext
-    val tubes: ArrayList<GameTubes> = finalTubes
+    val tubesString: String = tubeString
 
 
     override fun create() {
@@ -23,7 +24,32 @@ class dandelionrace(mContext: Context, finalTubes: ArrayList<GameTubes>) : Appli
         batch = SpriteBatch()
         gsm = GameStateManager()
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
-        gsm!!.push(PlayState(gsm, tubes))
+
+
+
+        var finalTubes: ArrayList<GameTubes>
+        finalTubes = ArrayList<GameTubes>()
+
+        var tubes = tubesString.split("%")
+
+        for(t in tubes){
+            if (t==tubes[tubes.size-1])
+            {
+
+            } else {
+                var tubes2: List<String> = t.split("$")
+                System.out.println("ERSTE LISTE: " + tubes)
+                System.out.println("ZWEITE LISTE: " + tubes2)
+                System.out.println("AUSGABE: "+ tubes2[0])
+                System.out.println("AUSGABE: "+ tubes2[1])
+                System.out.println("AUSGABE: "+ tubes2[2])
+                System.out.println("AUSGABE: "+ tubes2[3])
+                finalTubes.add(GameTubes(tubes2[0].toFloat(), tubes2[1].toFloat(), tubes2[2].toFloat(), tubes2[3].toFloat()))
+            }
+
+        }
+
+        gsm!!.push(PlayState(gsm, finalTubes))
 
     }
 

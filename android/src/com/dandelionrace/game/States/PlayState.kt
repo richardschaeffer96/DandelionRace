@@ -91,8 +91,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State
         sb.draw(bg, cam.position.x - (cam.viewportWidth / 2 ), 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
 
         for(tube in tubes) {
-            //sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
-            //sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
+            sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
+            sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
 
         }
         //sb.draw(bg, 0f, 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
