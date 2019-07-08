@@ -9,14 +9,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.dandelionrace.game.States.GameStateManager
 import com.dandelionrace.game.States.MenuState
 import com.dandelionrace.game.States.PlayState
+import com.dandelionrace.game.sprites.GameItems
 import com.dandelionrace.game.sprites.GameTubes
+import com.dandelionrace.game.sprites.Item
 
 
-class dandelionrace(mContext: Context, tubeString: String) : ApplicationAdapter() {
+class dandelionrace(mContext: Context, tubeString: String, itemString: String) : ApplicationAdapter() {
     internal lateinit var gsm: GameStateManager
     internal lateinit var batch: SpriteBatch
     val game_Context: Context = mContext
     val tubesString: String = tubeString
+    val itemsString: String = itemString
 
 
     override fun create() {
@@ -25,6 +28,25 @@ class dandelionrace(mContext: Context, tubeString: String) : ApplicationAdapter(
         gsm = GameStateManager()
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
 
+        var finalItems: ArrayList<GameItems>
+        finalItems = ArrayList<GameItems>()
+
+        var items = itemsString.split("%")
+
+        for(i in items){
+            if (i==items[items.size-1])
+            {
+
+            } else {
+                var items2: List<String> = i.split("$")
+                System.out.println("ITEM ERSTE LISTE: " + items)
+                System.out.println("ITEM ZWEITE LISTE: " + items2)
+                System.out.println("ITEM AUSGABE: "+ items2[0])
+                System.out.println("ITEM AUSGABE: "+ items2[1])
+                finalItems.add(GameItems(items2[0].toFloat(), items2[1].toFloat()))
+            }
+
+        }
 
 
         var finalTubes: ArrayList<GameTubes>
@@ -49,7 +71,7 @@ class dandelionrace(mContext: Context, tubeString: String) : ApplicationAdapter(
 
         }
 
-        gsm!!.push(PlayState(gsm, finalTubes))
+        gsm!!.push(PlayState(gsm, finalTubes, finalItems))
 
     }
 

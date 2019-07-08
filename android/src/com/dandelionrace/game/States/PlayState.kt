@@ -9,10 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector3
 import com.dandelionrace.game.dandelionrace
 import com.dandelionrace.game.sprites.Bird
+import com.dandelionrace.game.sprites.GameItems
 import com.dandelionrace.game.sprites.GameTubes
 import com.dandelionrace.game.sprites.Tube
 
-class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State(gsm) {
+class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalitems: ArrayList<GameItems>) : State(gsm) {
 
     private val TUBE_SPACING: Float = 125f
     //TUBE_COUNT: ANZAHL AN TUBES IM LEVEL
@@ -26,6 +27,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State
     val app_height: Float
 
     val tubes: ArrayList<GameTubes> = finaltubes
+    val items: ArrayList<GameItems> = finalitems
 
     init {
         app_height = Gdx.app.graphics.height.toFloat()
@@ -69,6 +71,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State
             }
         }
 
+        //TODO IMPLEMENT COLLIDER WITH ITEMS
+
 
         /* !!! CODE FOR REPOSITION OF TUBES FOR DYNAMIC LEVEL !!!
         for(tube in tubes){
@@ -97,6 +101,10 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State
             sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
             sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
 
+        }
+
+        for(item in items){
+            sb.draw(item.itemPic, item.posItem.x, item.posItem.y)
         }
         //sb.draw(bg, 0f, 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
         sb.draw(bird.bird, bird.position.x, bird.position.y)
