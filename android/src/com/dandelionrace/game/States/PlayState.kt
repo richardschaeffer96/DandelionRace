@@ -54,7 +54,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State
 
         if(cam.position.x - (cam.viewportWidth/2) > tubes[counter].posTopTube.x + tubes[counter].topTube.width){
             counter = counter.inc()
-            System.out.println(counter)
+            System.out.println("COUNTER:"+counter)
         }
 
         for(tube in tubes){
@@ -70,21 +70,18 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State
 
         /* !!! CODE FOR REPOSITION OF TUBES FOR DYNAMIC LEVEL !!!
         for(tube in tubes){
-            if(cam.position.x - (cam.viewportWidth/2) > tube.posTopTube.x + tube.topTube.width)
-                counter = counter.inc()
-                System.out.println(counter)
-               // tube.reposition(tube.posTopTube.x + ((Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT))
-            if(tube.collides(bird.getBound())){
-               // bird.status = "trapped"
-            }
-
+           // if(cam.position.x - (cam.viewportWidth/2) > tube.posTopTube.x + tube.topTube.width)
+                tube.reposition(tube.posTopTube.x + ((Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT))
+            if(tube.collides(bird.getBound()))
+               // gsm.set(PlayState(gsm))
+                gsm.set(MenuState(gsm))
         }
         */
-
         cam.update()
 
-        if(counter==TUBE_COUNT){
+        if(counter==tubes.size){
             gsm.set(WinGame(gsm))
+            dispose();
         }
     }
 
