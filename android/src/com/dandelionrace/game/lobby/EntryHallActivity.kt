@@ -76,8 +76,9 @@ class EntryHallActivity : AppCompatActivity() {
                         for (i in tubeArrayList){
                             if(tubeArrayList.indexOf(i)==tubeArrayList.size-1){
                                 tubeString += "" + i.posTopTube.x + "$" + i.posTopTube.y + "$" + i.posBotTube.x + "$" + i.posBotTube.y
+                            } else {
+                                tubeString += "" + i.posTopTube.x + "$" + i.posTopTube.y + "$" + i.posBotTube.x + "$" + i.posBotTube.y + "%"
                             }
-                            tubeString += "" + i.posTopTube.x + "$" + i.posTopTube.y + "$" + i.posBotTube.x + "$" + i.posBotTube.y + "%"
                         }
 
                         val setSeed = database.getReference("games/" + game + "/seed")
