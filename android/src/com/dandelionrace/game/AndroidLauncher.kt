@@ -11,12 +11,6 @@ import com.dandelionrace.game.sprites.Tube
 
 class AndroidLauncher : AndroidApplication() {
 
-    private val tubeCount: Int = 5
-    private val tubeSpacing: Float = 500f
-    private val width: Int = 300
-
-    lateinit var tubeArrayList: ArrayList<Tube>
-
     var tubeString: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,22 +18,7 @@ class AndroidLauncher : AndroidApplication() {
         val config = AndroidApplicationConfiguration()
 
 
-        tubeArrayList = arrayListOf<Tube>()
-        for (i in 1..tubeCount){
-            tubeArrayList.add(Tube(i*(tubeSpacing+width)))
-        }
-
-        for (i in tubeArrayList){
-
-            if(tubeArrayList.indexOf(i)==tubeArrayList.size){
-                tubeString += "" + i.posTopTube.x + "$" + i.posTopTube.y + "$" + i.posBotTube.x + "$" + i.posBotTube.y
-            }
-
-            tubeString += "" + i.posTopTube.x + "$" + i.posTopTube.y + "$" + i.posBotTube.x + "$" + i.posBotTube.y + "%"
-        }
-
-
-        System.out.println("LISTE NACH ERZEUGUNG: " + tubeString)
+        tubeString = intent.getStringExtra("tubes")
 
 
         initialize(dandelionrace(context, tubeString), config)
