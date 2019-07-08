@@ -96,6 +96,30 @@ class EntryHallActivity : AppCompatActivity() {
                         val intent = Intent(this@EntryHallActivity, lobbyActivity::class.java)
                         startActivity(intent)
                     }
+
+                    if (list[4].toBoolean()==false && list[1]!=myName){
+                        val intent = Intent(this@EntryHallActivity, AndroidLauncher::class.java)
+                        intent.putExtra("tubes", tubeString)
+                        intent.putExtra("game", game)
+                        val playersString = database.getReference("games/"+game+"/player")
+                        println(playersString)
+                        var playerMails = ""
+                        // fuegt den eigenen Namen der spielerliste hinzu
+                        playersString.addListenerForSingleValueEvent(object: ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                println(dataSnapshot)
+                                playerMails = dataSnapshot.getValue().toString()
+                                intent.putExtra("enemy", playerMails)
+                                startActivity(intent)
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                            }
+                        })
+                        println("MAILS: "+playerMails)
+
+                    }
+
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -122,8 +146,8 @@ class EntryHallActivity : AppCompatActivity() {
                     //TODO: remove player when player leaves
                     var newPlayers = arrayListOf<PlayerOnServer>()
                     val p = PlayerOnServer(list[2], list[1], list[0])
-                        p.posx = list[3].toInt()
-                        p.posy = list[4].toInt()
+                        p.posx = list[3].toFloat()
+                        p.posy = list[4].toFloat()
                         p.ready = list[5].toBoolean()
                         newPlayers.add(p)
 
@@ -146,8 +170,8 @@ class EntryHallActivity : AppCompatActivity() {
                     allPlayersReady = false
                 }
                 //check if client is host of session and can start game
-                println("Host: " + thisgame?.host)
-                println("NAME: " + myName)
+                //println("Host: " + thisgame?.host)
+                //println("NAME: " + myName)
                 if (thisgame?.host == myName && allPlayersReady) {
                     findViewById<Button>(R.id.startGame).setVisibility(View.VISIBLE)
                 } else {
@@ -225,6 +249,26 @@ class EntryHallActivity : AppCompatActivity() {
         val intent = Intent(this, AndroidLauncher::class.java)
         intent.putExtra("tubes", tubeString)
         intent.putExtra("game", game)
-        startActivity(intent)
+        val playersString = database.getReference("games/"+game+"/player")
+        println(playersString)
+        var playerMails = ""
+        // fuegt den eigenen Namen der spielerliste hinzu
+        playersString.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                println(dataSnapshot)
+                playerMails = dataSnapshot.getValue().toString()
+                intent.putExtra("enemy", playerMails)
+                startActivity(intent)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+        println("MAILS: "+playerMails)
+
+        val newGame = database.getReference("games/" + game + "/open")
+        newGame.setValue(false)
+
+
     }
 }

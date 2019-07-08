@@ -2,23 +2,17 @@ package com.dandelionrace.game.States
 
 import android.hardware.SensorManager.GRAVITY_EARTH
 import android.os.AsyncTask
-import android.widget.Button
-import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector3
-import com.dandelionrace.game.R
 import com.dandelionrace.game.dandelionrace
 import com.dandelionrace.game.sprites.Bird
 import com.dandelionrace.game.sprites.GameTubes
-import com.dandelionrace.game.sprites.Tube
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 
-class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, gameName: String) : State(gsm) {
+class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, gameName: String, enemy: String) : State(gsm) {
 
     private val TUBE_SPACING: Float = 125f
     //TUBE_COUNT: ANZAHL AN TUBES IM LEVEL
@@ -26,8 +20,11 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, gameNam
     private var counter: Int = 0
 
     private val bird: Bird
+    private val enemyBird: Bird
     private val bg: Texture
     private val win: Texture
+
+    private val enemy = enemy
 
     val app_width: Float
     val app_height: Float
@@ -35,30 +32,55 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, gameNam
     val tubes: ArrayList<GameTubes> = finaltubes
     val game: String = gameName
     val database = FirebaseDatabase.getInstance()
-    val playerList = database.getReference("playersInGame/"+game)
+    val myPosX: DatabaseReference
+    val myPosY: DatabaseReference
+
+    private var mAuth = FirebaseAuth.getInstance()
+    val mymail = mAuth?.currentUser?.email.toString()
 
     init {
         app_height = Gdx.app.graphics.height.toFloat()
         app_width = Gdx.app.graphics.width.toFloat()
         cam.setToOrtho(false, app_width, app_height)
-        bird = Bird(100,500)
+        bird = Bird(100,500, 1)
+        enemyBird = Bird(100,500, 2)
         bg = Texture("bg.png")
         win = Texture("win.jpg")
 
-        playerList.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-            }
+        myPosX = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/posx")
+        myPosY = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/posy")
 
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val snap = dataSnapshot.children
-                print(snap)
-                val list: ArrayList<String> = ArrayList()
-                for (s in snap) {
-                    list.add(s.value.toString())
-                }
-                print(list)
+        println("Test")
+        println("Enemy: "+enemy)
+        for (s in enemy.split(",")){
+            println("Split: "+s)
+            if (s != mymail){
+                val enemyPosX = database.getReference("playersInGame/"+game+"/"+s.replace(".","")+"/posx")
+                println(enemyPosX)
+                enemyPosX.addValueEventListener(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                    }
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        println("snapX: "+ dataSnapshot.getValue())
+                        enemyBird.position.x = dataSnapshot.getValue().toString().toFloat()
+                    }
+                })
+                val enemyPosY = database.getReference("playersInGame/"+game+"/"+s.replace(".","")+"/posy")
+                println(enemyPosY)
+                enemyPosY.addValueEventListener(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                    }
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        println("snapY: "+ dataSnapshot.getValue())
+                        enemyBird.position.y = dataSnapshot.getValue().toString().toFloat()
+                    }
+                })
             }
-        })
+        }
+
+
 
     }
 
@@ -76,8 +98,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, gameNam
         cam.position.set(bird.position.x + 80, cam.viewportHeight/2,0f)
 
         // Write a message to the database
-
-        playerList.setValue("Hello, World!");
+        myPosX.setValue(bird.position.x);
+        myPosY.setValue(bird.position.y);
 
         if(cam.position.x - (cam.viewportWidth/2) > tubes[counter].posTopTube.x + tubes[counter].topTube.width){
             //
@@ -132,6 +154,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, gameNam
         sb.draw(bird.bird, bird.position.x, bird.position.y)
         //sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
         //sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
+        sb.draw(enemyBird.bird, enemyBird.position.x, enemyBird.position.y)
         sb.end()
     }
 

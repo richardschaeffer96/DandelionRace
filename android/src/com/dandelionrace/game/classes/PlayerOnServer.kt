@@ -4,7 +4,7 @@ class PlayerOnServer (name: String, mail: String, game:String) {
     val name = name
     val mail = mail
     val game = game
-    var posx: Int = 0
-    var posy: Int = 0
+    var posx: Float = 0f
+    var posy: Float = 0f
     var ready: Boolean = false
 }

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector3
 
-class Bird(x: Int, y: Int) {
+class Bird(x: Int, y: Int, player: Int) {
     var position: Vector3
     private val velocity: Vector3
     private val bound: Rectangle
@@ -15,7 +15,11 @@ class Bird(x: Int, y: Int) {
         status = "free"
         position = Vector3(x.toFloat(), y.toFloat(), 0f)
         velocity = Vector3(0f, 0f, 0f)
-        bird = Texture("bird.png")
+        if(player==1) {
+            bird = Texture("bird.png")
+        }else{
+            bird = Texture("enemy.png")
+        }
         bound = Rectangle(x.toFloat(), y.toFloat(), bird.width.toFloat(), bird.height.toFloat())
     }
 

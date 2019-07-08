@@ -70,10 +70,20 @@ class lobbyActivity : AppCompatActivity() {
                     val pathforCount = "games/" + gamename + "/numberOfPlayers"
                     val numberOfPlayer = selectedItem.numberOfPlayers + 1
                     val newGame = database.getReference(path)
+                    // fuegt den eigenen Namen der spielerliste hinzu
+                    newGame.addListenerForSingleValueEvent(object: ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            newGame.setValue(""+dataSnapshot.getValue() + "," + mymail)
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                        }
+                    })
+
                     val newGameIncrementPlayer = database.getReference(pathforCount)
 
-                    // fuegt den eigenen Namen der spielerliste hinzu
-                    newGame.setValue(playersInGame + "," + myname)
+
+
                     //increments playernumber
                     newGameIncrementPlayer.setValue(numberOfPlayer)
 
