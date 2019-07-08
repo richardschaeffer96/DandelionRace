@@ -36,8 +36,8 @@ class Tube(x: Float) {
     companion object {
         val TUBE_WIDTH : Int = 300
         private val FLUCTUATION = 130
-        val TUBE_GAP = 700
-        val LOWEST_OPENING = -400
+        val TUBE_GAP = 1000
+        val LOWEST_OPENING = -700
     }
 
     /*

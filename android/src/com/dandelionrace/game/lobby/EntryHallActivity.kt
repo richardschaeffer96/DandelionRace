@@ -35,6 +35,8 @@ class EntryHallActivity : AppCompatActivity() {
     private val width: Int = 300
     lateinit var tubeArrayList: ArrayList<Tube>
 
+    var tubeString: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         thisgame = DandelionGame("DUMMY", "0", "0", true, "o", true)
@@ -70,10 +72,21 @@ class EntryHallActivity : AppCompatActivity() {
                         }
 
                         //TODO: change val tubeArrayList into the String variant
+
+                        for (i in tubeArrayList){
+                            if(tubeArrayList.indexOf(i)==tubeArrayList.size-1){
+                                tubeString += "" + i.posTopTube.x + "$" + i.posTopTube.y + "$" + i.posBotTube.x + "$" + i.posBotTube.y
+                            } else {
+                                tubeString += "" + i.posTopTube.x + "$" + i.posTopTube.y + "$" + i.posBotTube.x + "$" + i.posBotTube.y + "%"
+                            }
+                        }
+
                         val setSeed = database.getReference("games/" + game + "/seed")
-                        setSeed.setValue(tubeArrayList)
+                        setSeed.setValue(tubeString)
+
                     } else {
                         //TODO: Im not host, so i have to download and parse the seed (stored in list[6]
+                        tubeString = list[6]
                     }
                 } else {
                     thisgame.numberOfPlayers = list[3].toInt()
@@ -209,7 +222,7 @@ class EntryHallActivity : AppCompatActivity() {
 
     fun startGame(v: View){
         val intent = Intent(this, AndroidLauncher::class.java)
-        intent.putExtra("array", tubeArrayList)
+        intent.putExtra("tubes", tubeString)
         startActivity(intent)
     }
 }

@@ -9,9 +9,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector3
 import com.dandelionrace.game.dandelionrace
 import com.dandelionrace.game.sprites.Bird
+import com.dandelionrace.game.sprites.GameTubes
 import com.dandelionrace.game.sprites.Tube
 
-class PlayState(gsm: GameStateManager, array: ArrayList<Tube>) : State(gsm) {
+class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State(gsm) {
 
     private val TUBE_SPACING: Float = 125f
     //TUBE_COUNT: ANZAHL AN TUBES IM LEVEL
@@ -25,8 +26,7 @@ class PlayState(gsm: GameStateManager, array: ArrayList<Tube>) : State(gsm) {
     val app_width: Float
     val app_height: Float
 
-
-    private val tubes: ArrayList<Tube> = array
+    val tubes: ArrayList<GameTubes> = finaltubes
 
     init {
         app_height = Gdx.app.graphics.height.toFloat()
@@ -46,12 +46,12 @@ class PlayState(gsm: GameStateManager, array: ArrayList<Tube>) : State(gsm) {
 
 
     override fun update(dt: Float) {
-        //someTask(bird).execute()
+        someTask(bird).execute()
         handleInput()
         bird.update(dt)
         cam.position.set(bird.position.x + 80, cam.viewportHeight/2,0f)
 
-        /*
+
         if(cam.position.x - (cam.viewportWidth/2) > tubes[counter].posTopTube.x + tubes[counter].topTube.width){
             counter = counter.inc()
             System.out.println(counter)
@@ -59,11 +59,13 @@ class PlayState(gsm: GameStateManager, array: ArrayList<Tube>) : State(gsm) {
 
         for(tube in tubes){
             if(tube.collides(bird.getBound())){
+                if (bird.position.y > tube.posBotTube.y) {
+                    System.out.println("IST TOP TUBE")
+                }
+
                 bird.status = "trapped"
             }
         }
-
-        */
 
 
         /* !!! CODE FOR REPOSITION OF TUBES FOR DYNAMIC LEVEL !!!
@@ -93,8 +95,8 @@ class PlayState(gsm: GameStateManager, array: ArrayList<Tube>) : State(gsm) {
         sb.draw(bg, cam.position.x - (cam.viewportWidth / 2 ), 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
 
         for(tube in tubes) {
-            //sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
-            //sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
+            sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
+            sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
 
         }
         //sb.draw(bg, 0f, 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
