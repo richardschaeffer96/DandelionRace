@@ -12,7 +12,7 @@ import com.dandelionrace.game.sprites.Tube
 class AndroidLauncher : AndroidApplication() {
 
     private val tubeCount: Int = 5
-    private val tubeSpacing: Float = 125f
+    private val tubeSpacing: Float = 500f
     private val width: Int = 300
 
     lateinit var tubeArrayList: ArrayList<Tube>

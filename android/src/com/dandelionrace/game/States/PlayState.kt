@@ -59,6 +59,10 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State
 
         for(tube in tubes){
             if(tube.collides(bird.getBound())){
+                if (bird.position.y > tube.posBotTube.y) {
+                    System.out.println("IST TOP TUBE")
+                }
+
                 bird.status = "trapped"
             }
         }
