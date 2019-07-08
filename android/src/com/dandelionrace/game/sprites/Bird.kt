@@ -9,10 +9,12 @@ class Bird(x: Int, y: Int) {
     private val velocity: Vector3
     private val bound: Rectangle
     var status: String = "free"
+    var trappedTube: String = ""
     val bird: Texture
 
     init {
         status = "free"
+        trappedTube = ""
         position = Vector3(x.toFloat(), y.toFloat(), 0f)
         velocity = Vector3(0f, 0f, 0f)
         bird = Texture("bird.png")

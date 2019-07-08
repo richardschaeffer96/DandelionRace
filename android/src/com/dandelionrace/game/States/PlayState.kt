@@ -59,11 +59,14 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State
 
         for(tube in tubes){
             if(tube.collides(bird.getBound())){
-                if (bird.position.y > tube.posBotTube.y) {
-                    System.out.println("IST TOP TUBE!")
-                }
-
                 bird.status = "trapped"
+                if (bird.position.y - 700 > tube.posBotTube.y) {
+                    System.out.println("IST TOP TUBE!")
+                    bird.trappedTube = "top"
+
+                } else {
+                    bird.trappedTube = "bot"
+                }
             }
         }
 
@@ -132,7 +135,15 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State
                 if (gForce>1.7) {
                     System.out.println("SHAKE DETECTED")
                     new_bird.status = "free"
-                    new_bird.position = Vector3(new_bird.position.x, new_bird.position.y + 100f, 0f)
+                    if(new_bird.trappedTube == "bot"){
+                        new_bird.position = Vector3(new_bird.position.x, new_bird.position.y + 100f, 0f)
+                        new_bird.trappedTube = ""
+                        new_bird.jump()
+                    } else {
+                        new_bird.position = Vector3(new_bird.position.x, new_bird.position.y - 400f, 0f)
+                        new_bird.trappedTube = ""
+                    }
+
                 }
 
                 return "Free"
