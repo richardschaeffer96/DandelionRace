@@ -16,7 +16,6 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State
 
     private val TUBE_SPACING: Float = 125f
     //TUBE_COUNT: ANZAHL AN TUBES IM LEVEL
-    private val TUBE_COUNT: Int = 5
     private var counter: Int = 0
 
     private val bird: Bird
@@ -86,7 +85,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State
 
         cam.update()
 
-        if(counter==TUBE_COUNT){
+        if(counter==tubes.size){
             gsm.set(WinGame(gsm))
         }
     }
