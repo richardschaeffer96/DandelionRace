@@ -1,6 +1,7 @@
 package com.dandelionrace.game
 
 import android.content.Context
+import android.widget.Button
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
@@ -12,11 +13,12 @@ import com.dandelionrace.game.States.PlayState
 import com.dandelionrace.game.sprites.GameTubes
 
 
-class dandelionrace(mContext: Context, tubeString: String) : ApplicationAdapter() {
+class dandelionrace(mContext: Context, tubeString: String, gameName: String) : ApplicationAdapter() {
     internal lateinit var gsm: GameStateManager
     internal lateinit var batch: SpriteBatch
     val game_Context: Context = mContext
     val tubesString: String = tubeString
+    val gameName = gameName
 
 
     override fun create() {
@@ -24,7 +26,6 @@ class dandelionrace(mContext: Context, tubeString: String) : ApplicationAdapter(
         batch = SpriteBatch()
         gsm = GameStateManager()
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
-
 
 
         var finalTubes: ArrayList<GameTubes>
@@ -49,7 +50,7 @@ class dandelionrace(mContext: Context, tubeString: String) : ApplicationAdapter(
 
         }
 
-        gsm!!.push(PlayState(gsm, finalTubes))
+        gsm!!.push(PlayState(gsm, finalTubes, gameName))
 
     }
 

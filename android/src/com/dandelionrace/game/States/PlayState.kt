@@ -2,21 +2,27 @@ package com.dandelionrace.game.States
 
 import android.hardware.SensorManager.GRAVITY_EARTH
 import android.os.AsyncTask
+import android.widget.Button
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector3
+import com.dandelionrace.game.R
 import com.dandelionrace.game.dandelionrace
 import com.dandelionrace.game.sprites.Bird
 import com.dandelionrace.game.sprites.GameTubes
 import com.dandelionrace.game.sprites.Tube
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
-class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State(gsm) {
+class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, gameName: String) : State(gsm) {
 
     private val TUBE_SPACING: Float = 125f
     //TUBE_COUNT: ANZAHL AN TUBES IM LEVEL
-    private val TUBE_COUNT: Int = 5
+    private val TUBE_COUNT: Int = 100
     private var counter: Int = 0
 
     private val bird: Bird
@@ -27,6 +33,9 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State
     val app_height: Float
 
     val tubes: ArrayList<GameTubes> = finaltubes
+    val game: String = gameName
+    val database = FirebaseDatabase.getInstance()
+    val playerList = database.getReference("playersInGame/"+game)
 
     init {
         app_height = Gdx.app.graphics.height.toFloat()
@@ -35,6 +44,21 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State
         bird = Bird(100,500)
         bg = Texture("bg.png")
         win = Texture("win.jpg")
+
+        playerList.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val snap = dataSnapshot.children
+                print(snap)
+                val list: ArrayList<String> = ArrayList()
+                for (s in snap) {
+                    list.add(s.value.toString())
+                }
+                print(list)
+            }
+        })
 
     }
 
@@ -51,16 +75,21 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>) : State
         bird.update(dt)
         cam.position.set(bird.position.x + 80, cam.viewportHeight/2,0f)
 
+        // Write a message to the database
+
+        playerList.setValue("Hello, World!");
 
         if(cam.position.x - (cam.viewportWidth/2) > tubes[counter].posTopTube.x + tubes[counter].topTube.width){
-            counter = counter.inc()
-            System.out.println(counter)
+            //
+            // counter = counter.inc()
+            //System.out.println(counter)
         }
 
         for(tube in tubes){
             if(tube.collides(bird.getBound())){
                 if (bird.position.y > tube.posBotTube.y) {
-                    System.out.println("IST TOP TUBE")
+
+                    //System.out.println("IST TOP TUBE")
                 }
 
                 bird.status = "trapped"

@@ -36,12 +36,13 @@ class EntryHallActivity : AppCompatActivity() {
     lateinit var tubeArrayList: ArrayList<Tube>
 
     var tubeString: String = ""
+    var game: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         thisgame = DandelionGame("DUMMY", "0", "0", true, "o", true)
         setContentView(R.layout.activity_entry_hall)
-        val game = intent.getStringExtra("game")
+        game = intent.getStringExtra("game")
         val readybutton = findViewById<Button>(R.id.readybutton)
         val playerList = database.getReference("playersInGame/"+game)
 
@@ -223,6 +224,7 @@ class EntryHallActivity : AppCompatActivity() {
     fun startGame(v: View){
         val intent = Intent(this, AndroidLauncher::class.java)
         intent.putExtra("tubes", tubeString)
+        intent.putExtra("game", game)
         startActivity(intent)
     }
 }
