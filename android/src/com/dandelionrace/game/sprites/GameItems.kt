@@ -13,20 +13,36 @@ class GameItems(x: Float, y:Float) {
 
     var bounds: Rectangle
 
+    var effect: String = "EFFEKT IST 0"
+
+    var rand: Random
+
     init {
         posItem = Vector2(x, y)
-        itemPic = Texture("itemtime.png")
+
+        //TODO SET THE RIGHT ITEM PICTURES FOR THE DIFFERENT ITEMS
+
+        rand = Random()
+        var i: Int = rand.nextInt(ITEMCOUNT+1)
+        if(i==1){
+            effect = "EFFEKT IST 1"
+            itemPic = Texture("itemtime.png")
+        }else if (i==2){
+            effect = "EFFEKT IST 2"
+            itemPic = Texture("itemdiamond.png")
+        }else{
+            effect = "EFFEKT IST 3"
+            itemPic = Texture("itemband.png")
+        }
 
         bounds = Rectangle(posItem.x, posItem.y, itemPic.width.toFloat(), itemPic.height.toFloat())
 
-        //posTopTube = Vector2(x + 400, (rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING + 900).toFloat())
-        //posBotTube = Vector2(x + 400, posTopTube.y - TUBE_GAP.toFloat() - 10f)
-
+        System.out.println(effect)
 
     }
 
     companion object {
-        private val FLUCTUATION = 3000
+        private val ITEMCOUNT = 3
     }
 
     fun collides(player: Rectangle):Boolean{
