@@ -1,9 +1,12 @@
 package com.dandelionrace.game.States
 
+import android.content.Intent
+import android.support.v4.content.ContextCompat.startActivity
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.dandelionrace.game.dandelionrace
+import com.dandelionrace.game.lobby.EntryHallActivity
 import com.dandelionrace.game.sprites.Bird
 
 class WinGame(gsm: GameStateManager) : State(gsm) {

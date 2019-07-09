@@ -71,7 +71,13 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             }
         }
 
-        //TODO IMPLEMENT COLLIDER WITH ITEMS
+        for(item in items){
+            if(item.collides(bird.getBound())){
+                item.posItem.set(-100f,-100f)
+                item.bounds.set(-100f,-100f,0f,0f)
+            }
+        }
+
 
 
         /* !!! CODE FOR REPOSITION OF TUBES FOR DYNAMIC LEVEL !!!
