@@ -24,8 +24,6 @@ class AndroidLauncher : AndroidApplication() {
         var gameName = intent.getStringExtra("game")
         var enemy = intent.getStringExtra("enemy")
         println("AL: "+ enemy)
-
-        initialize(dandelionrace(context, tubeString, itemString), config)
-        initialize(dandelionrace(context, tubeString, gameName, enemy), config)
+        initialize(dandelionrace(context, tubeString, itemString, gameName, enemy), config)
     }
 }

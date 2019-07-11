@@ -73,7 +73,6 @@ class dandelionrace(mContext: Context, tubeString: String, itemString: String, g
 
         }
         println("DR: "+ enemy)
-        gsm!!.push(PlayState(gsm, finalTubes, gameName, enemy))
 
         gsm!!.push(PlayState(gsm, finalTubes, finalItems, gameName, enemy))
 
