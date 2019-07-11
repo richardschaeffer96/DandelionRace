@@ -12,6 +12,7 @@ import com.dandelionrace.game.R
 import com.dandelionrace.game.classes.DandelionGame
 import com.dandelionrace.game.classes.PlayerInGameAdapter
 import com.dandelionrace.game.classes.PlayerOnServer
+import com.dandelionrace.game.sprites.Item
 import com.dandelionrace.game.sprites.Tube
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -34,8 +35,13 @@ class EntryHallActivity : AppCompatActivity() {
     private val tubeSpacing: Float = 125f
     private val width: Int = 300
     lateinit var tubeArrayList: ArrayList<Tube>
+    lateinit var itemArrayList: ArrayList<Item>
+
 
     var tubeString: String = ""
+    var itemString: String = ""
+    private val itemCount: Int = 4
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,8 +73,12 @@ class EntryHallActivity : AppCompatActivity() {
                     if (list[1] == myName && thisgame.seed == "0") {
                         //create TubeList
                         tubeArrayList = arrayListOf<Tube>()
+                        itemArrayList = arrayListOf<Item>()
                         for (i in 1..tubeCount){
                             tubeArrayList.add(Tube(i*(tubeSpacing+width)))
+                        }
+                        for (i in 1..itemCount){
+                            itemArrayList.add(Item(i*(tubeSpacing+width)))
                         }
 
                         //TODO: change val tubeArrayList into the String variant
@@ -80,6 +90,16 @@ class EntryHallActivity : AppCompatActivity() {
                                 tubeString += "" + i.posTopTube.x + "$" + i.posTopTube.y + "$" + i.posBotTube.x + "$" + i.posBotTube.y + "%"
                             }
                         }
+
+                        for (i in itemArrayList){
+                            if(itemArrayList.indexOf(i)==itemArrayList.size-1){
+                                itemString += "" + i.posItem.x + "$" + i.posItem.y
+                            } else {
+                                itemString += "" + + i.posItem.x + "$" + i.posItem.y + "%"
+                            }
+                        }
+
+                        //TODO: SEND itemString to Database and PULL it from there for the Client
 
                         val setSeed = database.getReference("games/" + game + "/seed")
                         setSeed.setValue(tubeString)
@@ -223,6 +243,7 @@ class EntryHallActivity : AppCompatActivity() {
     fun startGame(v: View){
         val intent = Intent(this, AndroidLauncher::class.java)
         intent.putExtra("tubes", tubeString)
+        intent.putExtra("items", itemString)
         startActivity(intent)
     }
 }
