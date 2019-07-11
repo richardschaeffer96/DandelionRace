@@ -17,7 +17,6 @@ class Tube(x: Float) {
     //private val boundsTop: Rectangle
     //private val boundsBot: Rectangle
     private val rand: Random
-    var rout_length: Int =0
 
     init {
        //topTube = Texture("spidertop.png")
@@ -35,8 +34,8 @@ class Tube(x: Float) {
 
     companion object {
         val TUBE_WIDTH : Int = 300
-        private val FLUCTUATION = 130
-        val TUBE_GAP = 1000
+        private val FLUCTUATION = 300
+        val TUBE_GAP = 1200
         val LOWEST_OPENING = -700
     }
 

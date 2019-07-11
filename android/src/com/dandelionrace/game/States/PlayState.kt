@@ -8,11 +8,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector3
 import com.dandelionrace.game.dandelionrace
 import com.dandelionrace.game.sprites.Bird
+import com.dandelionrace.game.sprites.GameItems
 import com.dandelionrace.game.sprites.GameTubes
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
-class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, gameName: String, enemy: String) : State(gsm) {
+class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalitems: ArrayList<GameItems>, gameName: String, enemy: String) : State(gsm) {
 
     private val TUBE_SPACING: Float = 125f
     //TUBE_COUNT: ANZAHL AN TUBES IM LEVEL
@@ -30,6 +31,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, gameNam
     val app_height: Float
 
     val tubes: ArrayList<GameTubes> = finaltubes
+    val items: ArrayList<GameItems> = finalitems
+
     val game: String = gameName
     val database = FirebaseDatabase.getInstance()
     val myPosX: DatabaseReference
@@ -102,9 +105,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, gameNam
         myPosY.setValue(bird.position.y);
 
         if(cam.position.x - (cam.viewportWidth/2) > tubes[counter].posTopTube.x + tubes[counter].topTube.width){
-            //
-            // counter = counter.inc()
-            //System.out.println(counter)
+            counter = counter.inc()
+            System.out.println("COUNTER:"+counter)
         }
 
         for(tube in tubes){
@@ -115,27 +117,39 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, gameNam
                 }
 
                 bird.status = "trapped"
+                if (bird.position.y - 700 > tube.posBotTube.y) {
+                    System.out.println("IST TOP TUBE!")
+                    bird.trappedTube = "top"
+
+                } else {
+                    bird.trappedTube = "bot"
+                }
             }
         }
+
+        for(item in items){
+            if(item.collides(bird.getBound())){
+                item.posItem.set(-100f,-100f)
+                item.bounds.set(-100f,-100f,0f,0f)
+            }
+        }
+
 
 
         /* !!! CODE FOR REPOSITION OF TUBES FOR DYNAMIC LEVEL !!!
         for(tube in tubes){
-            if(cam.position.x - (cam.viewportWidth/2) > tube.posTopTube.x + tube.topTube.width)
-                counter = counter.inc()
-                System.out.println(counter)
-               // tube.reposition(tube.posTopTube.x + ((Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT))
-            if(tube.collides(bird.getBound())){
-               // bird.status = "trapped"
-            }
-
+           // if(cam.position.x - (cam.viewportWidth/2) > tube.posTopTube.x + tube.topTube.width)
+                tube.reposition(tube.posTopTube.x + ((Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT))
+            if(tube.collides(bird.getBound()))
+               // gsm.set(PlayState(gsm))
+                gsm.set(MenuState(gsm))
         }
         */
-
         cam.update()
 
-        if(counter==TUBE_COUNT){
+        if(counter==tubes.size){
             gsm.set(WinGame(gsm))
+            dispose();
         }
     }
 
@@ -149,6 +163,10 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, gameNam
             sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
             sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
 
+        }
+
+        for(item in items){
+            sb.draw(item.itemPic, item.posItem.x, item.posItem.y)
         }
         //sb.draw(bg, 0f, 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
         sb.draw(bird.bird, bird.position.x, bird.position.y)
@@ -184,7 +202,15 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, gameNam
                 if (gForce>1.7) {
                     System.out.println("SHAKE DETECTED")
                     new_bird.status = "free"
-                    new_bird.position = Vector3(new_bird.position.x, new_bird.position.y + 100f, 0f)
+                    if(new_bird.trappedTube == "bot"){
+                        new_bird.position = Vector3(new_bird.position.x, new_bird.position.y + 100f, 0f)
+                        new_bird.trappedTube = ""
+                        new_bird.jump()
+                    } else {
+                        new_bird.position = Vector3(new_bird.position.x, new_bird.position.y - 400f, 0f)
+                        new_bird.trappedTube = ""
+                    }
+
                 }
 
                 return "Free"

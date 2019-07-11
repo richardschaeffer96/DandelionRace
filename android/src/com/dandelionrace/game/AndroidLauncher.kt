@@ -4,10 +4,15 @@ import android.os.Bundle
 
 import com.badlogic.gdx.backends.android.AndroidApplication
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
+import com.badlogic.gdx.graphics.Texture
+import com.dandelionrace.game.sprites.GameTubes
+import com.dandelionrace.game.sprites.Item
+import com.dandelionrace.game.sprites.Tube
 
 class AndroidLauncher : AndroidApplication() {
 
-    var tubeString: String = ""
+    private lateinit var tubeString: String
+    private lateinit var itemString: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,10 +20,12 @@ class AndroidLauncher : AndroidApplication() {
 
 
         tubeString = intent.getStringExtra("tubes")
+        itemString = intent.getStringExtra("items")
         var gameName = intent.getStringExtra("game")
         var enemy = intent.getStringExtra("enemy")
         println("AL: "+ enemy)
 
+        initialize(dandelionrace(context, tubeString, itemString), config)
         initialize(dandelionrace(context, tubeString, gameName, enemy), config)
     }
 }
