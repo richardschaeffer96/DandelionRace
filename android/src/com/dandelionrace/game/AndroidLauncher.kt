@@ -14,7 +14,7 @@ class AndroidLauncher : AndroidApplication() {
 
     private lateinit var tubeString: String
     private lateinit var itemString: String
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val config = AndroidApplicationConfiguration()
