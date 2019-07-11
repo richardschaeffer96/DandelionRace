@@ -127,7 +127,7 @@ class EntryHallActivity : AppCompatActivity() {
                                 println(dataSnapshot)
                                 playerMails = dataSnapshot.getValue().toString()
                                 intent.putExtra("enemy", playerMails)
-                                intent.putExtra("items", itemString)
+                                intent.putExtra("items", thisgame.xItems)
                                 startActivity(intent)
                             }
 

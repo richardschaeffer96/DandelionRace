@@ -53,6 +53,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         myPosX = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/posx")
         myPosY = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/posy")
 
+
+        print(finalitems)
         println("Test")
         println("Enemy: "+enemy)
         for (s in enemy.split(",")){
