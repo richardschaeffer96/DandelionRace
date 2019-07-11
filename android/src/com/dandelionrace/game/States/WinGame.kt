@@ -20,7 +20,7 @@ class WinGame(gsm: GameStateManager) : State(gsm) {
 
     init {
         win = Texture("win.jpg")
-        bird = Bird(100,500)
+        bird = Bird(100,500, 0)
         app_height = Gdx.app.graphics.height.toFloat()
         app_width = Gdx.app.graphics.width.toFloat()
         playBtn = Texture("playBtn.png")

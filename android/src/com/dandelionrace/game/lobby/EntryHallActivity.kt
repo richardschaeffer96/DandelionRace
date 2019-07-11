@@ -46,7 +46,7 @@ class EntryHallActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        thisgame = DandelionGame("DUMMY", "0", "0", true, "o", true)
+        thisgame = DandelionGame("DUMMY", "0", "0", true, "o", true, "0")
         setContentView(R.layout.activity_entry_hall)
         game = intent.getStringExtra("game")
         val readybutton = findViewById<Button>(R.id.readybutton)
@@ -64,13 +64,12 @@ class EntryHallActivity : AppCompatActivity() {
 
                 //initialize game one time at launch
                 if (thisgame.dummy) {
-                    thisgame = DandelionGame(list[2], list[6], list[5], list[4].toBoolean(), list[1], false)
+                    thisgame = DandelionGame(list[2], list[6], list[5], list[4].toBoolean(), list[1], false, list[7])
                     thisgame.numberOfPlayers = list[3].toInt()
                     val gamenameforlabel = list[2]
                     findViewById<TextView>(R.id.gamename).setText("Du befindest dich im Spiel " + gamenameforlabel)
 
                     //If host == my own name, im host, so i send the seed
-                    //TODO: parse seed to string
                     if (list[1] == myName && thisgame.seed == "0") {
                         //create TubeList
                         tubeArrayList = arrayListOf<Tube>()
@@ -81,8 +80,6 @@ class EntryHallActivity : AppCompatActivity() {
                         for (i in 1..itemCount){
                             itemArrayList.add(Item(i*(tubeSpacing+width)))
                         }
-
-                        //TODO: change val tubeArrayList into the String variant
 
                         for (i in tubeArrayList){
                             if(tubeArrayList.indexOf(i)==tubeArrayList.size-1){
@@ -100,13 +97,13 @@ class EntryHallActivity : AppCompatActivity() {
                             }
                         }
 
-                        //TODO: SEND itemString to Database and PULL it from there for the Client
+                        val setItems = database.getReference("games/" + game + "/xitems")
+                        setItems.setValue(itemString)
 
                         val setSeed = database.getReference("games/" + game + "/seed")
                         setSeed.setValue(tubeString)
 
                     } else {
-                        //TODO: Im not host, so i have to download and parse the seed (stored in list[6]
                         tubeString = list[6]
                     }
                 } else {
@@ -130,6 +127,7 @@ class EntryHallActivity : AppCompatActivity() {
                                 println(dataSnapshot)
                                 playerMails = dataSnapshot.getValue().toString()
                                 intent.putExtra("enemy", playerMails)
+                                intent.putExtra("items", itemString)
                                 startActivity(intent)
                             }
 
