@@ -16,12 +16,12 @@ class AndroidLauncher : AndroidApplication() {
     private var itemString: String = ""
 
     //without multiplayer: following values are needed
-    private val tubeCount: Int = 5
+    private val tubeCount: Int = 10
     private val tubeSpacing: Float = 125f
-    private val width: Int = 300
+    private val width: Int = 800
     lateinit var tubeArrayList: ArrayList<Tube>
     lateinit var itemArrayList: ArrayList<Item>
-    private val itemCount: Int = 4
+    private val itemCount: Int = 8
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

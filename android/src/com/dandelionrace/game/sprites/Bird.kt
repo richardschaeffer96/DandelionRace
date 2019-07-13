@@ -1,6 +1,7 @@
 package com.dandelionrace.game.sprites
 
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector3
 
@@ -10,18 +11,21 @@ class Bird(x: Int, y: Int) {
     private val bound: Rectangle
     var status: String = "free"
     var trappedTube: String = ""
-    val bird: Texture
+    var birdAnimation: Animations
+    var texture: Texture
 
     init {
         status = "free"
         trappedTube = ""
         position = Vector3(x.toFloat(), y.toFloat(), 0f)
         velocity = Vector3(0f, 0f, 0f)
-        bird = Texture("bird.png")
-        bound = Rectangle(x.toFloat(), y.toFloat(), bird.width.toFloat(), bird.height.toFloat())
+        texture = Texture("bugredanimation.png")
+        bound = Rectangle(x.toFloat(), y.toFloat(), texture.width.toFloat() / 2, texture.height.toFloat() / 2)
+        birdAnimation = Animations(TextureRegion(texture), 2, 0.5f)
     }
 
     fun update(dt: Float) {
+        birdAnimation.update(dt)
         if(status=="free"){
             if (position.y > 0)
                 velocity.add(0f, GRAVITY.toFloat(), 0f)

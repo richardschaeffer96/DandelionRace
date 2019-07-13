@@ -14,29 +14,27 @@ class GameTubes(posTopTubeX: Float, posTopTubeY: Float,posBotTubeX: Float, posBo
 
     val posTopTube: Vector2
     val posBotTube: Vector2
-    private val boundsTop: Rectangle
-    private val boundsBot: Rectangle
+    val boundsTop: Rectangle
+    val boundsBot: Rectangle
     var topTube: Texture
     var bottomTube: Texture
-
+    private val rand: Random
 
 
     init {
-        topTube = Texture("spiderbottom.png")
-        bottomTube = Texture("spidertop.png")
+        topTube = Texture("weblong.png")
+        bottomTube = Texture("busch.png")
+
+        rand = Random()
 
         posBotTube = Vector2(posBotTubeX, posBotTubeY)
         posTopTube = Vector2(posTopTubeX, posTopTubeY)
 
         boundsTop = Rectangle(posTopTube.x, posTopTube.y, topTube.width.toFloat(), topTube.height.toFloat())
-        boundsBot = Rectangle(posBotTube.x,posBotTube.y, bottomTube.width.toFloat(), bottomTube.height.toFloat())
+        boundsBot = Rectangle(posBotTube.x,posBotTube.y, bottomTube.width.toFloat(), bottomTube.height.toFloat()-100f)
     }
 
     companion object {
-        val TUBE_WIDTH : Int = 300
-        private val FLUCTUATION = 130
-        val TUBE_GAP = 700
-        val LOWEST_OPENING = -400
     }
 
 

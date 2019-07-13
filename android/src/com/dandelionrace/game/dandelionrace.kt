@@ -16,7 +16,7 @@ import com.dandelionrace.game.sprites.Item
 
 class dandelionrace(mContext: Context, tubeString: String, itemString: String) : ApplicationAdapter() {
     internal lateinit var gsm: GameStateManager
-    internal lateinit var batch: SpriteBatch
+
     val game_Context: Context = mContext
     val tubesString: String = tubeString
     val itemsString: String = itemString
@@ -39,10 +39,6 @@ class dandelionrace(mContext: Context, tubeString: String, itemString: String) :
 
             } else {
                 var items2: List<String> = i.split("$")
-                System.out.println("ITEM ERSTE LISTE: " + items)
-                System.out.println("ITEM ZWEITE LISTE: " + items2)
-                System.out.println("ITEM AUSGABE: "+ items2[0])
-                System.out.println("ITEM AUSGABE: "+ items2[1])
                 finalItems.add(GameItems(items2[0].toFloat(), items2[1].toFloat()))
             }
 
@@ -60,12 +56,6 @@ class dandelionrace(mContext: Context, tubeString: String, itemString: String) :
 
             } else {
                 var tubes2: List<String> = t.split("$")
-                System.out.println("ERSTE LISTE: " + tubes)
-                System.out.println("ZWEITE LISTE: " + tubes2)
-                System.out.println("AUSGABE: "+ tubes2[0])
-                System.out.println("AUSGABE: "+ tubes2[1])
-                System.out.println("AUSGABE: "+ tubes2[2])
-                System.out.println("AUSGABE: "+ tubes2[3])
                 finalTubes.add(GameTubes(tubes2[0].toFloat(), tubes2[1].toFloat(), tubes2[2].toFloat(), tubes2[3].toFloat()))
             }
 
@@ -86,6 +76,7 @@ class dandelionrace(mContext: Context, tubeString: String, itemString: String) :
     }
 
     companion object {
+        lateinit var batch: SpriteBatch
         //TO-DO: Get screen sizes of device!!!
         val WIDTH =  1080  //480;
         val HEIGHT = 2240

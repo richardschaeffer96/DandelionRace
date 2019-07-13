@@ -26,13 +26,19 @@ class GameItems(x: Float, y:Float) {
         var i: Int = rand.nextInt(ITEMCOUNT+1)
         if(i==1){
             effect = "EFFEKT IST 1"
-            itemPic = Texture("itemtime.png")
+            itemPic = Texture("bluemushroom.png")
         }else if (i==2){
             effect = "EFFEKT IST 2"
-            itemPic = Texture("itemdiamond.png")
-        }else{
+            itemPic = Texture("greenmushroom.png")
+        }else if (i==3){
             effect = "EFFEKT IST 3"
-            itemPic = Texture("itemband.png")
+            itemPic = Texture("leaves.png")
+        }else if (i==4){
+            effect = "EFFEKT IST 4"
+            itemPic = Texture("ghost.png")
+        }else{
+            effect = "EFFEKT IST 5"
+            itemPic = Texture("switch.png")
         }
 
         bounds = Rectangle(posItem.x, posItem.y, itemPic.width.toFloat(), itemPic.height.toFloat())
@@ -42,7 +48,7 @@ class GameItems(x: Float, y:Float) {
     }
 
     companion object {
-        private val ITEMCOUNT = 3
+        private val ITEMCOUNT = 5
     }
 
     fun collides(player: Rectangle):Boolean{

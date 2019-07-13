@@ -6,6 +6,7 @@ import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.dandelionrace.game.dandelionrace
 import com.dandelionrace.game.sprites.Bird
@@ -21,21 +22,41 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
     private val bird: Bird
     private val bg: Texture
+    private val secondBg: Texture
     private val win: Texture
+
+    private var bgStartOld: Float
+    private var bgEndOld: Float
+
+    private var bgStart: Float
+    private var bgEnd: Float
 
     val app_width: Float
     val app_height: Float
 
+    var nextBg: Boolean = false
+
     val tubes: ArrayList<GameTubes> = finaltubes
     val items: ArrayList<GameItems> = finalitems
+
+    //val newBatch: SpriteBatch
 
     init {
         app_height = Gdx.app.graphics.height.toFloat()
         app_width = Gdx.app.graphics.width.toFloat()
         cam.setToOrtho(false, app_width, app_height)
         bird = Bird(100,500)
-        bg = Texture("bg.png")
+        bg = Texture("newbg.jpg")
+        secondBg = Texture("newbg.jpg")
         win = Texture("win.jpg")
+
+        bgStartOld = -400f
+        bgEndOld = dandelionrace.HEIGHT.toFloat() * 1.25f
+
+        bgStart = bgEndOld -400f
+        bgEnd = bgStart + dandelionrace.HEIGHT.toFloat() * 1.25f
+
+        //newBatch = SpriteBatch()
 
     }
 
@@ -58,11 +79,41 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             System.out.println("COUNTER:"+counter)
         }
 
+        //System.out.println("Background ist zu Ende bei: " + bgEnd)
+        //System.out.println("Rechte Seite der Kamera ist bei: " + cam.position.x + (cam.viewportWidth/2))
+
+        /*ZWEITERSCREEN
+        if(cam.position.x + (cam.viewportWidth/2) >= bgEnd) {
+            bgStart = bgEnd
+            bgEnd = bgStart + bg.width.toFloat()
+            nextBg = true
+
+            /*OLD
+            bgStart = bgEnd
+            bgEnd = bgStart + bg.width.toFloat()
+            nextBg = true
+            */
+            System.out.println("BACKGROUND ZU ENDE")
+        }
+        */
+
+        if(cam.position.x - (cam.viewportWidth/2) > bgEndOld){
+            bgStartOld = bgEnd
+            bgEndOld = bgStartOld + dandelionrace.HEIGHT.toFloat() * 1.25f
+            System.out.println("ERSTER BACKGROUND WEG")
+        }
+
+        if(cam.position.x - (cam.viewportWidth/2) > bgEnd){
+            bgStart = bgEndOld
+            bgEnd = bgStart + dandelionrace.HEIGHT.toFloat() * 1.25f
+            System.out.println("ZWEITER BACKGROUND WEG")
+        }
+
+
         for(tube in tubes){
             if(tube.collides(bird.getBound())){
                 bird.status = "trapped"
                 if (bird.position.y - 700 > tube.posBotTube.y) {
-                    System.out.println("IST TOP TUBE!")
                     bird.trappedTube = "top"
 
                 } else {
@@ -101,7 +152,12 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         sb.projectionMatrix.set(cam.combined)
         //test
         sb.begin()
-        sb.draw(bg, cam.position.x - (cam.viewportWidth / 2 ), 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
+        //sb.draw(bg, cam.position.x - (cam.viewportWidth / 2 ), 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
+
+        sb.draw(bg, bgStartOld, 0f, dandelionrace.HEIGHT.toFloat() * 1.25f, dandelionrace.HEIGHT.toFloat())
+        //if(nextBg){
+        sb.draw(secondBg, bgStart, 0f, dandelionrace.HEIGHT.toFloat() * 1.25f, dandelionrace.HEIGHT.toFloat())
+        //}
 
         for(tube in tubes) {
             sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
@@ -113,7 +169,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             sb.draw(item.itemPic, item.posItem.x, item.posItem.y)
         }
         //sb.draw(bg, 0f, 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
-        sb.draw(bird.bird, bird.position.x, bird.position.y)
+        sb.draw(bird.birdAnimation.getFrame(), bird.position.x, bird.position.y)
         //sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
         //sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
         sb.end()
@@ -146,7 +202,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                     System.out.println("SHAKE DETECTED")
                     new_bird.status = "free"
                     if(new_bird.trappedTube == "bot"){
-                        new_bird.position = Vector3(new_bird.position.x, new_bird.position.y + 100f, 0f)
+                        new_bird.position = Vector3(new_bird.position.x, new_bird.position.y + 200, 0f)
                         new_bird.trappedTube = ""
                         new_bird.jump()
                     } else {
