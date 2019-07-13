@@ -9,10 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.dandelionrace.game.dandelionrace
-import com.dandelionrace.game.sprites.Bird
-import com.dandelionrace.game.sprites.GameItems
-import com.dandelionrace.game.sprites.GameTubes
-import com.dandelionrace.game.sprites.Tube
+import com.dandelionrace.game.sprites.*
 
 class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalitems: ArrayList<GameItems>) : State(gsm) {
 
@@ -126,6 +123,13 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             if(item.collides(bird.getBound())){
                 item.posItem.set(-100f,-100f)
                 item.bounds.set(-100f,-100f,0f,0f)
+
+                if(item.effect == "EFFEKT IST 1"){
+                    bird.status = "slow"
+                }
+                if(item.effect == "EFFEKT IST 2"){
+                    bird.status = "speed"
+                }
             }
         }
 
