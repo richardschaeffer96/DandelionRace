@@ -14,9 +14,6 @@ import com.dandelionrace.game.sprites.Bird
 import com.dandelionrace.game.sprites.GameItems
 import com.dandelionrace.game.sprites.GameTubes
 import com.dandelionrace.game.sprites.Tube
-import com.dandelionrace.game.sprites.Bird
-import com.dandelionrace.game.sprites.GameItems
-import com.dandelionrace.game.sprites.GameTubes
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.dandelionrace.game.sprites.*
@@ -243,7 +240,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
                 }
                 if(item.effect == "switch"){
-                    //no skin change
+                    //no skin change, switch positions of player
                     startTime = System.currentTimeMillis()
                     effectOn=true
 
