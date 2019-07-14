@@ -15,18 +15,20 @@ class AndroidLauncher : AndroidApplication() {
     private var tubeString: String = ""
     private var itemString: String = ""
 
-    //without multiplayer: following values are needed
+    /*without multiplayer: following values are needed
     private val tubeCount: Int = 10
     private val tubeSpacing: Float = 125f
     private val width: Int = 800
     lateinit var tubeArrayList: ArrayList<Tube>
     lateinit var itemArrayList: ArrayList<Item>
     private val itemCount: Int = 8
+    */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val config = AndroidApplicationConfiguration()
 
+        /* for game branch use this code
         tubeArrayList = arrayListOf<Tube>()
         itemArrayList = arrayListOf<Item>()
         for (i in 1..tubeCount){
@@ -35,8 +37,6 @@ class AndroidLauncher : AndroidApplication() {
         for (i in 1..itemCount){
             itemArrayList.add(Item(i*(tubeSpacing+width)))
         }
-
-        //TODO: change val tubeArrayList into the String variant
 
         for (i in tubeArrayList){
             if(tubeArrayList.indexOf(i)==tubeArrayList.size-1){
@@ -53,10 +53,11 @@ class AndroidLauncher : AndroidApplication() {
                 itemString += "" + + i.posItem.x + "$" + i.posItem.y + "%"
             }
         }
+        */
 
         //for Multiplayer only this code
-        //tubeString = intent.getStringExtra("tubes")
-        //itemString = intent.getStringExtra("items")
+        tubeString = intent.getStringExtra("tubes")
+        itemString = intent.getStringExtra("items")
 
         initialize(dandelionrace(context, tubeString, itemString), config)
     }
