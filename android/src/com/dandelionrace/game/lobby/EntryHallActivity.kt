@@ -31,16 +31,16 @@ class EntryHallActivity : AppCompatActivity() {
     var allPlayersReady: Boolean = false
     lateinit var thisgame: DandelionGame
 
-    private val tubeCount: Int = 5
+    private val tubeCount: Int = 10
     private val tubeSpacing: Float = 125f
-    private val width: Int = 300
+    private val width: Int = 800
     lateinit var tubeArrayList: ArrayList<Tube>
     lateinit var itemArrayList: ArrayList<Item>
-
+    private val itemCount: Int = 8
 
     var tubeString: String = ""
     var itemString: String = ""
-    private val itemCount: Int = 4
+
     var game: String = ""
 
 
