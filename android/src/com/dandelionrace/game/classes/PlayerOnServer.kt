@@ -7,4 +7,5 @@ class PlayerOnServer (name: String, mail: String, game:String) {
     var posx: Float = 0f
     var posy: Float = 0f
     var ready: Boolean = false
+    var xItem: String = ""
 }

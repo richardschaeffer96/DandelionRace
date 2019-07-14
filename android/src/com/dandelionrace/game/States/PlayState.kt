@@ -62,6 +62,9 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
     val myPosX: DatabaseReference
     val myPosY: DatabaseReference
 
+
+    val myItem: DatabaseReference
+
     private var mAuth = FirebaseAuth.getInstance()
     val mymail = mAuth?.currentUser?.email.toString()
 
@@ -90,6 +93,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         myPosX = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/posx")
         myPosY = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/posy")
 
+        myItem = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/xitem")
 
         print(finalitems)
         println("Test")
@@ -104,7 +108,6 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                     }
 
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        println("snapX: "+ dataSnapshot.getValue())
                         enemyBird.position.x = dataSnapshot.getValue().toString().toFloat()
                     }
                 })
@@ -115,10 +118,39 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                     }
 
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        println("snapY: "+ dataSnapshot.getValue())
                         enemyBird.position.y = dataSnapshot.getValue().toString().toFloat()
                     }
                 })
+
+                val  enemyItem = database.getReference("playersInGame/"+game+"/"+s.replace(".","")+"/xitem")
+                enemyItem.addValueEventListener(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                    }
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val enemyEffect : String = dataSnapshot.getValue().toString()
+                        println("ENEMY: "+enemyEffect)
+                        if(enemyEffect == "slow"){
+                            enemyBird.birdAnimation = Animations(TextureRegion(Texture("bugblueanimation.png")), 2, 0.5f)
+                        }
+                        if(enemyEffect == "speed"){
+                            enemyBird.birdAnimation = Animations(TextureRegion(Texture("buggreenanimation.png")), 2, 0.5f)
+                        }
+                        if(enemyEffect == "leaves"){
+                            startTime = System.currentTimeMillis()
+                        }
+                        if(enemyEffect == "ghost"){
+                            isGhost==true
+                            enemyBird.birdAnimation = Animations(TextureRegion(Texture("bugghostanimation.png")), 2, 0.5f)
+                        }
+                        if(enemyEffect == "switch"){
+                            //no skin change, switch positions of player
+                            startTime = System.currentTimeMillis()
+                            effectOn=true
+                        }
+                    }
+                })
+
             }
         }
 
@@ -211,39 +243,34 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                 item.bounds.set(-100f,-100f,0f,0f)
                 isGhost=true
                 //TODO: SET THE EFFECTS
-                //TODO: @FELIX SEND item.effect to database
+
+                myItem.setValue(item.effect)
 
                 if(item.effect == "slow"){
                     bird.birdAnimation = Animations(TextureRegion(Texture("bugblueanimation.png")), 2, 0.5f)
                     startTime = System.currentTimeMillis()
                     effectOn=true
-
-
                 }
                 if(item.effect == "speed"){
                     bird.birdAnimation = Animations(TextureRegion(Texture("buggreenanimation.png")), 2, 0.5f)
                     startTime = System.currentTimeMillis()
                     effectOn=true
-
                 }
                 if(item.effect == "leaves"){
                     startTime = System.currentTimeMillis()
                     effectOn=true
                     leavesOn=true
-
                 }
                 if(item.effect == "ghost"){
                     isGhost==true
                     bird.birdAnimation = Animations(TextureRegion(Texture("bugghostanimation.png")), 2, 0.5f)
                     startTime = System.currentTimeMillis()
                     effectOn=true
-
                 }
                 if(item.effect == "switch"){
                     //no skin change, switch positions of player
                     startTime = System.currentTimeMillis()
                     effectOn=true
-
                 }
 
             }
@@ -295,7 +322,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
 
         //sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
-        sb.draw(enemyBird.bird, enemyBird.position.x, enemyBird.position.y)
+        //sb.draw(enemyBird.bird, enemyBird.position.x, enemyBird.position.y)
+        sb.draw(enemyBird.birdAnimation.getFrame(), enemyBird.position.x, enemyBird.position.y)
 
 
         if(leavesOn){

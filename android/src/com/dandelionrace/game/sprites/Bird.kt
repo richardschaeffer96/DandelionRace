@@ -12,7 +12,7 @@ class Bird(x: Int, y: Int, player: Int) {
     private val bound: Rectangle
     var status: String = "free"
     var trappedTube: String = ""
-    var birdAnimation: Animations
+    lateinit var birdAnimation: Animations
     val bird: Texture
 
     init {
@@ -24,7 +24,8 @@ class Bird(x: Int, y: Int, player: Int) {
             bird = Texture("bugredanimation.png")
             birdAnimation = Animations(TextureRegion(bird), 2, 0.5f)
         }else{
-            bird = Texture("enemy.png")
+            bird = Texture("bugcaramelanimation.png")
+            birdAnimation = Animations(TextureRegion(bird), 2, 0.5f)
         }
         bound = Rectangle(x.toFloat(), y.toFloat(), bird.width.toFloat(), bird.height.toFloat())
     }
