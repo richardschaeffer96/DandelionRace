@@ -137,16 +137,12 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                             enemyBird.birdAnimation = Animations(TextureRegion(Texture("buggreenanimation.png")), 2, 0.5f)
                         }
                         if(enemyEffect == "leaves"){
-                            startTime = System.currentTimeMillis()
                         }
                         if(enemyEffect == "ghost"){
-                            isGhost==true
                             enemyBird.birdAnimation = Animations(TextureRegion(Texture("bugghostanimation.png")), 2, 0.5f)
                         }
                         if(enemyEffect == "switch"){
                             //no skin change, switch positions of player
-                            startTime = System.currentTimeMillis()
-                            effectOn=true
                         }
                     }
                 })
@@ -241,7 +237,6 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             if(item.collides(bird.getBound())){
                 item.posItem.set(-100f,-100f)
                 item.bounds.set(-100f,-100f,0f,0f)
-                isGhost=true
                 //TODO: SET THE EFFECTS
 
                 myItem.setValue(item.effect)
