@@ -4,8 +4,10 @@ import android.content.Context
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.dandelionrace.game.States.GameStateManager
+import com.dandelionrace.game.States.MenuState
 import com.dandelionrace.game.States.PlayState
 import com.dandelionrace.game.sprites.GameItems
 import com.dandelionrace.game.sprites.GameTubes
@@ -40,10 +42,6 @@ class dandelionrace(mContext: Context, tubeString: String, itemString: String, g
 
             } else {
                 var items2: List<String> = i.split("$")
-                System.out.println("ITEM ERSTE LISTE: " + items)
-                System.out.println("ITEM ZWEITE LISTE: " + items2)
-                System.out.println("ITEM AUSGABE: "+ items2[0])
-                System.out.println("ITEM AUSGABE: "+ items2[1])
                 finalItems.add(GameItems(items2[0].toFloat(), items2[1].toFloat()))
             }
 
@@ -89,6 +87,7 @@ class dandelionrace(mContext: Context, tubeString: String, itemString: String, g
     }
 
     companion object {
+        lateinit var batch: SpriteBatch
         //TO-DO: Get screen sizes of device!!!
         val WIDTH =  1080  //480;
         val HEIGHT = 2240

@@ -2,16 +2,26 @@ package com.dandelionrace.game.States
 
 import android.hardware.SensorManager.GRAVITY_EARTH
 import android.os.AsyncTask
+import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.dandelionrace.game.dandelionrace
 import com.dandelionrace.game.sprites.Bird
 import com.dandelionrace.game.sprites.GameItems
 import com.dandelionrace.game.sprites.GameTubes
+import com.dandelionrace.game.sprites.Tube
+import com.dandelionrace.game.sprites.Bird
+import com.dandelionrace.game.sprites.GameItems
+import com.dandelionrace.game.sprites.GameTubes
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.dandelionrace.game.sprites.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalitems: ArrayList<GameItems>, gameName: String, enemy: String) : State(gsm) {
 
@@ -23,15 +33,32 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
     private val bird: Bird
     private val enemyBird: Bird
     private val bg: Texture
+    private val secondBg: Texture
     private val win: Texture
-
     private val enemy = enemy
+    private var bgStartOld: Float
+    private var bgEndOld: Float
+
+    private var bgStart: Float
+    private var bgEnd: Float
 
     val app_width: Float
     val app_height: Float
 
+    var nextBg: Boolean = false
+
+    var effectOn: Boolean = false
+
     val tubes: ArrayList<GameTubes> = finaltubes
     val items: ArrayList<GameItems> = finalitems
+
+    var startTime: Long
+
+    val leavesObstacle: Texture
+    var leavesOn: Boolean = false
+    var isGhost: Boolean = false
+
+    //val newBatch: SpriteBatch
 
     val game: String = gameName
     val database = FirebaseDatabase.getInstance()
@@ -47,8 +74,21 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         cam.setToOrtho(false, app_width, app_height)
         bird = Bird(100,500, 1)
         enemyBird = Bird(100,500, 2)
-        bg = Texture("bg.png")
+        bg = Texture("newbg.jpg")
+        secondBg = Texture("newbg.jpg")
         win = Texture("win.jpg")
+
+        bgStartOld = -400f
+        bgEndOld = dandelionrace.HEIGHT.toFloat() * 1.25f
+
+        bgStart = bgEndOld -400f
+        bgEnd = bgStart + dandelionrace.HEIGHT.toFloat() * 1.25f
+
+        startTime = System.currentTimeMillis();
+
+        leavesObstacle = Texture("leavesobstacle.png")
+
+        //newBatch = SpriteBatch()
 
         myPosX = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/posx")
         myPosY = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/posy")
@@ -97,6 +137,17 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
 
     override fun update(dt: Float) {
+
+        if(effectOn){
+            if(System.currentTimeMillis()>startTime+5000){
+                effectOn=false
+                leavesOn=false
+                isGhost=false
+                bird.birdAnimation = Animations(TextureRegion(Texture("bugredanimation.png")), 2, 0.5f)
+                //TODO: @FELIX SEND to database that the effect of the enemy is over and you can use the standard texture again
+            }
+        }
+
         someTask(bird).execute()
         handleInput()
         bird.update(dt)
@@ -111,31 +162,95 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             System.out.println("COUNTER:"+counter)
         }
 
-        for(tube in tubes){
-            if(tube.collides(bird.getBound())){
-                if (bird.position.y > tube.posBotTube.y) {
+        //System.out.println("Background ist zu Ende bei: " + bgEnd)
+        //System.out.println("Rechte Seite der Kamera ist bei: " + cam.position.x + (cam.viewportWidth/2))
 
-                    //System.out.println("IST TOP TUBE")
-                }
+        /*ZWEITERSCREEN
+        if(cam.position.x + (cam.viewportWidth/2) >= bgEnd) {
+            bgStart = bgEnd
+            bgEnd = bgStart + bg.width.toFloat()
+            nextBg = true
 
-                bird.status = "trapped"
-                if (bird.position.y - 700 > tube.posBotTube.y) {
-                    System.out.println("IST TOP TUBE!")
-                    bird.trappedTube = "top"
+            /*OLD
+            bgStart = bgEnd
+            bgEnd = bgStart + bg.width.toFloat()
+            nextBg = true
+            */
+            System.out.println("BACKGROUND ZU ENDE")
+        }
+        */
 
-                } else {
-                    bird.trappedTube = "bot"
+        if(cam.position.x - (cam.viewportWidth/2) > bgEndOld){
+            bgStartOld = bgEnd
+            bgEndOld = bgStartOld + dandelionrace.HEIGHT.toFloat() * 1.25f
+            System.out.println("ERSTER BACKGROUND WEG")
+        }
+
+        if(cam.position.x - (cam.viewportWidth/2) > bgEnd){
+            bgStart = bgEndOld
+            bgEnd = bgStart + dandelionrace.HEIGHT.toFloat() * 1.25f
+            System.out.println("ZWEITER BACKGROUND WEG")
+        }
+
+
+        if(isGhost==false) {
+            for (tube in tubes) {
+                if (tube.collides(bird.getBound())) {
+                    bird.status = "trapped"
+                    if (bird.position.y - 700 > tube.posBotTube.y) {
+                        bird.trappedTube = "top"
+
+                    } else {
+                        bird.trappedTube = "bot"
+                    }
                 }
             }
         }
 
         for(item in items){
+
             if(item.collides(bird.getBound())){
                 item.posItem.set(-100f,-100f)
                 item.bounds.set(-100f,-100f,0f,0f)
+                isGhost=true
+                //TODO: SET THE EFFECTS
+                //TODO: @FELIX SEND item.effect to database
+
+                if(item.effect == "slow"){
+                    bird.birdAnimation = Animations(TextureRegion(Texture("bugblueanimation.png")), 2, 0.5f)
+                    startTime = System.currentTimeMillis()
+                    effectOn=true
+
+
+                }
+                if(item.effect == "speed"){
+                    bird.birdAnimation = Animations(TextureRegion(Texture("buggreenanimation.png")), 2, 0.5f)
+                    startTime = System.currentTimeMillis()
+                    effectOn=true
+
+                }
+                if(item.effect == "leaves"){
+                    startTime = System.currentTimeMillis()
+                    effectOn=true
+                    leavesOn=true
+
+                }
+                if(item.effect == "ghost"){
+                    isGhost==true
+                    bird.birdAnimation = Animations(TextureRegion(Texture("bugghostanimation.png")), 2, 0.5f)
+                    startTime = System.currentTimeMillis()
+                    effectOn=true
+
+                }
+                if(item.effect == "switch"){
+                    //no skin change
+                    startTime = System.currentTimeMillis()
+                    effectOn=true
+
+                }
+
             }
         }
-
 
 
         /* !!! CODE FOR REPOSITION OF TUBES FOR DYNAMIC LEVEL !!!
@@ -159,7 +274,14 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         sb.projectionMatrix.set(cam.combined)
         //test
         sb.begin()
-        sb.draw(bg, cam.position.x - (cam.viewportWidth / 2 ), 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
+        //sb.draw(bg, cam.position.x - (cam.viewportWidth / 2 ), 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
+
+
+
+        sb.draw(bg, bgStartOld, 0f, dandelionrace.HEIGHT.toFloat() * 1.25f, dandelionrace.HEIGHT.toFloat())
+        //if(nextBg){
+        sb.draw(secondBg, bgStart, 0f, dandelionrace.HEIGHT.toFloat() * 1.25f, dandelionrace.HEIGHT.toFloat())
+        //}
 
         for(tube in tubes) {
             sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
@@ -171,10 +293,18 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             sb.draw(item.itemPic, item.posItem.x, item.posItem.y)
         }
         //sb.draw(bg, 0f, 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
-        sb.draw(bird.bird, bird.position.x, bird.position.y)
+        sb.draw(bird.birdAnimation.getFrame(), bird.position.x, bird.position.y)
         //sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
+
+
         //sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
         sb.draw(enemyBird.bird, enemyBird.position.x, enemyBird.position.y)
+
+
+        if(leavesOn){
+            sb.draw(leavesObstacle, cam.position.x-500f, cam.position.y-500f)
+        }
+
         sb.end()
     }
 
@@ -205,7 +335,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                     System.out.println("SHAKE DETECTED")
                     new_bird.status = "free"
                     if(new_bird.trappedTube == "bot"){
-                        new_bird.position = Vector3(new_bird.position.x, new_bird.position.y + 100f, 0f)
+                        new_bird.position = Vector3(new_bird.position.x, new_bird.position.y + 200, 0f)
                         new_bird.trappedTube = ""
                         new_bird.jump()
                     } else {

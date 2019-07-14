@@ -20,19 +20,23 @@ class GameItems(x: Float, y:Float) {
     init {
         posItem = Vector2(x, y)
 
-        //TODO SET THE RIGHT ITEM PICTURES FOR THE DIFFERENT ITEMS
-
         rand = Random()
         var i: Int = rand.nextInt(ITEMCOUNT+1)
-        if(i==1){
-            effect = "EFFEKT IST 1"
-            itemPic = Texture("itemtime.png")
-        }else if (i==2){
-            effect = "EFFEKT IST 2"
-            itemPic = Texture("itemdiamond.png")
+        if(i==1) {
+            effect = "slow"
+            itemPic = Texture("bluemushroom.png")
+        }else if(i==2){
+            effect = "switch"
+            itemPic = Texture("switch.png")
+        }else if (i==3){
+            effect = "leaves"
+            itemPic = Texture("leaves.png")
+        }else if (i==4){
+            effect = "ghost"
+            itemPic = Texture("ghost.png")
         }else{
-            effect = "EFFEKT IST 3"
-            itemPic = Texture("itemband.png")
+            effect = "speed"
+            itemPic = Texture("greenmushroom.png")
         }
 
         bounds = Rectangle(posItem.x, posItem.y, itemPic.width.toFloat(), itemPic.height.toFloat())
@@ -42,7 +46,7 @@ class GameItems(x: Float, y:Float) {
     }
 
     companion object {
-        private val ITEMCOUNT = 3
+        private val ITEMCOUNT = 5
     }
 
     fun collides(player: Rectangle):Boolean{
