@@ -6,10 +6,13 @@ import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.dandelionrace.game.dandelionrace
 import com.dandelionrace.game.sprites.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalitems: ArrayList<GameItems>) : State(gsm) {
 
@@ -33,8 +36,16 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
     var nextBg: Boolean = false
 
+    var effectOn: Boolean = false
+
     val tubes: ArrayList<GameTubes> = finaltubes
     val items: ArrayList<GameItems> = finalitems
+
+    var startTime: Long
+
+    val leavesObstacle: Texture
+    var leavesOn: Boolean = false
+    var isGhost: Boolean = false
 
     //val newBatch: SpriteBatch
 
@@ -53,6 +64,10 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         bgStart = bgEndOld -400f
         bgEnd = bgStart + dandelionrace.HEIGHT.toFloat() * 1.25f
 
+        startTime = System.currentTimeMillis();
+
+        leavesObstacle = Texture("leavesobstacle.png")
+
         //newBatch = SpriteBatch()
 
     }
@@ -65,6 +80,17 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
 
     override fun update(dt: Float) {
+
+        if(effectOn){
+            if(System.currentTimeMillis()>startTime+5000){
+                effectOn=false
+                leavesOn=false
+                isGhost=false
+                bird.birdAnimation = Animations(TextureRegion(Texture("bugredanimation.png")), 2, 0.5f)
+                //TODO: @FELIX SEND to database that the effect of the enemy is over and you can use the standard texture again
+            }
+        }
+
         someTask(bird).execute()
         handleInput()
         bird.update(dt)
@@ -107,32 +133,64 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         }
 
 
-        for(tube in tubes){
-            if(tube.collides(bird.getBound())){
-                bird.status = "trapped"
-                if (bird.position.y - 700 > tube.posBotTube.y) {
-                    bird.trappedTube = "top"
+        if(isGhost==false) {
+            for (tube in tubes) {
+                if (tube.collides(bird.getBound())) {
+                    bird.status = "trapped"
+                    if (bird.position.y - 700 > tube.posBotTube.y) {
+                        bird.trappedTube = "top"
 
-                } else {
-                    bird.trappedTube = "bot"
+                    } else {
+                        bird.trappedTube = "bot"
+                    }
                 }
             }
         }
 
         for(item in items){
+
             if(item.collides(bird.getBound())){
                 item.posItem.set(-100f,-100f)
                 item.bounds.set(-100f,-100f,0f,0f)
+                isGhost=true
+                //TODO: SET THE EFFECTS
+                //TODO: @FELIX SEND item.effect to database
 
-                if(item.effect == "EFFEKT IST 1"){
-                    bird.status = "slow"
+                if(item.effect == "slow"){
+                    bird.birdAnimation = Animations(TextureRegion(Texture("bugblueanimation.png")), 2, 0.5f)
+                    startTime = System.currentTimeMillis()
+                    effectOn=true
+
+
                 }
-                if(item.effect == "EFFEKT IST 2"){
-                    bird.status = "speed"
+                if(item.effect == "speed"){
+                    bird.birdAnimation = Animations(TextureRegion(Texture("buggreenanimation.png")), 2, 0.5f)
+                    startTime = System.currentTimeMillis()
+                    effectOn=true
+
                 }
+                if(item.effect == "leaves"){
+                    startTime = System.currentTimeMillis()
+                    effectOn=true
+                    leavesOn=true
+
+                }
+                if(item.effect == "ghost"){
+                    isGhost==true
+                    bird.birdAnimation = Animations(TextureRegion(Texture("bugghostanimation.png")), 2, 0.5f)
+                    startTime = System.currentTimeMillis()
+                    effectOn=true
+
+                }
+                if(item.effect == "switch"){
+                    //no skin change
+                    startTime = System.currentTimeMillis()
+                    effectOn=true
+
+                }
+
             }
         }
-
 
 
         /* !!! CODE FOR REPOSITION OF TUBES FOR DYNAMIC LEVEL !!!
@@ -158,6 +216,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         sb.begin()
         //sb.draw(bg, cam.position.x - (cam.viewportWidth / 2 ), 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
 
+
+
         sb.draw(bg, bgStartOld, 0f, dandelionrace.HEIGHT.toFloat() * 1.25f, dandelionrace.HEIGHT.toFloat())
         //if(nextBg){
         sb.draw(secondBg, bgStart, 0f, dandelionrace.HEIGHT.toFloat() * 1.25f, dandelionrace.HEIGHT.toFloat())
@@ -176,6 +236,11 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         sb.draw(bird.birdAnimation.getFrame(), bird.position.x, bird.position.y)
         //sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
         //sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
+
+        if(leavesOn){
+            sb.draw(leavesObstacle, cam.position.x-500f, cam.position.y-500f)
+        }
+
         sb.end()
     }
 

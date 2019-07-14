@@ -1,5 +1,6 @@
 package com.dandelionrace.game.sprites
 
+import android.media.Image
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Rectangle
@@ -26,16 +27,18 @@ class Bird(x: Int, y: Int) {
 
     fun update(dt: Float) {
         birdAnimation.update(dt)
-        if(status=="free"){
+        if(status=="free") {
+
             if (position.y > 0)
                 velocity.add(0f, GRAVITY.toFloat(), 0f)
             velocity.scl(dt)
-            position.add(MOVEMENT *dt, velocity.y, 0f)
-            if(position.y < 0)
+            position.add(MOVEMENT * dt, velocity.y, 0f)
+            if (position.y < 0)
                 position.y = 0f
 
             velocity.scl(1 / dt)
-            bound.setPosition(position.x,position.y)
+            bound.setPosition(position.x, position.y)
+
         } else if(status=="trapped"){
 
         }

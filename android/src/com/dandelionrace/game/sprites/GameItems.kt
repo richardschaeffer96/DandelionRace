@@ -20,25 +20,23 @@ class GameItems(x: Float, y:Float) {
     init {
         posItem = Vector2(x, y)
 
-        //TODO SET THE RIGHT ITEM PICTURES FOR THE DIFFERENT ITEMS
-
         rand = Random()
         var i: Int = rand.nextInt(ITEMCOUNT+1)
-        if(i==1){
-            effect = "EFFEKT IST 1"
+        if(i==1) {
+            effect = "slow"
             itemPic = Texture("bluemushroom.png")
-        }else if (i==2){
-            effect = "EFFEKT IST 2"
-            itemPic = Texture("greenmushroom.png")
+        }else if(i==2){
+            effect = "switch"
+            itemPic = Texture("switch.png")
         }else if (i==3){
-            effect = "EFFEKT IST 3"
+            effect = "leaves"
             itemPic = Texture("leaves.png")
         }else if (i==4){
-            effect = "EFFEKT IST 4"
+            effect = "ghost"
             itemPic = Texture("ghost.png")
         }else{
-            effect = "EFFEKT IST 5"
-            itemPic = Texture("switch.png")
+            effect = "speed"
+            itemPic = Texture("greenmushroom.png")
         }
 
         bounds = Rectangle(posItem.x, posItem.y, itemPic.width.toFloat(), itemPic.height.toFloat())
