@@ -226,6 +226,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                 effectOn=false
                 leavesOn=false
                 isGhost=false
+                bird.status="free"
                 bird.birdAnimation = Animations(TextureRegion(Texture("bugredanimation.png")), 2, 0.5f)
                 //TODO: @FELIX SEND to database that the effect of the enemy is over and you can use the standard texture again
             }
@@ -300,11 +301,13 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                 myItem.setValue(item.effect)
 
                 if(item.effect == "slow"){
+                    bird.status="SLOW"
                     bird.birdAnimation = Animations(TextureRegion(Texture("bugblueanimation.png")), 2, 0.5f)
                     startTime = System.currentTimeMillis()
                     effectOn=true
                 }
                 if(item.effect == "speed"){
+                    bird.status="SPEED"
                     bird.birdAnimation = Animations(TextureRegion(Texture("buggreenanimation.png")), 2, 0.5f)
                     startTime = System.currentTimeMillis()
                     effectOn=true
