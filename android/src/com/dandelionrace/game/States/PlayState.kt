@@ -86,6 +86,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                 effectOn=false
                 leavesOn=false
                 isGhost=false
+                bird.status="free"
                 bird.birdAnimation = Animations(TextureRegion(Texture("bugredanimation.png")), 2, 0.5f)
                 //TODO: @FELIX SEND to database that the effect of the enemy is over and you can use the standard texture again
             }
@@ -157,6 +158,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                 //TODO: @FELIX SEND item.effect to database
 
                 if(item.effect == "slow"){
+                    bird.status="SLOW"
                     bird.birdAnimation = Animations(TextureRegion(Texture("bugblueanimation.png")), 2, 0.5f)
                     startTime = System.currentTimeMillis()
                     effectOn=true
@@ -164,6 +166,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
                 }
                 if(item.effect == "speed"){
+                    bird.status="SPEED"
                     bird.birdAnimation = Animations(TextureRegion(Texture("buggreenanimation.png")), 2, 0.5f)
                     startTime = System.currentTimeMillis()
                     effectOn=true
@@ -269,7 +272,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
                 if (gForce>1.7) {
                     System.out.println("SHAKE DETECTED")
-                    new_bird.status = "free"
+                    new_bird.status = "frengvc "
                     if(new_bird.trappedTube == "bot"){
                         new_bird.position = Vector3(new_bird.position.x, new_bird.position.y + 200, 0f)
                         new_bird.trappedTube = ""
