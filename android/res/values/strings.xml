@@ -2,5 +2,6 @@
 <resources>
 
     <string name="app_name">DandelionRace</string>
-
+    <string name="introTextLobby">Wähle aus der Liste eins der Spiele aus und Tippe darauf um beizutreten. Alternativ kannst du auch unten in das Textfeld tippen, einen Namen eingeben und so ein eigenes Spiel hosten.</string>
+    <string name="introTextEntryHall">Klicke auf READY wenn du bereit bist.</string>
 </resources>

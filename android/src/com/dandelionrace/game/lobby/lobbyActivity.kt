@@ -4,9 +4,6 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.EditText
-import android.widget.ListView
 import com.dandelionrace.game.R
 import com.dandelionrace.game.classes.DandelionGame
 import com.dandelionrace.game.classes.GameAdapter
@@ -14,7 +11,8 @@ import com.dandelionrace.game.classes.PlayerOnServer
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.DataSnapshot
-
+import android.view.View.OnFocusChangeListener
+import android.widget.*
 
 
 class lobbyActivity : AppCompatActivity() {
@@ -93,6 +91,9 @@ class lobbyActivity : AppCompatActivity() {
             }
             override fun onCancelled(error: DatabaseError) {
             }
+        })
+        findViewById<EditText>(R.id.editText).setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
+            findViewById<Button>(R.id.createGame).isEnabled = true;
         })
     }
 
