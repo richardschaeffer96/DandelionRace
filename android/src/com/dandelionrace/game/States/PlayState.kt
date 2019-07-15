@@ -98,6 +98,34 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         print(finalitems)
         println("Test")
         println("Enemy: "+enemy)
+
+        //is true if the other player gets a pos switch item -> override y pos
+        var overridePos = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/xxReadPos")
+
+        //New Location set by other Player in case of pos switch item
+        var newYPos = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/xxypos")
+
+        overridePos.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.getValue().toString().toBoolean()) {
+                    newYPos.addListenerForSingleValueEvent(object: ValueEventListener {
+                        override fun onDataChange(dataSnapshotY: DataSnapshot) {
+                            val posY: Float = dataSnapshotY.getValue().toString().toFloat()
+                            bird.position.y = posY
+                            overridePos.setValue("false")
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                        }
+                    })
+
+                }
+            }
+        })
+
         for (s in enemy.split(",")){
             println("Split: "+s)
             if (s != mymail){
@@ -146,12 +174,12 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                         }
                         if(enemyEffect == "switch"){
 
-                            enemyPosX.addListenerForSingleValueEvent(object: ValueEventListener {
+/*                            enemyPosX.addListenerForSingleValueEvent(object: ValueEventListener {
                                 override fun onDataChange(dataSnapshotX: DataSnapshot) {
                                     val posX: Float = dataSnapshotX.getValue().toString().toFloat()
                                     enemyPosY.addListenerForSingleValueEvent(object: ValueEventListener {
                                         override fun onDataChange(dataSnapshotY: DataSnapshot) {
-                                            val posY: Float = dataSnapshot.getValue().toString().toFloat()
+                                            val posY: Float = dataSnapshotY.getValue().toString().toFloat()
 
                                             enemyPosX.setValue(bird.position.x)
                                             enemyPosY.setValue(bird.position.y)
@@ -172,6 +200,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                                 }
                             })
                             //no skin change, switch positions of player
+                            */
                         }
                     }
                 })
@@ -295,6 +324,24 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                     //no skin change, switch positions of player
                     startTime = System.currentTimeMillis()
                     effectOn=true
+
+
+                    var enemy = enemy.split(",")[0]
+                    database.getReference("playersInGame/"+game+"/"+enemy.replace(".","")+"/xxypos").setValue(bird.position.y)
+                    val enemyPosY = database.getReference("playersInGame/"+game+"/"+enemy.replace(".","")+"/posy")
+                    //Read ypos of enemy and set own pos to it
+                    enemyPosY.addListenerForSingleValueEvent(object: ValueEventListener {
+                        override fun onDataChange(dataSnapshotY: DataSnapshot) {
+                            val posY: Float = dataSnapshotY.getValue().toString().toFloat()
+                            bird.position.y = posY
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                        }
+                    })
+                    val enemyReadPos = database.getReference("playersInGame/"+game+"/"+enemy.replace(".","")+"/xxReadPos")
+                    enemyReadPos.setValue("true")
+
                 }
 
             }
