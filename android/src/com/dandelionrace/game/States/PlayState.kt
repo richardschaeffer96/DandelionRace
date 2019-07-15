@@ -271,11 +271,13 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                 myItem.setValue(item.effect)
 
                 if(item.effect == "slow"){
+                    //
                     bird.birdAnimation = Animations(TextureRegion(Texture("bugblueanimation.png")), 2, 0.5f)
                     startTime = System.currentTimeMillis()
                     effectOn=true
                 }
                 if(item.effect == "speed"){
+                    //
                     bird.birdAnimation = Animations(TextureRegion(Texture("buggreenanimation.png")), 2, 0.5f)
                     startTime = System.currentTimeMillis()
                     effectOn=true
