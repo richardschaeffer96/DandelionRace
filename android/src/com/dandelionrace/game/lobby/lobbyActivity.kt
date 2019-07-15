@@ -92,9 +92,9 @@ class lobbyActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
             }
         })
-        findViewById<EditText>(R.id.editText).setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-            findViewById<Button>(R.id.createGame).isEnabled = true;
-        })
+//        findViewById<EditText>(R.id.editText).setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
+//            findViewById<Button>(R.id.createGame).isEnabled = true;
+//        })
     }
 
     fun registratePlayerInGame(gamename: String, nameForPlayerDatabase: String, myname: String, mymail: String) {

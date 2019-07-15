@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import com.dandelionrace.game.AndroidLauncher
@@ -49,7 +50,6 @@ class EntryHallActivity : AppCompatActivity() {
         thisgame = DandelionGame("DUMMY", "0", "0", true, "o", true, "0")
         setContentView(R.layout.activity_entry_hall)
         game = intent.getStringExtra("game")
-        val readybutton = findViewById<Button>(R.id.readybutton)
         val playerList = database.getReference("playersInGame/"+game)
 
         //get the game i joint
@@ -191,9 +191,9 @@ class EntryHallActivity : AppCompatActivity() {
                 //println("Host: " + thisgame?.host)
                 //println("NAME: " + myName)
                 if (thisgame?.host == myName && allPlayersReady) {
-                    findViewById<Button>(R.id.startGame).setVisibility(View.VISIBLE)
+                    findViewById<ImageView>(R.id.startGame).setVisibility(View.VISIBLE)
                 } else {
-                    findViewById<Button>(R.id.startGame).setVisibility(View.INVISIBLE)
+                    findViewById<ImageView>(R.id.startGame).setVisibility(View.INVISIBLE)
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -212,11 +212,9 @@ class EntryHallActivity : AppCompatActivity() {
         if (ready) {
             newGame.setValue("false")
             ready = false
-            readybutton.text = "Bereit"
         } else {
             newGame.setValue("true")
             ready = true
-            readybutton.text = "doch nicht bereit"
         }
 
     }
