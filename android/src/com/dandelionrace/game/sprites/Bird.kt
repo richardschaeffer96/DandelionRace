@@ -43,8 +43,27 @@ class Bird(x: Int, y: Int, player: Int) {
 
             velocity.scl(1 / dt)
             bound.setPosition(position.x, position.y)
+            }else if(status=="SLOW"){
+                if (position.y > 0)
+                    velocity.add(0f, GRAVITY.toFloat(), 0f)
+                velocity.scl(dt)
+                position.add(MOVEMENT.minus(50) *dt, velocity.y, 0f)
+                if(position.y < 0)
+                    position.y = 0f
 
-        } else if(status=="trapped"){
+                velocity.scl(1 / dt)
+                bound.setPosition(position.x,position.y)
+            }else if(status=="SPEED"){
+                if (position.y > 0)
+                    velocity.add(0f, GRAVITY.toFloat(), 0f)
+                velocity.scl(dt)
+                position.add(MOVEMENT.plus(400) *dt, velocity.y, 0f)
+                if(position.y < 0)
+                    position.y = 0f
+
+                velocity.scl(1 / dt)
+                bound.setPosition(position.x,position.y)
+            }else if(status=="trapped"){
 
         }
 
@@ -57,7 +76,7 @@ class Bird(x: Int, y: Int, player: Int) {
     }
 
     fun jump(){
-        if (status=="free")
+        if (status=="free"||status=="SLOW"||status=="SPEED")
             velocity.y = 800f;
     }
     fun getBound():Rectangle{
