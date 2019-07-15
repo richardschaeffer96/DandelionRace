@@ -323,10 +323,16 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                     startTime = System.currentTimeMillis()
                     effectOn=true
 
-
-                    var enemy = enemy.split(",")[0]
-                    database.getReference("playersInGame/"+game+"/"+enemy.replace(".","")+"/xxypos").setValue(bird.position.y)
-                    val enemyPosY = database.getReference("playersInGame/"+game+"/"+enemy.replace(".","")+"/posy")
+                    //gets the enemys gamename for database
+                    var enemyArray = enemy.split(",")
+                    var onlyEnemy = ""
+                    for (e in enemyArray) {
+                        if (e != mymail) {
+                            onlyEnemy = e
+                        }
+                    }
+                    database.getReference("playersInGame/"+game+"/"+onlyEnemy.replace(".","")+"/xxypos").setValue(bird.position.y)
+                    val enemyPosY = database.getReference("playersInGame/"+game+"/"+onlyEnemy.replace(".","")+"/posy")
                     //Read ypos of enemy and set own pos to it
                     enemyPosY.addListenerForSingleValueEvent(object: ValueEventListener {
                         override fun onDataChange(dataSnapshotY: DataSnapshot) {
@@ -337,7 +343,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                         override fun onCancelled(error: DatabaseError) {
                         }
                     })
-                    val enemyReadPos = database.getReference("playersInGame/"+game+"/"+enemy.replace(".","")+"/xxReadPos")
+                    val enemyReadPos = database.getReference("playersInGame/"+game+"/"+onlyEnemy.replace(".","")+"/xxReadPos")
                     enemyReadPos.setValue("true")
 
                 }
