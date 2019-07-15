@@ -151,7 +151,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                                     val posX: Float = dataSnapshotX.getValue().toString().toFloat()
                                     enemyPosY.addListenerForSingleValueEvent(object: ValueEventListener {
                                         override fun onDataChange(dataSnapshotY: DataSnapshot) {
-                                            val posY: Float = dataSnapshot.getValue().toString().toFloat()
+                                            val posY: Float = dataSnapshotY.getValue().toString().toFloat()
 
                                             enemyPosX.setValue(bird.position.x)
                                             enemyPosY.setValue(bird.position.y)
