@@ -145,6 +145,32 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                             enemyBird.birdAnimation = Animations(TextureRegion(enemyBird.bird), 2, 0.5f)
                         }
                         if(enemyEffect == "switch"){
+
+                            enemyPosX.addListenerForSingleValueEvent(object: ValueEventListener {
+                                override fun onDataChange(dataSnapshotX: DataSnapshot) {
+                                    val posX: Float = dataSnapshotX.getValue().toString().toFloat()
+                                    enemyPosY.addListenerForSingleValueEvent(object: ValueEventListener {
+                                        override fun onDataChange(dataSnapshotY: DataSnapshot) {
+                                            val posY: Float = dataSnapshot.getValue().toString().toFloat()
+
+                                            enemyPosX.setValue(bird.position.x)
+                                            enemyPosY.setValue(bird.position.y)
+
+                                            bird.position.x = posX
+                                            bird.position.y = posY
+
+                                            myPosX.setValue(posX)
+                                            myPosY.setValue(posY)
+                                        }
+
+                                        override fun onCancelled(error: DatabaseError) {
+                                        }
+                                    })
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                }
+                            })
                             //no skin change, switch positions of player
                         }
                     }
