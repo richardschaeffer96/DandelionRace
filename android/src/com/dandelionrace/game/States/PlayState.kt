@@ -131,15 +131,18 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                         val enemyEffect : String = dataSnapshot.getValue().toString()
                         println("ENEMY: "+enemyEffect)
                         if(enemyEffect == "slow"){
-                            enemyBird.birdAnimation = Animations(TextureRegion(Texture("bugblueanimation.png")), 2, 0.5f)
+                            enemyBird.birdAnimation = Animations(TextureRegion(enemyBird.bird), 2, 0.5f)
                         }
                         if(enemyEffect == "speed"){
-                            enemyBird.birdAnimation = Animations(TextureRegion(Texture("buggreenanimation.png")), 2, 0.5f)
+                            enemyBird.birdAnimation = Animations(TextureRegion(enemyBird.bird), 2, 0.5f)
                         }
                         if(enemyEffect == "leaves"){
+                            startTime = System.currentTimeMillis()
+                            effectOn=true
+                            leavesOn=true
                         }
                         if(enemyEffect == "ghost"){
-                            enemyBird.birdAnimation = Animations(TextureRegion(Texture("bugghostanimation.png")), 2, 0.5f)
+                            enemyBird.birdAnimation = Animations(TextureRegion(enemyBird.bird), 2, 0.5f)
                         }
                         if(enemyEffect == "switch"){
                             //no skin change, switch positions of player
@@ -150,7 +153,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             }
         }
 
-
+        println("START STATUS: "+bird.status)
 
     }
 
@@ -221,7 +224,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         if(isGhost==false) {
             for (tube in tubes) {
                 if (tube.collides(bird.getBound())) {
-                    bird.status = "trapped"
+                    bird.status = "free" ///"trapped"                                                     ////CHANGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
                     if (bird.position.y - 700 > tube.posBotTube.y) {
                         bird.trappedTube = "top"
 
@@ -252,9 +255,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                     effectOn=true
                 }
                 if(item.effect == "leaves"){
-                    startTime = System.currentTimeMillis()
-                    effectOn=true
-                    leavesOn=true
+
                 }
                 if(item.effect == "ghost"){
                     isGhost==true
