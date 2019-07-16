@@ -6,12 +6,12 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textViewName"
+        android:id="@+id/itemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/imageView"
-        android:layout_toRightOf="@+id/imageView"
+        android:layout_toEndOf="@+id/itemImage"
+        android:layout_toRightOf="@+id/itemImage"
         android:paddingBottom="10dp"
         android:text="Blue Mushroom"
         android:fontFamily="@font/advancedpixel"
@@ -21,18 +21,18 @@
         android:textStyle="bold" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/itemImage"
         android:src="@drawable/blue_mushroom"
         android:layout_width="150dp"
         android:layout_height="150dp" />
 
     <TextView
-        android:id="@+id/textViewTeam"
+        android:id="@+id/itemExplanation"
         android:layout_width="246dp"
         android:layout_height="93dp"
-        android:layout_below="@+id/textViewName"
-        android:layout_toEndOf="@+id/imageView"
-        android:layout_toRightOf="@+id/imageView"
+        android:layout_below="@+id/itemName"
+        android:layout_toEndOf="@+id/itemImage"
+        android:layout_toRightOf="@+id/itemImage"
         android:paddingTop="10dp"
         android:text="Not only do they taste great, they also make you fly faster!"
         android:fontFamily="@font/advancedpixel"
