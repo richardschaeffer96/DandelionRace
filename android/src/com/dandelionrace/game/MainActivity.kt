@@ -43,4 +43,9 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
+
+    fun howto(view: View){
+        val intent = Intent(this@MainActivity, HowTo::class.java)
+        startActivity(intent)
+    }
 }

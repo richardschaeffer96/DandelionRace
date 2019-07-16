@@ -13,38 +13,34 @@
         android:layout_toEndOf="@+id/imageView"
         android:layout_toRightOf="@+id/imageView"
         android:paddingBottom="10dp"
-        android:text="Spiderman"
+        android:text="Blue Mushroom"
+        android:fontFamily="@font/advancedpixel"
         android:textAlignment="center"
-        android:textSize="35dp"
+        android:textColor="#000000"
+        android:textSize="40sp"
         android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/imageView"
+        android:src="@drawable/blue_mushroom"
         android:layout_width="150dp"
         android:layout_height="150dp" />
 
     <TextView
         android:id="@+id/textViewTeam"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="246dp"
+        android:layout_height="93dp"
         android:layout_below="@+id/textViewName"
         android:layout_toEndOf="@+id/imageView"
         android:layout_toRightOf="@+id/imageView"
         android:paddingTop="10dp"
-        android:text="Spiderman"
+        android:text="Not only do they taste great, they also make you fly faster!"
+        android:fontFamily="@font/advancedpixel"
         android:textAlignment="center"
-        android:textSize="25dp"
+        android:textColor="#000000"
+        android:textSize="25sp"
         android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/buttonDelete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageView"
-        android:layout_toEndOf="@+id/imageView"
-        android:layout_toRightOf="@+id/imageView"
-        android:background="#FF0000"
-        android:text="Delete" />
 
 
 </RelativeLayout>
+

@@ -4,4 +4,6 @@
     <string name="app_name">DandelionRace</string>
     <string name="introTextLobby">Choose a game or create one!</string>
     <string name="introTextEntryHall">Click on READY if you prepared yourself for the Dandelion Race!</string>
+    <string name="howToText">Help Buggy to reach to dandelion before anyone else!\nYou can make him fly by clicking on the screen.\nBut be aware of the spider webs and the bushes!\nIf
+    you are trapped in them, shake your device to free yourself. Use following items to boost Buggy:</string>
 </resources>
