@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector3
+import com.dandelionrace.game.dandelionrace
 
 class Bird(x: Int, y: Int, player: Int) {
     var position: Vector3
@@ -14,8 +15,11 @@ class Bird(x: Int, y: Int, player: Int) {
     var trappedTube: String = ""
     lateinit var birdAnimation: Animations
     val bird: Texture
+    var maxY: Float
 
     init {
+        //TODO: MAKE MAXY TO MAX Y VALUE OF THE SCREEN! AUTOMATICALLY!
+        maxY = 1900f
         status = "free"
         trappedTube = ""
         position = Vector3(x.toFloat(), y.toFloat(), 0f)
@@ -33,33 +37,41 @@ class Bird(x: Int, y: Int, player: Int) {
     fun update(dt: Float) {
         birdAnimation.update(dt)
         if(status=="free") {
-
-            if (position.y > 0)
+            if (position.y > 0 && position.y < maxY)
                 velocity.add(0f, GRAVITY.toFloat(), 0f)
             velocity.scl(dt)
             position.add(MOVEMENT * dt, velocity.y, 0f)
             if (position.y < 0)
                 position.y = 0f
+            if (position.y >= maxY){
+                position.y = maxY-1f
+            }
 
             velocity.scl(1 / dt)
             bound.setPosition(position.x, position.y)
             }else if(status=="SLOW"){
-                if (position.y > 0)
+                if (position.y > 0 && position.y < maxY)
                     velocity.add(0f, GRAVITY.toFloat(), 0f)
                 velocity.scl(dt)
                 position.add(MOVEMENT.minus(50) *dt, velocity.y, 0f)
                 if(position.y < 0)
                     position.y = 0f
+                if (position.y >= maxY){
+                    position.y = maxY-1f
+                 }
 
                 velocity.scl(1 / dt)
                 bound.setPosition(position.x,position.y)
             }else if(status=="SPEED"){
-                if (position.y > 0)
+                if (position.y > 0 && position.y < maxY)
                     velocity.add(0f, GRAVITY.toFloat(), 0f)
                 velocity.scl(dt)
                 position.add(MOVEMENT.plus(400) *dt, velocity.y, 0f)
                 if(position.y < 0)
                     position.y = 0f
+                if (position.y >= maxY){
+                    position.y = maxY-1f
+                   }
 
                 velocity.scl(1 / dt)
                 bound.setPosition(position.x,position.y)
