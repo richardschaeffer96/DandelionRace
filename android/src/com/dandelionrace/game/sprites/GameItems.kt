@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import java.util.*
 
-class GameItems(x: Float, y:Float) {
+class GameItems(x: Float, y:Float, item:String) {
 
 
     var posItem: Vector2
@@ -13,29 +13,21 @@ class GameItems(x: Float, y:Float) {
 
     var bounds: Rectangle
 
-    var effect: String = "EFFEKT IST 0"
+    var effect: String = item
 
-    var rand: Random
 
     init {
         posItem = Vector2(x, y)
 
-        rand = Random()
-        var i: Int = rand.nextInt(ITEMCOUNT+1)
-        if(i==1) {
-            effect = "slow"
+        if(effect == "slow") {
             itemPic = Texture("bluemushroom.png")
-        }else if(i==2){
-            effect = "switch"
+        }else if(effect == "switch"){
             itemPic = Texture("switch.png")
-        }else if (i==3){
-            effect = "leaves"
+        }else if (effect == "leaves"){
             itemPic = Texture("leaves.png")
-        }else if (i==4){
-            effect = "ghost"
+        }else if (effect == "ghost"){
             itemPic = Texture("ghost.png")
         }else{
-            effect = "speed"
             itemPic = Texture("greenmushroom.png")
         }
 
@@ -46,7 +38,7 @@ class GameItems(x: Float, y:Float) {
     }
 
     companion object {
-        private val ITEMCOUNT = 5
+
     }
 
     fun collides(player: Rectangle):Boolean{

@@ -78,7 +78,7 @@ class EntryHallActivity : AppCompatActivity() {
                             tubeArrayList.add(Tube(i*(tubeSpacing+width)))
                         }
                         for (i in 1..itemCount){
-                            itemArrayList.add(Item(i*(tubeSpacing+width)))
+                            itemArrayList.add(Item(i*(tubeSpacing+width), false))
                         }
 
                         for (i in tubeArrayList){
@@ -91,9 +91,9 @@ class EntryHallActivity : AppCompatActivity() {
 
                         for (i in itemArrayList){
                             if(itemArrayList.indexOf(i)==itemArrayList.size-1){
-                                itemString += "" + i.posItem.x + "$" + i.posItem.y
+                                itemString += "" + i.posItem.x + "$" + i.posItem.y + "$" + i.effect
                             } else {
-                                itemString += "" + + i.posItem.x + "$" + i.posItem.y + "%"
+                                itemString += "" + + i.posItem.x + "$" + i.posItem.y + "$" + i.effect + "%"
                             }
                         }
 

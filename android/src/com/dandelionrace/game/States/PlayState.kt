@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import com.dandelionrace.game.AndroidLauncher
 import com.dandelionrace.game.dandelionrace
 import com.dandelionrace.game.sprites.Bird
 import com.dandelionrace.game.sprites.GameItems
@@ -74,6 +75,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         cam.setToOrtho(false, app_width, app_height)
         bird = Bird(100,500, 1)
         enemyBird = Bird(100,500, 2)
+
+
         bg = Texture("newbg.jpg")
         secondBg = Texture("newbg.jpg")
         win = Texture("win.jpg")
@@ -99,80 +102,81 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         println("Test")
         println("Enemy: "+enemy)
 
-        //is true if the other player gets a pos switch item -> override y pos
-        var overridePos = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/xxReadPos")
+        if(AndroidLauncher.isSingle==false){
+            //is true if the other player gets a pos switch item -> override y pos
+            var overridePos = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/xxReadPos")
 
-        //New Location set by other Player in case of pos switch item
-        var newYPos = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/xxypos")
+            //New Location set by other Player in case of pos switch item
+            var newYPos = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/xxypos")
 
-        overridePos.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-            }
+            overridePos.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                }
 
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.getValue().toString().toBoolean()) {
-                    newYPos.addListenerForSingleValueEvent(object: ValueEventListener {
-                        override fun onDataChange(dataSnapshotY: DataSnapshot) {
-                            val posY: Float = dataSnapshotY.getValue().toString().toFloat()
-                            bird.position.y = posY
-                            overridePos.setValue("false")
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.getValue().toString().toBoolean()) {
+                        newYPos.addListenerForSingleValueEvent(object: ValueEventListener {
+                            override fun onDataChange(dataSnapshotY: DataSnapshot) {
+                                val posY: Float = dataSnapshotY.getValue().toString().toFloat()
+                                bird.position.y = posY
+                                overridePos.setValue("false")
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                            }
+                        })
+
+                    }
+                }
+            })
+
+            for (s in enemy.split(",")){
+                println("Split: "+s)
+                if (s != mymail){
+                    val enemyPosX = database.getReference("playersInGame/"+game+"/"+s.replace(".","")+"/posx")
+                    println(enemyPosX)
+                    enemyPosX.addValueEventListener(object : ValueEventListener {
+                        override fun onCancelled(p0: DatabaseError) {
                         }
 
-                        override fun onCancelled(error: DatabaseError) {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            enemyBird.position.x = dataSnapshot.getValue().toString().toFloat()
+                        }
+                    })
+                    val enemyPosY = database.getReference("playersInGame/"+game+"/"+s.replace(".","")+"/posy")
+                    println(enemyPosY)
+                    enemyPosY.addValueEventListener(object : ValueEventListener {
+                        override fun onCancelled(p0: DatabaseError) {
+                        }
+
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            enemyBird.position.y = dataSnapshot.getValue().toString().toFloat()
                         }
                     })
 
-                }
-            }
-        })
-
-        for (s in enemy.split(",")){
-            println("Split: "+s)
-            if (s != mymail){
-                val enemyPosX = database.getReference("playersInGame/"+game+"/"+s.replace(".","")+"/posx")
-                println(enemyPosX)
-                enemyPosX.addValueEventListener(object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError) {
-                    }
-
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        enemyBird.position.x = dataSnapshot.getValue().toString().toFloat()
-                    }
-                })
-                val enemyPosY = database.getReference("playersInGame/"+game+"/"+s.replace(".","")+"/posy")
-                println(enemyPosY)
-                enemyPosY.addValueEventListener(object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError) {
-                    }
-
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        enemyBird.position.y = dataSnapshot.getValue().toString().toFloat()
-                    }
-                })
-
-                val  enemyItem = database.getReference("playersInGame/"+game+"/"+s.replace(".","")+"/xitem")
-                enemyItem.addValueEventListener(object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError) {
-                    }
-
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val enemyEffect : String = dataSnapshot.getValue().toString()
-                        println("ENEMY: "+enemyEffect)
-                        if(enemyEffect == "slow"){
-                            enemyBird.birdAnimation = Animations(TextureRegion(enemyBird.bird), 2, 0.5f)
+                    val  enemyItem = database.getReference("playersInGame/"+game+"/"+s.replace(".","")+"/xitem")
+                    enemyItem.addValueEventListener(object : ValueEventListener {
+                        override fun onCancelled(p0: DatabaseError) {
                         }
-                        if(enemyEffect == "speed"){
-                            enemyBird.birdAnimation = Animations(TextureRegion(enemyBird.bird), 2, 0.5f)
-                        }
-                        if(enemyEffect == "leaves"){
-                            startTime = System.currentTimeMillis()
-                            effectOn=true
-                            leavesOn=true
-                        }
-                        if(enemyEffect == "ghost"){
-                            enemyBird.birdAnimation = Animations(TextureRegion(enemyBird.bird), 2, 0.5f)
-                        }
-                        if(enemyEffect == "switch"){
+
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            val enemyEffect : String = dataSnapshot.getValue().toString()
+                            println("ENEMY: "+enemyEffect)
+                            if(enemyEffect == "slow"){
+                                enemyBird.birdAnimation = Animations(TextureRegion(enemyBird.bird), 2, 0.5f)
+                            }
+                            if(enemyEffect == "speed"){
+                                enemyBird.birdAnimation = Animations(TextureRegion(enemyBird.bird), 2, 0.5f)
+                            }
+                            if(enemyEffect == "leaves"){
+                                startTime = System.currentTimeMillis()
+                                effectOn=true
+                                leavesOn=true
+                            }
+                            if(enemyEffect == "ghost"){
+                                enemyBird.birdAnimation = Animations(TextureRegion(enemyBird.bird), 2, 0.5f)
+                            }
+                            if(enemyEffect == "switch"){
 
 /*                            enemyPosX.addListenerForSingleValueEvent(object: ValueEventListener {
                                 override fun onDataChange(dataSnapshotX: DataSnapshot) {
@@ -201,11 +205,13 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                             })
                             //no skin change, switch positions of player
                             */
+                            }
                         }
-                    }
-                })
+                    })
 
+                }
             }
+
         }
 
         println("START STATUS: "+bird.status)
@@ -402,8 +408,9 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
         //sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
         //sb.draw(enemyBird.bird, enemyBird.position.x, enemyBird.position.y)
-        sb.draw(enemyBird.birdAnimation.getFrame(), enemyBird.position.x, enemyBird.position.y)
-
+        if(AndroidLauncher.isSingle==false){
+            sb.draw(enemyBird.birdAnimation.getFrame(), enemyBird.position.x, enemyBird.position.y)
+        }
 
         if(leavesOn){
             sb.draw(leavesObstacle, cam.position.x-500f, cam.position.y-500f)

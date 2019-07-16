@@ -42,7 +42,7 @@ class dandelionrace(mContext: Context, tubeString: String, itemString: String, g
 
             } else {
                 var items2: List<String> = i.split("$")
-                finalItems.add(GameItems(items2[0].toFloat(), items2[1].toFloat()))
+                finalItems.add(GameItems(items2[0].toFloat(), items2[1].toFloat(), items2[2]))
             }
 
         }
@@ -58,14 +58,6 @@ class dandelionrace(mContext: Context, tubeString: String, itemString: String, g
 
             } else {
                 var tubes2: List<String> = t.split("$")
-                /*
-                System.out.println("ERSTE LISTE: " + tubes)
-                System.out.println("ZWEITE LISTE: " + tubes2)
-                System.out.println("AUSGABE: "+ tubes2[0])
-                System.out.println("AUSGABE: "+ tubes2[1])
-                System.out.println("AUSGABE: "+ tubes2[2])
-                System.out.println("AUSGABE: "+ tubes2[3])
-                */
                 finalTubes.add(GameTubes(tubes2[0].toFloat(), tubes2[1].toFloat(), tubes2[2].toFloat(), tubes2[3].toFloat()))
             }
 

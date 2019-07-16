@@ -15,6 +15,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var tv_main_email: TextView
     lateinit var tv_main_name: TextView
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         /* println("Start"); */
@@ -25,8 +27,9 @@ class MainActivity : AppCompatActivity() {
         tv_main_name.setText(mAuth?.currentUser?.displayName)
     }
 
-    fun switchToGame(view: View) {
+    fun switchToSingle(view: View) {
         val intent = Intent(this@MainActivity, AndroidLauncher::class.java)
+        intent.putExtra("single", true);
         startActivity(intent)
     }
 
