@@ -24,7 +24,7 @@ class Bird(x: Int, y: Int, player: Int) {
             bird = Texture("bugredanimation.png")
             birdAnimation = Animations(TextureRegion(bird), 2, 0.5f)
         }else{
-            bird = Texture("bugcaramelanimation.png")
+            bird = Texture("bugpurpleanimation.png")
             birdAnimation = Animations(TextureRegion(bird), 2, 0.5f)
         }
         bound = Rectangle(x.toFloat(), y.toFloat(), bird.width.toFloat(), bird.height.toFloat())

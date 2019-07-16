@@ -1,20 +1,24 @@
 # DandelionRace
 
 To do's:
-- Lobby Zurück Button (Felix & Richard)
-- Entry Hall Spielerliste mit Design (Basti & Richard)
-- Spielende setzen mit Gewinner und Verlierer (Felix)
-- Extra Button für Game Over Screen -> LoginActivity (Richard)
-- Musik (Amena)
-- Instructions (Richard)
-- Unterschiedlichere Farben für Spieler (Richard)
-- Playstore (Amena)
-- Collision Box Bugs (Richard)
-- Sperre für oben im Game (Richard)
-- Feedback beim Ready Button (Richard)
-- Animationen nach Items setzen beim Gegner (Felix)
-- Begrenzung auf 2 Player pro Spiel (Basti)
-- Single Player (Richard)
-- Listener auf offiziellen Back-Button (???)
+o Lobby Zurück Button (Felix & Richard)
+o Entry Hall Spielerliste mit Design (Basti & Richard)
+o Extra Button für Game Over Screen -> LoginActivity (Richard)
+
+o Musik (Amena)
+o Playstore (Amena)
+
+o Animationen nach Items setzen beim Gegner (Felix)
+o Spielende setzen mit Gewinner und Verlierer (Felix)
+
+o Begrenzung auf 2 Player pro Spiel (Basti)
+o Listener auf offiziellen Back-Button (???)
+
+x Single Player (Richard)
+o Instructions (Richard)
+x Unterschiedlichere Farben für Spieler (Richard)
+o Collision Box Bugs (Richard)
+o Sperre für oben im Game (Richard)
+o Feedback beim Ready Button (Richard)
 
 this is our fantastic Dandelion Race App!!
