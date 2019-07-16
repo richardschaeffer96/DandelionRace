@@ -19,6 +19,6 @@ o Instructions (Richard)
 x Unterschiedlichere Farben für Spieler (Richard)
 o Collision Box Bugs (Richard)
 o Sperre für oben im Game (Richard)
-o Feedback beim Ready Button (Richard)
+x Feedback beim Ready Button (Richard) MUSS NOCH GETESTET WERDEN!
 
 this is our fantastic Dandelion Race App!!
