@@ -65,6 +65,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
 
     val myItem: DatabaseReference
+    val myFinish: DatabaseReference
 
     private var mAuth = FirebaseAuth.getInstance()
     val mymail = mAuth?.currentUser?.email.toString()
@@ -97,6 +98,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         myPosY = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/posy")
 
         myItem = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/xitem")
+        myFinish = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/xxzfinish")
 
         print(finalitems)
         println("Test")
@@ -205,6 +207,20 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                             })
                             //no skin change, switch positions of player
                             */
+                            }
+                        }
+                    })
+
+                    val  enemyFinish = database.getReference("playersInGame/"+game+"/"+s.replace(".","")+"/xxzfinish")
+                    print(enemyFinish)
+                    enemyFinish.addValueEventListener(object : ValueEventListener {
+                        override fun onCancelled(p0: DatabaseError) {
+                        }
+
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            if (dataSnapshot.getValue().toString().toBoolean()==true) {
+                                print(dataSnapshot.getValue().toString().toBoolean())
+                                // TODO: Make Client change to game over screen
                             }
                         }
                     })
@@ -374,7 +390,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
         if(counter==tubes.size){
             //TODO: SET WINNER AND LOOSER
-            gsm.set(WinGame(gsm))
+            myFinish.setValue(true)
+            gsm.set(WinGame(gsm, true))
             dispose();
         }
     }

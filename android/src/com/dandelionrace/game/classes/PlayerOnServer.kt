@@ -10,4 +10,5 @@ class PlayerOnServer (name: String, mail: String, game:String) {
     var xItem: String = ""
     var xxReadPos: Boolean = false
     var xxypos: Float = 0f
+    var xxzfinish: Boolean = false
 }
