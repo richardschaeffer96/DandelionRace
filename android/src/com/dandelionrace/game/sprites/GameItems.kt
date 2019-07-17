@@ -22,7 +22,7 @@ class GameItems(x: Float, y:Float, item:String) {
         if(effect == "slow") {
             itemPic = Texture("bluemushroom.png")
         }else if(effect == "switch"){
-            itemPic = Texture("switch.png")
+            itemPic = Texture("switchpic.png")
         }else if (effect == "leaves"){
             itemPic = Texture("leaves.png")
         }else if (effect == "ghost"){
