@@ -17,28 +17,28 @@
         android:fontFamily="@font/advancedpixel"
         android:textAlignment="center"
         android:textColor="#000000"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/itemImage"
-        android:src="@drawable/blue_mushroom"
-        android:layout_width="150dp"
-        android:layout_height="150dp" />
+        android:layout_width="114dp"
+        android:layout_height="117dp"
+        android:src="@drawable/blue_mushroom" />
 
     <TextView
         android:id="@+id/itemExplanation"
-        android:layout_width="246dp"
-        android:layout_height="93dp"
+        android:layout_width="269dp"
+        android:layout_height="92dp"
         android:layout_below="@+id/itemName"
         android:layout_toEndOf="@+id/itemImage"
         android:layout_toRightOf="@+id/itemImage"
+        android:fontFamily="@font/advancedpixel"
         android:paddingTop="10dp"
         android:text="Not only do they taste great, they also make you fly faster!"
-        android:fontFamily="@font/advancedpixel"
         android:textAlignment="center"
         android:textColor="#000000"
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
 

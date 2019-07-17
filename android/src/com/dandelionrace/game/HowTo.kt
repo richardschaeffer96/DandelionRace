@@ -32,13 +32,13 @@ class HowTo : AppCompatActivity() {
         ghostPic.setImageResource(R.drawable.ghost)
         switchPic.setImageResource(R.drawable.switchpic)
 
-        var mListView: ListView = findViewById(R.id.itemlistview)
+        val mListView: ListView = findViewById(R.id.itemlistview);
 
-        var bluemushroom: ItemInstructions = ItemInstructions("", "", bluemushroomPic)
-        var greenmushroom: ItemInstructions = ItemInstructions("", "", greenmushroomPic)
-        var leaves: ItemInstructions = ItemInstructions("", "", leavesPic)
-        var ghost: ItemInstructions = ItemInstructions("", "", ghostPic)
-        var switch: ItemInstructions = ItemInstructions("", "", switchPic)
+        var bluemushroom: ItemInstructions = ItemInstructions("Blue Mushroom", "Not only do they taste great, they also make you fly faster.", bluemushroomPic)
+        var greenmushroom: ItemInstructions = ItemInstructions("Green Mushroom", "Ew, they taste bad and slow you down.", greenmushroomPic)
+        var leaves: ItemInstructions = ItemInstructions("Rain of Leaves", "You drop leaves on your opponent and restrict his view.", leavesPic)
+        var ghost: ItemInstructions = ItemInstructions("Ghost Mode", "You become a ghost beetle and can fly through all obstacles.", ghostPic)
+        var switch: ItemInstructions = ItemInstructions("Switch", "Oops... this item lets you swap your flying height with that of your opponent.", switchPic)
 
         var itemList: ArrayList<ItemInstructions> = ArrayList()
 
@@ -50,7 +50,7 @@ class HowTo : AppCompatActivity() {
 
         var adapterItems: ItemListAdapter = ItemListAdapter(this, R.layout.custom_listview, itemList)
         //TODO: SET ADAPTER
-        mListView.adapter
+        mListView.adapter = adapterItems
 
     }
 }
