@@ -31,7 +31,7 @@ class HowTo : AppCompatActivity() {
         leavesPic.setImageResource(R.drawable.leaves)
         ghostPic.setImageResource(R.drawable.ghost)
         switchPic.setImageResource(R.drawable.switchpic)
-
+        //TEST
         val mListView: ListView = findViewById(R.id.itemlistview);
 
         var bluemushroom: ItemInstructions = ItemInstructions("Blue Mushroom", "Not only do they taste great, they also make you fly faster.", bluemushroomPic)
