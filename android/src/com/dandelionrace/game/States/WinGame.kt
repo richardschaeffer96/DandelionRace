@@ -9,7 +9,7 @@ import com.dandelionrace.game.dandelionrace
 import com.dandelionrace.game.lobby.EntryHallActivity
 import com.dandelionrace.game.sprites.Bird
 
-class WinGame(gsm: GameStateManager) : State(gsm) {
+class WinGame(gsm: GameStateManager, winner: Boolean) : State(gsm) {
 
     private val win: Texture
     val app_width: Float
@@ -19,7 +19,11 @@ class WinGame(gsm: GameStateManager) : State(gsm) {
     private val bird: Bird
 
     init {
-        win = Texture("win.jpg")
+        if (winner){
+            win = Texture("win.jpg")
+        }else{
+            win = Texture("win.jpg")
+        }
         bird = Bird(100,500, 0)
         app_height = Gdx.app.graphics.height.toFloat()
         app_width = Gdx.app.graphics.width.toFloat()
