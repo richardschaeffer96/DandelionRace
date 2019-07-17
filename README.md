@@ -1,9 +1,9 @@
 # DandelionRace
 
 To do's:
-o Lobby Zurück Button (Felix & Richard)
-o Entry Hall Spielerliste mit Design (Basti & Richard)
-o Extra Button für Game Over Screen -> LoginActivity (Richard)
+o Lobby Zurück Button (Felix) (Richard: Erledigt)
+o Entry Hall Spielerliste mit Design (Basti)
+o Extra Button für Game Over Screen -> LoginActivity (Richard: Erledigt)
 
 o Musik (Amena)
 o Playstore (Amena)
@@ -15,7 +15,7 @@ o Begrenzung auf 2 Player pro Spiel (Basti)
 o Listener auf offiziellen Back-Button (???)
 
 x Single Player (Richard)
-o Instructions (Richard)
+x Instructions (Richard)
 x Unterschiedlichere Farben für Spieler (Richard)
 o Collision Box Bugs (Richard)
 x Sperre für oben im Game (Richard)
