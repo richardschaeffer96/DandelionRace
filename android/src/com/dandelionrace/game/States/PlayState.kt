@@ -23,6 +23,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
     //TUBE_COUNT: ANZAHL AN TUBES IM LEVEL
     private var counter: Int = 0
 
+    var inCheck: Boolean = false
     private val bird: Bird
     private val enemyBird: Bird
     private val bg: Texture
@@ -31,6 +32,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
     private val enemy = enemy
     private var bgStartOld: Float
     private var bgEndOld: Float
+    var enemyWon: Boolean = false
 
     var testBot: Texture
     var testTop: Texture
@@ -221,10 +223,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                         }
 
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            if (dataSnapshot.getValue().toString().toBoolean()==true) {
-                                println(dataSnapshot.getValue().toString().toBoolean())
-                                // TODO: Make Client switch to game over screen
-                            }
+                                enemyWon = dataSnapshot.getValue().toString().toBoolean()==true
+
                         }
                     })
 
@@ -245,189 +245,180 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
 
     override fun update(dt: Float) {
-        System.out.println("GHOST MODE IS: "+ isGhost)
-        if(effectOn){
-            if(System.currentTimeMillis()>startTime+5000){
-                effectOn=false
-                leavesOn=false
-                isGhost=false
-                bird.status="free"
-                bird.birdAnimation = Animations(TextureRegion(Texture("bugredanimation.png")), 2, 0.5f)
-                //TODO: @FELIX SEND to database that the effect of the enemy is over and you can use the standard texture again
+        if (!inCheck) {
+            if(effectOn){
+                if(System.currentTimeMillis()>startTime+5000){
+                    effectOn=false
+                    leavesOn=false
+                    isGhost=false
+                    bird.status="free"
+                    bird.birdAnimation = Animations(TextureRegion(Texture("bugredanimation.png")), 2, 0.5f)
+                    //TODO: @FELIX SEND to database that the effect of the enemy is over and you can use the standard texture again
+                }
             }
-        }
 
-        someTask(bird, obstacleHeight).execute()
-        handleInput()
-        bird.update(dt)
-        cam.position.set(bird.position.x + 80, cam.viewportHeight/2,0f)
+            someTask(bird, obstacleHeight).execute()
+            handleInput()
+            bird.update(dt)
+            cam.position.set(bird.position.x + 80, cam.viewportHeight/2,0f)
 
-        // Write a message to the database
-        myPosX.setValue(bird.position.x);
-        myPosY.setValue(bird.position.y);
+            // Write a message to the database
+            myPosX.setValue(bird.position.x);
+            myPosY.setValue(bird.position.y);
 
-        if(cam.position.x - (cam.viewportWidth/2) > tubes[counter].posTopTube.x + tubes[counter].topTube.width){
-            counter = counter.inc()
-            System.out.println("COUNTER:"+counter)
-        }
+            if(cam.position.x - (cam.viewportWidth/2) > tubes[counter].posTopTube.x + tubes[counter].topTube.width){
+                counter = counter.inc()
+                System.out.println("COUNTER:"+counter)
+            }
 
-        //System.out.println("Background ist zu Ende bei: " + bgEnd)
-        //System.out.println("Rechte Seite der Kamera ist bei: " + cam.position.x + (cam.viewportWidth/2))
+            //System.out.println("Background ist zu Ende bei: " + bgEnd)
+            //System.out.println("Rechte Seite der Kamera ist bei: " + cam.position.x + (cam.viewportWidth/2))
 
-        /*ZWEITERSCREEN
-        if(cam.position.x + (cam.viewportWidth/2) >= bgEnd) {
-            bgStart = bgEnd
-            bgEnd = bgStart + bg.width.toFloat()
-            nextBg = true
+            /*ZWEITERSCREEN
+            if(cam.position.x + (cam.viewportWidth/2) >= bgEnd) {
+                bgStart = bgEnd
+                bgEnd = bgStart + bg.width.toFloat()
+                nextBg = true
 
-            /*OLD
-            bgStart = bgEnd
-            bgEnd = bgStart + bg.width.toFloat()
-            nextBg = true
+                /*OLD
+                bgStart = bgEnd
+                bgEnd = bgStart + bg.width.toFloat()
+                nextBg = true
+                */
+                System.out.println("BACKGROUND ZU ENDE")
+            }
             */
-            System.out.println("BACKGROUND ZU ENDE")
-        }
-        */
 
-        if(cam.position.x - (cam.viewportWidth/2) > bgEndOld){
-            bgStartOld = bgEnd
-            bgEndOld = bgStartOld + dandelionrace.HEIGHT.toFloat() * 1.25f
-            System.out.println("ERSTER BACKGROUND WEG")
-        }
+            if(cam.position.x - (cam.viewportWidth/2) > bgEndOld){
+                bgStartOld = bgEnd
+                bgEndOld = bgStartOld + dandelionrace.HEIGHT.toFloat() * 1.25f
+                System.out.println("ERSTER BACKGROUND WEG")
+            }
 
-        if(cam.position.x - (cam.viewportWidth/2) > bgEnd){
-            bgStart = bgEndOld
-            bgEnd = bgStart + dandelionrace.HEIGHT.toFloat() * 1.25f
-            System.out.println("ZWEITER BACKGROUND WEG")
-        }
+            if(cam.position.x - (cam.viewportWidth/2) > bgEnd){
+                bgStart = bgEndOld
+                bgEnd = bgStart + dandelionrace.HEIGHT.toFloat() * 1.25f
+                System.out.println("ZWEITER BACKGROUND WEG")
+            }
 
 
-        if(isGhost==false) {
-            for (tube in tubes) {
-                if (tube.collides(bird.getBound())) {
+            if(isGhost==false) {
+                for (tube in tubes) {
+                    if (tube.collides(bird.getBound())) {
 
-                    bird.status = "free" //"trapped" ///"trapped"                                                     ////CHANGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-                    if (bird.position.y - 700 > tube.posBotTube.y) {
-                        bird.trappedTube = "top"
-                        obstacleHeight = tube.boundsTop.height
+                        bird.status = "free" //"trapped" ///"trapped"                                                     ////CHANGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+                        if (bird.position.y - 700 > tube.posBotTube.y) {
+                            bird.trappedTube = "top"
+                            obstacleHeight = tube.boundsTop.height
 
-                    } else {
-                        bird.trappedTube = "bot"
-                        obstacleHeight = tube.boundsBot.height
+                        } else {
+                            bird.trappedTube = "bot"
+                            obstacleHeight = tube.boundsBot.height
+                        }
                     }
                 }
             }
-        }
 
-        for(item in items){
+            for(item in items){
 
-            if(item.collides(bird.getBound())){
-                item.posItem.set(-100f,-100f)
-                item.bounds.set(-100f,-100f,0f,0f)
-                //TODO: SET THE EFFECTS
+                if(item.collides(bird.getBound())){
+                    item.posItem.set(-100f,-100f)
+                    item.bounds.set(-100f,-100f,0f,0f)
+                    //TODO: SET THE EFFECTS
 
-                myItem.setValue(item.effect)
+                    myItem.setValue(item.effect)
 
-                if(item.effect == "slow"){
-                    bird.status="SLOW"
-                    bird.birdAnimation = Animations(TextureRegion(Texture("bugblueanimation.png")), 2, 0.5f)
-                    startTime = System.currentTimeMillis()
-                    effectOn=true
-                }
-                if(item.effect == "speed"){
-                    bird.status="SPEED"
-                    bird.birdAnimation = Animations(TextureRegion(Texture("buggreenanimation.png")), 2, 0.5f)
-                    startTime = System.currentTimeMillis()
-                    effectOn=true
-                }
-                if(item.effect == "leaves"){
-
-                }
-                if(item.effect == "ghost"){
-                    isGhost=true
-                    bird.birdAnimation = Animations(TextureRegion(Texture("bugghostanimation.png")), 2, 0.5f)
-                    startTime = System.currentTimeMillis()
-                    effectOn=true
-                }
-                if(item.effect == "switch"){
-                    //no skin change, switch positions of player
-                    startTime = System.currentTimeMillis()
-                    effectOn=true
-
-                    //gets the enemys gamename for database
-                    var enemyArray = enemy.split(",")
-                    var onlyEnemy = ""
-                    for (e in enemyArray) {
-                        if (e != mymail) {
-                            onlyEnemy = e
-                        }
+                    if(item.effect == "slow"){
+                        bird.status="SLOW"
+                        bird.birdAnimation = Animations(TextureRegion(Texture("bugblueanimation.png")), 2, 0.5f)
+                        startTime = System.currentTimeMillis()
+                        effectOn=true
                     }
-                    database.getReference("playersInGame/"+game+"/"+onlyEnemy.replace(".","")+"/xxypos").setValue(bird.position.y)
-                    val enemyPosY = database.getReference("playersInGame/"+game+"/"+onlyEnemy.replace(".","")+"/posy")
-                    //Read ypos of enemy and set own pos to it
-                    enemyPosY.addListenerForSingleValueEvent(object: ValueEventListener {
-                        override fun onDataChange(dataSnapshotY: DataSnapshot) {
-                            val posY: Float = dataSnapshotY.getValue().toString().toFloat()
-                            bird.position.y = posY
+                    if(item.effect == "speed"){
+                        bird.status="SPEED"
+                        bird.birdAnimation = Animations(TextureRegion(Texture("buggreenanimation.png")), 2, 0.5f)
+                        startTime = System.currentTimeMillis()
+                        effectOn=true
+                    }
+                    if(item.effect == "leaves"){
+
+                    }
+                    if(item.effect == "ghost"){
+                        isGhost=true
+                        bird.birdAnimation = Animations(TextureRegion(Texture("bugghostanimation.png")), 2, 0.5f)
+                        startTime = System.currentTimeMillis()
+                        effectOn=true
+                    }
+                    if(item.effect == "switch"){
+                        //no skin change, switch positions of player
+                        startTime = System.currentTimeMillis()
+                        effectOn=true
+
+                        //gets the enemys gamename for database
+                        var enemyArray = enemy.split(",")
+                        var onlyEnemy = ""
+                        for (e in enemyArray) {
+                            if (e != mymail) {
+                                onlyEnemy = e
+                            }
                         }
+                        database.getReference("playersInGame/"+game+"/"+onlyEnemy.replace(".","")+"/xxypos").setValue(bird.position.y)
+                        val enemyPosY = database.getReference("playersInGame/"+game+"/"+onlyEnemy.replace(".","")+"/posy")
+                        //Read ypos of enemy and set own pos to it
+                        enemyPosY.addListenerForSingleValueEvent(object: ValueEventListener {
+                            override fun onDataChange(dataSnapshotY: DataSnapshot) {
+                                val posY: Float = dataSnapshotY.getValue().toString().toFloat()
+                                bird.position.y = posY
+                            }
 
-                        override fun onCancelled(error: DatabaseError) {
-                        }
-                    })
-                    val enemyReadPos = database.getReference("playersInGame/"+game+"/"+onlyEnemy.replace(".","")+"/xxReadPos")
-                    enemyReadPos.setValue("true")
+                            override fun onCancelled(error: DatabaseError) {
+                            }
+                        })
+                        val enemyReadPos = database.getReference("playersInGame/"+game+"/"+onlyEnemy.replace(".","")+"/xxReadPos")
+                        enemyReadPos.setValue("true")
 
-                }
+                    }
 
-            }
-        }
-
-
-        /* !!! CODE FOR REPOSITION OF TUBES FOR DYNAMIC LEVEL !!!
-        for(tube in tubes){
-           // if(cam.position.x - (cam.viewportWidth/2) > tube.posTopTube.x + tube.topTube.width)
-                tube.reposition(tube.posTopTube.x + ((Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT))
-            if(tube.collides(bird.getBound()))
-               // gsm.set(PlayState(gsm))
-                gsm.set(MenuState(gsm))
-        }
-        */
-        cam.update()
-
-        if(counter==tubes.size){
-            //TODO: SET WINNER AND LOOSER
-            myFinish.setValue(true)
-            gsm.set(WinGame(gsm, false))
-            dispose();
-
-            var onlyEnemy = ""
-            for (e in enemy.split(",")) {
-                if (e != mymail) {
-                    onlyEnemy = e
                 }
             }
-            val  enemyFinish = database.getReference("playersInGame/"+game+"/"+onlyEnemy.replace(".","")+"/xxzfinish")
 
-            enemyFinish.addListenerForSingleValueEvent(object: ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if(dataSnapshot.getValue().toString().toBoolean()){
-                        println("YOU LOST")
-                        //gsm.set(WinGame(gsm, false))
-                        //dispose();
-                    }else{
-                        println("YOU WON")
-                        //myFinish.setValue(true)
-                        //gsm.set(WinGame(gsm, true))
-                        //dispose();
-                    }
-                    println(dataSnapshot.getValue().toString())
+
+            /* !!! CODE FOR REPOSITION OF TUBES FOR DYNAMIC LEVEL !!!
+            for(tube in tubes){
+               // if(cam.position.x - (cam.viewportWidth/2) > tube.posTopTube.x + tube.topTube.width)
+                    tube.reposition(tube.posTopTube.x + ((Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT))
+                if(tube.collides(bird.getBound()))
+                   // gsm.set(PlayState(gsm))
+                    gsm.set(MenuState(gsm))
+            }
+            */
+            cam.update()
+
+            if(counter==tubes.size){
+                //TODO: SET WINNER AND LOOSER
+                /*
+                myFinish.setValue(true)
+                gsm.set(WinGame(gsm, false))
+                dispose();
+                */
+
+                if(enemyWon){
+                    //myFinish.setValue(true)
+                    println("YOU LOST")
+                    gsm.set(WinGame(gsm, false))
+                    dispose();
+                }else{
+                    println("YOU WON")
+                    myFinish.setValue(true)
+                    gsm.set(WinGame(gsm, true))
+                    dispose();
                 }
 
-                override fun onCancelled(error: DatabaseError) {
-                }
-            })
 
 
+            } else if (counter < tubes.size) {
+
+            }
         }
     }
 
