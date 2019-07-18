@@ -29,6 +29,7 @@ class EntryHallActivity : AppCompatActivity() {
     val gamenameforlabel = ""
     //to change Button-Text when Player is ready
     var ready: Boolean = false
+    lateinit var readyButton: ImageView
     var allPlayersReady: Boolean = false
     lateinit var thisgame: DandelionGame
 
@@ -51,6 +52,9 @@ class EntryHallActivity : AppCompatActivity() {
         setContentView(R.layout.activity_entry_hall)
         game = intent.getStringExtra("game")
         val playerList = database.getReference("playersInGame/"+game)
+
+        readyButton = ImageView(this)
+        readyButton = this.findViewById(R.id.readybutton)
 
         //get the game i joint
         val gameDatabase = database.getReference("games/" + game)
@@ -211,10 +215,12 @@ class EntryHallActivity : AppCompatActivity() {
         val newGame = database.getReference(path)
         if (ready) {
             newGame.setValue("false")
+            readyButton.setImageDrawable(resources.getDrawable(R.drawable.leave))
             ready = false
         } else {
             newGame.setValue("true")
             ready = true
+            readyButton.setImageDrawable(resources.getDrawable(R.drawable.ready))
         }
 
     }
