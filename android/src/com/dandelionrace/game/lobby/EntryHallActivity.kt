@@ -17,8 +17,10 @@ import com.dandelionrace.game.sprites.Item
 import com.dandelionrace.game.sprites.Tube
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.database.snapshot.Index
 import kotlinx.android.synthetic.main.activity_entry_hall.*
 import java.lang.Exception
+import java.lang.IndexOutOfBoundsException
 
 class EntryHallActivity : AppCompatActivity() {
     val database = FirebaseDatabase.getInstance()
@@ -159,6 +161,7 @@ class EntryHallActivity : AppCompatActivity() {
                 players.clear()
                 var ready = 0
                 var newPlayers = arrayListOf<PlayerOnServer>()
+                var incorrectPlayer: Boolean = false
                 for (child in dataSnapshot.children) {
                     val snap = child as DataSnapshot
                     val s = snap.children
@@ -168,12 +171,19 @@ class EntryHallActivity : AppCompatActivity() {
                     }
                     //creates a new Playerobject and checks if player is already listed
                     //TODO: remove player when player leaves
+                    val p: PlayerOnServer
 
-                    val p = PlayerOnServer(list[2], list[1], list[0])
+                    try {
+                        p = PlayerOnServer(list[2], list[1], list[0])
                         p.posx = list[3].toFloat()
                         p.posy = list[4].toFloat()
                         p.ready = list[5].toBoolean()
                         players.add(p)
+                    } catch (e: IndexOutOfBoundsException) {
+                        incorrectPlayer = true
+                    }
+
+
 
 
 
@@ -192,6 +202,10 @@ class EntryHallActivity : AppCompatActivity() {
                 if (r) {
                     allPlayersReady = true
                 } else {
+                    allPlayersReady = false
+                }
+
+                if (incorrectPlayer) {
                     allPlayersReady = false
                 }
                 //check if client is host of session and can start game
