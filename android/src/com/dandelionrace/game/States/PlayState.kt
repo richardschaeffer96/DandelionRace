@@ -37,6 +37,9 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
     private var bgStartOld: Float
     private var bgEndOld: Float
 
+    var testBot: Texture
+    var testTop: Texture
+
     private var bgStart: Float
     private var bgEnd: Float
 
@@ -55,6 +58,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
     val leavesObstacle: Texture
     var leavesOn: Boolean = false
     var isGhost: Boolean = false
+
+    var obstacleHeight: Float = 0f
 
     //val newBatch: SpriteBatch
 
@@ -93,6 +98,9 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         leavesObstacle = Texture("leavesobstacle.png")
 
         //newBatch = SpriteBatch()
+
+        testBot = Texture("badlogic.jpg")
+        testTop = Texture("badlogic.jpg")
 
         myPosX = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/posx")
         myPosY = database.getReference("playersInGame/"+game+"/"+mymail.replace(".","")+"/posy")
@@ -242,7 +250,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
 
     override fun update(dt: Float) {
-
+        System.out.println("GHOST MODE IS: "+ isGhost)
         if(effectOn){
             if(System.currentTimeMillis()>startTime+5000){
                 effectOn=false
@@ -254,7 +262,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             }
         }
 
-        someTask(bird).execute()
+        someTask(bird, obstacleHeight).execute()
         handleInput()
         bird.update(dt)
         cam.position.set(bird.position.x + 80, cam.viewportHeight/2,0f)
@@ -302,12 +310,15 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         if(isGhost==false) {
             for (tube in tubes) {
                 if (tube.collides(bird.getBound())) {
-                    bird.status = "free" ///"trapped"                                                     ////CHANGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+
+                    bird.status = "trapped" ///"trapped"                                                     ////CHANGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
                     if (bird.position.y - 700 > tube.posBotTube.y) {
                         bird.trappedTube = "top"
+                        obstacleHeight = tube.boundsTop.height
 
                     } else {
                         bird.trappedTube = "bot"
+                        obstacleHeight = tube.boundsBot.height
                     }
                 }
             }
@@ -338,7 +349,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
                 }
                 if(item.effect == "ghost"){
-                    isGhost==true
+                    isGhost=true
                     bird.birdAnimation = Animations(TextureRegion(Texture("bugghostanimation.png")), 2, 0.5f)
                     startTime = System.currentTimeMillis()
                     effectOn=true
@@ -412,7 +423,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         for(tube in tubes) {
             sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
             sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
-
+            //sb.draw(testBot, tube.boundsBot.x, tube.boundsBot.y, tube.boundsBot.width, tube.boundsBot.height)
+            //sb.draw(testTop, tube.boundsTop.x, tube.boundsTop.y, tube.boundsTop.width, tube.boundsTop.height)
         }
 
         for(item in items){
@@ -433,6 +445,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             sb.draw(leavesObstacle, cam.position.x-500f, cam.position.y-500f)
         }
 
+
+
         sb.end()
     }
 
@@ -440,13 +454,14 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
     }
 
-    class someTask(bird: Bird) : AsyncTask<Void, Void, String>(){
+    class someTask(bird: Bird, obstacleH: Float) : AsyncTask<Void, Void, String>(){
 
         val new_bird: Bird
+        var obstacleHeight: Float
 
         init {
             new_bird = bird
-
+            obstacleHeight = obstacleH
         }
 
         override fun doInBackground(vararg params: Void?): String? {
@@ -463,12 +478,18 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                     System.out.println("SHAKE DETECTED")
                     new_bird.status = "free"
                     if(new_bird.trappedTube == "bot"){
-                        new_bird.position = Vector3(new_bird.position.x, new_bird.position.y + 200, 0f)
-                        new_bird.trappedTube = ""
+                        //TODO: WENN BUG IN EINEM BUSCH GEFANGEN IST
+                        //new_bird.position = Vector3(new_bird.position.x, obstacleHeight - -50, 0f)
+                        //new_bird.position = Vector3(new_bird.position.x, new_bird.position.y + 200, 0f)
+                        //new_bird.trappedTube = ""
+                        new_bird.bushjump()
                         new_bird.jump()
                     } else {
-                        new_bird.position = Vector3(new_bird.position.x, new_bird.position.y - 400f, 0f)
-                        new_bird.trappedTube = ""
+                        //TODO: WENN BUG IN EINEM SPINNENNETZ GEFANGEN IST
+                        //new_bird.position = Vector3(new_bird.position.x, new_bird.position.y - 400f, 0f)
+                        //new_bird.position = Vector3(new_bird.position.x, new_bird.position.y - 400f, 0f)
+                        //new_bird.trappedTube = ""
+                        new_bird.invertjump()
                     }
 
                 }

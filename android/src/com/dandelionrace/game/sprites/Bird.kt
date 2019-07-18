@@ -31,7 +31,7 @@ class Bird(x: Int, y: Int, player: Int) {
             bird = Texture("bugyellowanimation.png")
             birdAnimation = Animations(TextureRegion(bird), 2, 0.5f)
         }
-        bound = Rectangle(x.toFloat(), y.toFloat(), bird.width.toFloat(), bird.height.toFloat())
+        bound = Rectangle(x.toFloat(), y.toFloat(), bird.width.toFloat()-200, bird.height.toFloat())
     }
 
     fun update(dt: Float) {
@@ -91,6 +91,19 @@ class Bird(x: Int, y: Int, player: Int) {
         if (status=="free"||status=="SLOW"||status=="SPEED")
             velocity.y = 800f;
     }
+
+    fun bushjump(){
+        if (status=="free"||status=="SLOW"||status=="SPEED")
+            velocity.y = 800f;
+            position.x += 10
+            position.y += 50
+    }
+
+    fun invertjump(){
+        if (status=="free"||status=="SLOW"||status=="SPEED")
+            velocity.y = -800f;
+    }
+
     fun getBound():Rectangle{
         return bound
     }
