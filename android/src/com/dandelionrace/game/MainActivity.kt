@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.TextView
 import com.dandelionrace.game.lobby.lobbyActivity
 import com.google.firebase.auth.FirebaseAuth
+import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
@@ -48,5 +49,10 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this@MainActivity, HowTo::class.java)
         startActivity(intent)
     }
-
+    //When back key is pressed close app
+    override fun onBackPressed (){
+        //super.onBackPressed()
+        moveTaskToBack(true);
+        exitProcess(-1)
+    }
 }

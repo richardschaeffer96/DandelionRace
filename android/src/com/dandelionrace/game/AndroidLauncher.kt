@@ -72,7 +72,7 @@ class AndroidLauncher : AndroidApplication() {
     companion object {
         var isSingle: Boolean = false
     }
-    //When back key is pressed return to lobby and unregister from game
+    //When back key is pressed return to mainscreen
     override fun onBackPressed (){
         //super.onBackPressed()
         val intent = Intent(this, LoginActivity::class.java)
