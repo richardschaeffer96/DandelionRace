@@ -20,9 +20,9 @@ class WinGame(gsm: GameStateManager, winner: Boolean) : State(gsm) {
 
     init {
         if (winner){
-            win = Texture("win.jpg")
+            win = Texture("winscreen.jpg")
         }else{
-            win = Texture("win.jpg")
+            win = Texture("lostscreen.jpg")
         }
         bird = Bird(100,500, 0)
         app_height = Gdx.app.graphics.height.toFloat()
