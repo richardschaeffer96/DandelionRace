@@ -21,7 +21,6 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
     private val TUBE_SPACING: Float = 125f
     //TUBE_COUNT: ANZAHL AN TUBES IM LEVEL
-    private val TUBE_COUNT: Int = 100
     private var counter: Int = 0
 
     private val bird: Bird
@@ -307,7 +306,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             for (tube in tubes) {
                 if (tube.collides(bird.getBound())) {
 
-                    bird.status = "trapped" ///"trapped"                                                     ////CHANGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+                    bird.status = "free" //"trapped" ///"trapped"                                                     ////CHANGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
                     if (bird.position.y - 700 > tube.posBotTube.y) {
                         bird.trappedTube = "top"
                         obstacleHeight = tube.boundsTop.height
@@ -397,6 +396,9 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
         if(counter==tubes.size){
             //TODO: SET WINNER AND LOOSER
+            myFinish.setValue(true)
+            gsm.set(WinGame(gsm, false))
+            dispose();
 
             var onlyEnemy = ""
             for (e in enemy.split(",")) {
@@ -404,18 +406,21 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                     onlyEnemy = e
                 }
             }
-
             val  enemyFinish = database.getReference("playersInGame/"+game+"/"+onlyEnemy.replace(".","")+"/xxzfinish")
+
             enemyFinish.addListenerForSingleValueEvent(object: ValueEventListener {
-                override fun onDataChange(dataSnapshotY: DataSnapshot) {
-                    if(dataSnapshotY.getValue().toString().toBoolean()){
-                        gsm.set(WinGame(gsm, false))
-                        dispose();
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if(dataSnapshot.getValue().toString().toBoolean()){
+                        println("YOU LOST")
+                        //gsm.set(WinGame(gsm, false))
+                        //dispose();
                     }else{
-                        myFinish.setValue(true)
-                        gsm.set(WinGame(gsm, true))
-                        dispose();
+                        println("YOU WON")
+                        //myFinish.setValue(true)
+                        //gsm.set(WinGame(gsm, true))
+                        //dispose();
                     }
+                    println(dataSnapshot.getValue().toString())
                 }
 
                 override fun onCancelled(error: DatabaseError) {

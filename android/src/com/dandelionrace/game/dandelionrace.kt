@@ -66,6 +66,9 @@ class dandelionrace(mContext: Context, tubeString: String, itemString: String, g
         }
         println("DR: "+ enemy)
 
+        finalTubes = ArrayList<GameTubes>()
+        finalTubes.add(GameTubes(20f,20f,20f,20f))
+
         gsm!!.push(PlayState(gsm, finalTubes, finalItems, gameName, enemy))
 
     }
