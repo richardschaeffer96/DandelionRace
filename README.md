@@ -20,7 +20,6 @@ o Animationen nach Items setzen beim Gegner (Felix)
 
 o Spielende setzen mit Gewinner und Verlierer (Felix)
 
-o Listener auf offiziellen Back-Button (???)
 
 
 done
@@ -37,6 +36,7 @@ x Sperre für oben im Game (Richard)
 x Feedback beim Ready Button (Richard) -Passt jetzt-
 x Begrenzung auf 2 Player pro Spiel (Basti)
 x Lobby Zurück Button (Felix) (Richard: Erledigt)
+x Listener auf offiziellen Back-Button (Basti)
 
 
 this is our fantastic Dandelion Race App!!
