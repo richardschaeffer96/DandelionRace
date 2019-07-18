@@ -99,7 +99,7 @@ class lobbyActivity : AppCompatActivity() {
 //        })
     }
 
-    fun registratePlayerInGame(gamename: String, nameForPlayerDatabase: String, myname: String, mymail: String, increment: Boolean) {
+    fun registratePlayerInGame(gamename: String, nameForPlayerDatabase: String, myname: String, mymail: String) {
         val newplayerpath = "playersInGame/"+ gamename+"/" + nameForPlayerDatabase
         val newplayerRef = database.getReference(newplayerpath)
 
@@ -137,7 +137,7 @@ class lobbyActivity : AppCompatActivity() {
         newGame.setValue(g)
         findViewById<EditText>(R.id.editText).setText("")
 
-        registratePlayerInGame(n, nameForPlayerDatabase!!, name!!, mail!!, false)
+        registratePlayerInGame(n, nameForPlayerDatabase!!, name!!, mail!!)
     }
 
 }
