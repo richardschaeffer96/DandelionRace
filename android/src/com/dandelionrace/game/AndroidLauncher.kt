@@ -1,5 +1,6 @@
 package com.dandelionrace.game
 
+import android.content.Intent
 import android.os.Bundle
 
 import com.badlogic.gdx.backends.android.AndroidApplication
@@ -73,8 +74,9 @@ class AndroidLauncher : AndroidApplication() {
     }
     //When back key is pressed return to lobby and unregister from game
     override fun onBackPressed (){
-        super.onBackPressed()
-        println("----------------------- BACK PRESSED  ----------------------")
+        //super.onBackPressed()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 
 }
