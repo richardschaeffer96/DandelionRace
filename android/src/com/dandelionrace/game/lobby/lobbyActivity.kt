@@ -48,7 +48,9 @@ class lobbyActivity : AppCompatActivity() {
                     }
                     val o = DandelionGame(list[2],list[6],list[5],list[4].toBoolean(), list[1], false, list[7])
                     o.numberOfPlayers = list[3].toInt()
-                    games.add(o)
+                    if (o.numberOfPlayers < 2) {
+                        games.add(o)
+                    }
                 }
 
                 adapter.notifyDataSetChanged()
@@ -97,7 +99,7 @@ class lobbyActivity : AppCompatActivity() {
 //        })
     }
 
-    fun registratePlayerInGame(gamename: String, nameForPlayerDatabase: String, myname: String, mymail: String) {
+    fun registratePlayerInGame(gamename: String, nameForPlayerDatabase: String, myname: String, mymail: String, increment: Boolean) {
         val newplayerpath = "playersInGame/"+ gamename+"/" + nameForPlayerDatabase
         val newplayerRef = database.getReference(newplayerpath)
 
@@ -109,6 +111,7 @@ class lobbyActivity : AppCompatActivity() {
         val intent = Intent(this@lobbyActivity, EntryHallActivity::class.java)
         intent.putExtra("game", gamename);
         intent.putExtra("nameForPlayerDatabase", nameForPlayerDatabase)
+
         startActivity(intent)
     }
 
@@ -129,11 +132,12 @@ class lobbyActivity : AppCompatActivity() {
         val path = "games/" + n
         val newGame = database.getReference(path)
         val g = DandelionGame(n,"0",""+mail,true, ""+name, false, "0")
+        g.numberOfPlayers = 1
         val nameForPlayerDatabase = createPlayerNameForDatabase(mail!!)
         newGame.setValue(g)
         findViewById<EditText>(R.id.editText).setText("")
 
-        registratePlayerInGame(n, nameForPlayerDatabase!!, name!!, mail!!)
+        registratePlayerInGame(n, nameForPlayerDatabase!!, name!!, mail!!, false)
     }
 
 }
