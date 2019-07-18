@@ -478,14 +478,12 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                     System.out.println("SHAKE DETECTED")
                     new_bird.status = "free"
                     if(new_bird.trappedTube == "bot"){
-                        //TODO: WENN BUG IN EINEM BUSCH GEFANGEN IST
                         //new_bird.position = Vector3(new_bird.position.x, obstacleHeight - -50, 0f)
                         //new_bird.position = Vector3(new_bird.position.x, new_bird.position.y + 200, 0f)
                         //new_bird.trappedTube = ""
                         new_bird.bushjump()
                         new_bird.jump()
                     } else {
-                        //TODO: WENN BUG IN EINEM SPINNENNETZ GEFANGEN IST
                         //new_bird.position = Vector3(new_bird.position.x, new_bird.position.y - 400f, 0f)
                         //new_bird.position = Vector3(new_bird.position.x, new_bird.position.y - 400f, 0f)
                         //new_bird.trappedTube = ""
