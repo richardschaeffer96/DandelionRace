@@ -9,12 +9,13 @@
 
     <ListView
         android:id="@+id/playersInGame"
-        android:layout_width="387dp"
+        android:layout_width="match_parent"
         android:layout_height="419dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="8dp"
+        android:fontFamily="@font/advancedpixel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,8 +42,8 @@
 
     <TextView
         android:id="@+id/gamename"
-        android:layout_width="47dp"
-        android:layout_height="63dp"
+        android:layout_width="281dp"
+        android:layout_height="62dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -53,6 +54,7 @@
         app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/advancedpixel"
         app:layout_constraintVertical_bias="0.038" />
 
     <ImageView

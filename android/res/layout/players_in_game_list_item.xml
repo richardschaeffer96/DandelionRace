@@ -16,8 +16,9 @@
         android:id="@+id/playerInGameName"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:fontFamily="@font/advancedpixel"
         android:padding="10dip"
-        android:textSize="16dip"
+        android:textSize="32dip"
         android:textStyle="bold" >
 
     </TextView>
@@ -25,8 +26,9 @@
         android:id="@+id/playerInGameReady"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
+        android:fontFamily="@font/advancedpixel"
         android:layout_gravity="right"
-        android:textSize="16dip"
+        android:textSize="32dip"
         android:textStyle="bold" >
 
     </TextView>

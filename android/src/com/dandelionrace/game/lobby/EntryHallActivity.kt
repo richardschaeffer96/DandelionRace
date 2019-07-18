@@ -149,14 +149,16 @@ class EntryHallActivity : AppCompatActivity() {
         })
 
 
+
         val adapter = PlayerInGameAdapter(this, players)
-        val playersInGame = findViewById<ListView>(R.id.playersInGame)
-        playersInGame.setAdapter(adapter)
+
 
         //Laedt aktuelle Spieler des Spiels vom Server und legt Spieler-objekte an
         playerList.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                players.clear()
                 var ready = 0
+                var newPlayers = arrayListOf<PlayerOnServer>()
                 for (child in dataSnapshot.children) {
                     val snap = child as DataSnapshot
                     val s = snap.children
@@ -166,18 +168,19 @@ class EntryHallActivity : AppCompatActivity() {
                     }
                     //creates a new Playerobject and checks if player is already listed
                     //TODO: remove player when player leaves
-                    var newPlayers = arrayListOf<PlayerOnServer>()
+
                     val p = PlayerOnServer(list[2], list[1], list[0])
                         p.posx = list[3].toFloat()
                         p.posy = list[4].toFloat()
                         p.ready = list[5].toBoolean()
-                        newPlayers.add(p)
+                        players.add(p)
 
 
-                    players = newPlayers;
+
                 }
-
                 adapter.notifyDataSetChanged()
+                val playersInGame = findViewById<ListView>(R.id.playersInGame)
+                playersInGame.setAdapter(adapter)
 
                 //check if every player is ready
                 var r = true
