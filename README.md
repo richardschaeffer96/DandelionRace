@@ -4,7 +4,7 @@ To do's:
 
 open
 ----
-o Lobby Zurück Button (Felix) (Richard: Erledigt)
+o Lobby Zurück Button (Felix) (Richard: Erledigt)\n
 o Extra Button für Game Over Screen -> LoginActivity (Richard: Erledigt)
 o Collision Box Bugs (Richard)
 o Musik (Amena)
