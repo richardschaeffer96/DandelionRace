@@ -174,8 +174,6 @@ class EntryHallActivity : AppCompatActivity() {
 
 
                 }
-                println("##########################################################################")
-                println(players[0].ready)
                 adapter.notifyDataSetChanged()
                 val playersInGame = findViewById<ListView>(R.id.playersInGame)
                 playersInGame.setAdapter(adapter)
