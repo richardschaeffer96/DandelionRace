@@ -27,6 +27,7 @@ class dandelionrace(mContext: Context, tubeString: String, itemString: String, g
 
     override fun create() {
 
+
         batch = SpriteBatch()
         gsm = GameStateManager()
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
@@ -86,4 +87,6 @@ class dandelionrace(mContext: Context, tubeString: String, itemString: String, g
         val SCALE = 0.5f
         val TITLE = "Dandelion Race"
     }
+
+
 }

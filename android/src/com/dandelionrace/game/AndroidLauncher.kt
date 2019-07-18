@@ -71,4 +71,10 @@ class AndroidLauncher : AndroidApplication() {
     companion object {
         var isSingle: Boolean = false
     }
+    //When back key is pressed return to lobby and unregister from game
+    override fun onBackPressed (){
+        super.onBackPressed()
+        println("----------------------- BACK PRESSED  ----------------------")
+    }
+
 }

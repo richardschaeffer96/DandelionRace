@@ -48,7 +48,7 @@ class lobbyActivity : AppCompatActivity() {
                     }
                     val o = DandelionGame(list[2],list[6],list[5],list[4].toBoolean(), list[1], false, list[7])
                     o.numberOfPlayers = list[3].toInt()
-                    if (o.numberOfPlayers < 2) {
+                    if (o.numberOfPlayers == 1 ) {
                         games.add(o)
                     }
                 }
