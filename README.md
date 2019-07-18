@@ -1,12 +1,5 @@
 # DandelionRace
 
-To do's:
-<<<<<<< HEAD
-o Lobby Zurück Button (Felix) (Richard: Erledigt. back.jpg für backbutton nutzen)
-o Entry Hall Spielerliste mit Design (Basti)
-o Extra Button für Game Over Screen -> LoginActivity (Richard: Erledigt. winscreen.jpg und lostscreen.png einfügen. Und back.jpg für den back button.)
-=======
-
 open
 ----
 
@@ -19,6 +12,10 @@ o Playstore (Amena)
 o Animationen nach Items setzen beim Gegner (Felix)
 
 o Spielende setzen mit Gewinner und Verlierer (Felix)
+
+o Extra Button für Game Over Screen -> LoginActivity (Richard: Erledigt. winscreen.jpg und lostscreen.png einfügen. Und back.jpg für den back button.)
+
+o Lobby Zurück Button (Felix) (Richard: Erledigt. back.jpg für backbutton nutzen)
 
 
 
