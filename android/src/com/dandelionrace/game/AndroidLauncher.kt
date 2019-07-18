@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.dandelionrace.game.sprites.GameTubes
 import com.dandelionrace.game.sprites.Item
 import com.dandelionrace.game.sprites.Tube
+import kotlin.streams.asSequence
 
 class AndroidLauncher : AndroidApplication() {
 
@@ -55,7 +56,9 @@ class AndroidLauncher : AndroidApplication() {
                 }
             }
 
-            initialize(dandelionrace(context, tubeString, itemString, "single", "null"), config)
+
+            val str = getRandomString(20)
+            initialize(dandelionrace(context, tubeString, itemString, "single" + str, "null"), config)
         }
 
 
@@ -77,6 +80,13 @@ class AndroidLauncher : AndroidApplication() {
         //super.onBackPressed()
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
+    }
+
+    fun getRandomString(length: Int) : String {
+        val allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz"
+        return (1..length)
+                .map { allowedChars.random() }
+                .joinToString("")
     }
 
 }
