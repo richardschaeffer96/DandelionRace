@@ -2,11 +2,10 @@ package com.dandelionrace.game
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.DisplayMetrics
 
 import com.badlogic.gdx.backends.android.AndroidApplication
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
-import com.badlogic.gdx.graphics.Texture
-import com.dandelionrace.game.sprites.GameTubes
 import com.dandelionrace.game.sprites.Item
 import com.dandelionrace.game.sprites.Tube
 import kotlin.streams.asSequence
@@ -27,6 +26,13 @@ class AndroidLauncher : AndroidApplication() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val config = AndroidApplicationConfiguration()
+
+        // get device dimensions
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+
+        var screenWidth = displayMetrics.widthPixels
+        var screenHeight = displayMetrics.heightPixels
 
         isSingle = intent.getBooleanExtra("single", false);
 
@@ -58,7 +64,8 @@ class AndroidLauncher : AndroidApplication() {
 
 
             val str = getRandomString(20)
-            initialize(dandelionrace(context, tubeString, itemString, "single" + str, "null"), config)
+            initialize(dandelionrace(context, tubeString, itemString, "single" + str, "null", screenWidth, screenHeight), config)
+
         }
 
 
@@ -68,7 +75,7 @@ class AndroidLauncher : AndroidApplication() {
             var gameName = intent.getStringExtra("game")
             var enemy = intent.getStringExtra("enemy")
             println("AL: "+ enemy)
-            initialize(dandelionrace(context, tubeString, itemString, gameName, enemy), config)
+            initialize(dandelionrace(context, tubeString, itemString, gameName, enemy, screenWidth, screenHeight), config)
         }
     }
 

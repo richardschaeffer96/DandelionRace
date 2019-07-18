@@ -4,18 +4,15 @@ import android.content.Context
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.dandelionrace.game.States.GameStateManager
-import com.dandelionrace.game.States.MenuState
 import com.dandelionrace.game.States.PlayState
 import com.dandelionrace.game.sprites.GameItems
 import com.dandelionrace.game.sprites.GameTubes
 import com.google.firebase.database.FirebaseDatabase
-import com.dandelionrace.game.sprites.Item
 
 
-class dandelionrace(mContext: Context, tubeString: String, itemString: String, gameName: String, enemy: String) : ApplicationAdapter() {
+class dandelionrace(mContext: Context, tubeString: String, itemString: String, gameName: String, enemy: String, screenWidth: Int, screenHeight: Int) : ApplicationAdapter() {
     internal lateinit var gsm: GameStateManager
     internal lateinit var batch: SpriteBatch
     val game_Context: Context = mContext
@@ -24,10 +21,14 @@ class dandelionrace(mContext: Context, tubeString: String, itemString: String, g
     val gameName = gameName
     val enemy = enemy
     val database = FirebaseDatabase.getInstance()
+    val screenWidth: Int = screenWidth
+    val screenHeight: Int = screenHeight
 
     override fun create() {
 
-
+        // TODO: Check why screensize is buggy
+        //WIDTH = screenWidth
+        //HEIGHT = screenHeight
         batch = SpriteBatch()
         gsm = GameStateManager()
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
@@ -81,9 +82,10 @@ class dandelionrace(mContext: Context, tubeString: String, itemString: String, g
 
     companion object {
         lateinit var batch: SpriteBatch
+
         //TO-DO: Get screen sizes of device!!!
-        val WIDTH =  1080  //480;
-        val HEIGHT = 2240
+        var WIDTH: Int = 1080  //480;
+        var HEIGHT = 2240
         val SCALE = 0.5f
         val TITLE = "Dandelion Race"
     }

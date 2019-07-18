@@ -2,23 +2,19 @@ package com.dandelionrace.game.States
 
 import android.hardware.SensorManager.GRAVITY_EARTH
 import android.os.AsyncTask
-import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.dandelionrace.game.AndroidLauncher
 import com.dandelionrace.game.dandelionrace
 import com.dandelionrace.game.sprites.Bird
 import com.dandelionrace.game.sprites.GameItems
 import com.dandelionrace.game.sprites.GameTubes
-import com.dandelionrace.game.sprites.Tube
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.dandelionrace.game.sprites.*
-import java.util.*
 import kotlin.collections.ArrayList
 
 class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalitems: ArrayList<GameItems>, gameName: String, enemy: String) : State(gsm) {
@@ -92,6 +88,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
         bgStart = bgEndOld -400f
         bgEnd = bgStart + dandelionrace.HEIGHT.toFloat() * 1.25f
+
+        println("DANDELIONRACE HEIGHT: "+ dandelionrace.HEIGHT + " | "+ dandelionrace.WIDTH)
 
         startTime = System.currentTimeMillis();
 
@@ -227,8 +225,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             if (dataSnapshot.getValue().toString().toBoolean()==true) {
-                                print(dataSnapshot.getValue().toString().toBoolean())
-                                // TODO: Make Client change to game over screen
+                                println(dataSnapshot.getValue().toString().toBoolean())
+                                // TODO: Make Client switch to game over screen
                             }
                         }
                     })
