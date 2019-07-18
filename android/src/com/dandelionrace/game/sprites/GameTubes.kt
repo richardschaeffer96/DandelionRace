@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.dandelionrace.game.States.WinGame
+import org.w3c.dom.Text
 
 import java.util.Random
 
@@ -18,12 +19,14 @@ class GameTubes(posTopTubeX: Float, posTopTubeY: Float,posBotTubeX: Float, posBo
     val boundsBot: Rectangle
     var topTube: Texture
     var bottomTube: Texture
+
     private val rand: Random
 
 
     init {
         topTube = Texture("weblong.png")
         bottomTube = Texture("busch.png")
+
 
         rand = Random()
 
