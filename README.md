@@ -3,24 +3,17 @@
 open
 ----
 
-o Extra Button für Game Over Screen -> LoginActivity (Richard: Erledigt)
-
 o Musik (Amena)
 
 o Playstore (Amena)
 
 o Animationen nach Items setzen beim Gegner (Felix)
 
-o Spielende setzen mit Gewinner und Verlierer (Felix)
-
-o Extra Button für Game Over Screen -> LoginActivity (Richard: Erledigt. winscreen.jpg und lostscreen.png einfügen. Und back.jpg für den back button.)
-
-
-
-
-
 done
 -----
+x Spielende setzen mit Gewinner und Verlierer (Felix, Basti)
+x Extra Button für Game Over Screen -> LoginActivity (Richard: Erledigt. winscreen.jpg und lostscreen.png einfügen. Und back.jpg für den back button.) (Felix, Richard
+x Extra Button für Game Over Screen -> LoginActivity (Felix, Richard)
 x Entry Hall Spielerliste mit Design (Basti)
 x Single Player (Richard)
 x Instructions (Richard)
