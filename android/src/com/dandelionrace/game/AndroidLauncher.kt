@@ -1,6 +1,7 @@
 package com.dandelionrace.game
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.DisplayMetrics
 
@@ -22,8 +23,16 @@ class AndroidLauncher : AndroidApplication() {
     lateinit var tubeArrayList: ArrayList<Tube>
     lateinit var itemArrayList: ArrayList<Item>
     private val itemCount: Int = 8
+    lateinit var mp:MediaPlayer
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        mp = MediaPlayer.create(this,R.raw.rainbow_forest)
+        mp.isLooping = true
+        mp.setVolume(0.3f,0.3f)
+        mp.start()
+
         super.onCreate(savedInstanceState)
         val config = AndroidApplicationConfiguration()
 
@@ -33,7 +42,7 @@ class AndroidLauncher : AndroidApplication() {
 
         var screenWidth = displayMetrics.widthPixels
         var screenHeight = displayMetrics.heightPixels
-
+        
         isSingle = intent.getBooleanExtra("single", false);
 
         if(isSingle){

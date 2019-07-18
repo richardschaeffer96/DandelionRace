@@ -16,8 +16,10 @@ class Bird(x: Int, y: Int, player: Int) {
     lateinit var birdAnimation: Animations
     val bird: Texture
     var maxY: Float
+    var move: Int = 100
 
     init {
+
         //TODO: MAKE MAXY TO MAX Y VALUE OF THE SCREEN! AUTOMATICALLY!
         maxY = 1900f
         status = "free"
@@ -40,7 +42,7 @@ class Bird(x: Int, y: Int, player: Int) {
             if (position.y > 0 && position.y < maxY)
                 velocity.add(0f, GRAVITY.toFloat(), 0f)
             velocity.scl(dt)
-            position.add(MOVEMENT * dt, velocity.y, 0f)
+            position.add(move * dt, velocity.y, 0f)
             if (position.y < 0)
                 position.y = 0f
             if (position.y >= maxY){
@@ -49,32 +51,6 @@ class Bird(x: Int, y: Int, player: Int) {
 
             velocity.scl(1 / dt)
             bound.setPosition(position.x, position.y)
-            }else if(status=="SLOW"){
-                if (position.y > 0 && position.y < maxY)
-                    velocity.add(0f, GRAVITY.toFloat(), 0f)
-                velocity.scl(dt)
-                position.add(MOVEMENT.minus(50) *dt, velocity.y, 0f)
-                if(position.y < 0)
-                    position.y = 0f
-                if (position.y >= maxY){
-                    position.y = maxY-1f
-                 }
-
-                velocity.scl(1 / dt)
-                bound.setPosition(position.x,position.y)
-            }else if(status=="SPEED"){
-                if (position.y > 0 && position.y < maxY)
-                    velocity.add(0f, GRAVITY.toFloat(), 0f)
-                velocity.scl(dt)
-                position.add(MOVEMENT.plus(400) *dt, velocity.y, 0f)
-                if(position.y < 0)
-                    position.y = 0f
-                if (position.y >= maxY){
-                    position.y = maxY-1f
-                   }
-
-                velocity.scl(1 / dt)
-                bound.setPosition(position.x,position.y)
             }else if(status=="trapped"){
 
         }

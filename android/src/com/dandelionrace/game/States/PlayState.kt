@@ -254,6 +254,15 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                     bird.status="free"
                     bird.birdAnimation = Animations(TextureRegion(Texture("bugredanimation.png")), 2, 0.5f)
                     //TODO: @FELIX SEND to database that the effect of the enemy is over and you can use the standard texture again
+                    for(item in items){
+                        if(item.effect == "slow"){
+                            bird.move = 100
+                        }
+                        if(item.effect == "speed"){
+                            bird.move = 100
+                        }
+                    }
+
                 }
             }
 
@@ -267,7 +276,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             myPosY.setValue(bird.position.y);
 
             if(cam.position.x - (cam.viewportWidth/2) > tubes[counter].posTopTube.x + tubes[counter].topTube.width){
-                counter = counter.inc()
+                //counter = counter.inc()
                 System.out.println("COUNTER:"+counter)
             }
 
@@ -329,13 +338,16 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                     myItem.setValue(item.effect)
 
                     if(item.effect == "slow"){
-                        bird.status="SLOW"
+                    bird.move = bird.move -50
                         bird.birdAnimation = Animations(TextureRegion(Texture("bugblueanimation.png")), 2, 0.5f)
                         startTime = System.currentTimeMillis()
+                        if(System.currentTimeMillis()>startTime+5000){
+                            bird.move = bird.move +50
+                        }
                         effectOn=true
                     }
                     if(item.effect == "speed"){
-                        bird.status="SPEED"
+                        bird.move = bird.move + 400
                         bird.birdAnimation = Animations(TextureRegion(Texture("buggreenanimation.png")), 2, 0.5f)
                         startTime = System.currentTimeMillis()
                         effectOn=true
