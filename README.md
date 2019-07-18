@@ -15,7 +15,7 @@ o Spielende setzen mit Gewinner und Verlierer (Felix)
 
 o Extra Button für Game Over Screen -> LoginActivity (Richard: Erledigt. winscreen.jpg und lostscreen.png einfügen. Und back.jpg für den back button.)
 
-o Lobby Zurück Button (Felix) (Richard: Erledigt. back.jpg für backbutton nutzen)
+
 
 
 
@@ -33,6 +33,10 @@ x Feedback beim Ready Button (Richard) -Passt jetzt-
 x Begrenzung auf 2 Player pro Spiel (Basti)
 x Lobby Zurück Button (Felix) (Richard: Erledigt)
 x Listener auf offiziellen Back-Button (Basti)
+
+o Lobby Zurück Button (Felix) (Richard: Erledigt. back.jpg für backbutton nutzen)
+----
+Felix und Basti meinen dass der Android-Back Key ausreichend ist. Wir wollen die leute nicht dazu verleiten da vor und zurück zu springen
 
 
 this is our fantastic Dandelion Race App!!
