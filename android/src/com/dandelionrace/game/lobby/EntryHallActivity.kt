@@ -218,12 +218,12 @@ class EntryHallActivity : AppCompatActivity() {
         val newGame = database.getReference(path)
         if (ready) {
             newGame.setValue("false")
-            readyButton.setImageDrawable(resources.getDrawable(R.drawable.leave))
+            readyButton.setImageDrawable(resources.getDrawable(R.drawable.ready))
             ready = false
         } else {
             newGame.setValue("true")
             ready = true
-            readyButton.setImageDrawable(resources.getDrawable(R.drawable.ready))
+            readyButton.setImageDrawable(resources.getDrawable(R.drawable.leave))
         }
 
     }
