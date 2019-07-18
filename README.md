@@ -1,6 +1,8 @@
 # DandelionRace
 
 To do's:
+
+
 o Lobby Zurück Button (Felix) (Richard: Erledigt)
 x Entry Hall Spielerliste mit Design (Basti)
 o Extra Button für Game Over Screen -> LoginActivity (Richard: Erledigt)
