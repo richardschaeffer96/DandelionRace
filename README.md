@@ -28,7 +28,6 @@ x Unterschiedlichere Farben für Spieler (Richard)
 x Collision Box Bugs (Richard)
 x Sperre für oben im Game (Richard)
 x Feedback beim Ready Button (Richard)
-=======
 x Sperre für oben im Game (Richard)
 x Feedback beim Ready Button (Richard) -Passt jetzt-
 x Begrenzung auf 2 Player pro Spiel (Basti)
