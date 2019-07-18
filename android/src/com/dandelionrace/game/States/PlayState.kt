@@ -89,8 +89,6 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         bgStart = bgEndOld -400f
         bgEnd = bgStart + dandelionrace.HEIGHT.toFloat() * 1.25f
 
-        println("DANDELIONRACE HEIGHT: "+ dandelionrace.HEIGHT + " | "+ dandelionrace.WIDTH)
-
         startTime = System.currentTimeMillis();
 
         leavesObstacle = Texture("leavesobstacle.png")
@@ -399,9 +397,32 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
         if(counter==tubes.size){
             //TODO: SET WINNER AND LOOSER
-            myFinish.setValue(true)
-            gsm.set(WinGame(gsm, true))
-            dispose();
+
+            var onlyEnemy = ""
+            for (e in enemy.split(",")) {
+                if (e != mymail) {
+                    onlyEnemy = e
+                }
+            }
+
+            val  enemyFinish = database.getReference("playersInGame/"+game+"/"+onlyEnemy.replace(".","")+"/xxzfinish")
+            enemyFinish.addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onDataChange(dataSnapshotY: DataSnapshot) {
+                    if(dataSnapshotY.getValue().toString().toBoolean()){
+                        gsm.set(WinGame(gsm, false))
+                        dispose();
+                    }else{
+                        myFinish.setValue(true)
+                        gsm.set(WinGame(gsm, true))
+                        dispose();
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+
+
         }
     }
 
