@@ -15,6 +15,7 @@ import com.dandelionrace.game.sprites.GameTubes
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.dandelionrace.game.sprites.*
+import org.w3c.dom.Text
 import kotlin.collections.ArrayList
 
 class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalitems: ArrayList<GameItems>, gameName: String, enemy: String) : State(gsm) {
@@ -36,6 +37,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
     var testBot: Texture
     var testTop: Texture
+    var dandelion: Texture
 
     private var bgStart: Float
     private var bgEnd: Float
@@ -83,6 +85,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         bg = Texture("newbg.jpg")
         secondBg = Texture("newbg.jpg")
         win = Texture("win.jpg")
+        dandelion = Texture("dandelion.png")
 
         bgStartOld = -400f
         bgEndOld = dandelionrace.HEIGHT.toFloat() * 1.25f
@@ -452,6 +455,8 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
             //sb.draw(testBot, tube.boundsBot.x, tube.boundsBot.y, tube.boundsBot.width, tube.boundsBot.height)
             //sb.draw(testTop, tube.boundsTop.x, tube.boundsTop.y, tube.boundsTop.width, tube.boundsTop.height)
+            if(tube == tubes[tubes.size-1])
+                sb.draw(dandelion, tube.posBotTube.x+900, 0f)
         }
 
         for(item in items){
