@@ -16,7 +16,7 @@ class Bird(x: Int, y: Int, player: Int) {
     lateinit var birdAnimation: Animations
     val bird: Texture
     var maxY: Float
-    var move: Int = 100
+    var move: Int = 150
 
     init {
 
@@ -65,14 +65,14 @@ class Bird(x: Int, y: Int, player: Int) {
 
     fun jump(){
         if (status=="free"||status=="SLOW"||status=="SPEED")
-            velocity.y = 800f;
+            velocity.y = 500f;
     }
 
     fun bushjump(){
         if (status=="free"||status=="SLOW"||status=="SPEED")
             velocity.y = 800f;
             position.x += 10
-            position.y += 50
+            position.y += 70
     }
 
     fun invertjump(){

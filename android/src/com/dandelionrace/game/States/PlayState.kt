@@ -255,16 +255,10 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                     leavesOn=false
                     isGhost=false
                     bird.status="free"
+                    bird.move = 150
                     bird.birdAnimation = Animations(TextureRegion(Texture("bugredanimation.png")), 2, 0.5f)
                     //TODO: @FELIX SEND to database that the effect of the enemy is over and you can use the standard texture again
-                    for(item in items){
-                        if(item.effect == "slow"){
-                            bird.move = 100
-                        }
-                        if(item.effect == "speed"){
-                            bird.move = 100
-                        }
-                    }
+
 
                 }
             }
@@ -318,7 +312,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                 for (tube in tubes) {
                     if (tube.collides(bird.getBound())) {
 
-                        bird.status = "free" //"trapped" ///"trapped"                                                     ////CHANGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+                        bird.status = "trapped" //"trapped" ///"trapped"                                                     ////CHANGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
                         if (bird.position.y - 700 > tube.posBotTube.y) {
                             bird.trappedTube = "top"
                             obstacleHeight = tube.boundsTop.height
@@ -341,16 +335,13 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                     myItem.setValue(item.effect)
 
                     if(item.effect == "slow"){
-                    bird.move = bird.move -50
+                    bird.move = 50
                         bird.birdAnimation = Animations(TextureRegion(Texture("bugblueanimation.png")), 2, 0.5f)
                         startTime = System.currentTimeMillis()
-                        if(System.currentTimeMillis()>startTime+5000){
-                            bird.move = bird.move +50
-                        }
                         effectOn=true
                     }
                     if(item.effect == "speed"){
-                        bird.move = bird.move + 400
+                        bird.move = 400
                         bird.birdAnimation = Animations(TextureRegion(Texture("buggreenanimation.png")), 2, 0.5f)
                         startTime = System.currentTimeMillis()
                         effectOn=true
