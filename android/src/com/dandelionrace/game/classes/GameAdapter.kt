@@ -33,7 +33,7 @@ class GameAdapter (val context: Context, private val dataSource: ArrayList<Dande
         val hostTextView = rowView.findViewById(R.id.gameviewlisthost) as TextView
         val game = getItem(position) as DandelionGame
 
-        titleTextView.text = game.name + "  - Anzahl Spieler: " + game.numberOfPlayers
+        titleTextView.text = game.name + "  - Players in Lobby: " + game.numberOfPlayers
         hostTextView.text = "Host: " + game.host
 
         return rowView

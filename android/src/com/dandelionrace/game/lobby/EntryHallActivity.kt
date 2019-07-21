@@ -73,7 +73,7 @@ class EntryHallActivity : AppCompatActivity() {
                     thisgame = DandelionGame(list[2], list[6], list[5], list[4].toBoolean(), list[1], false, list[7])
                     thisgame.numberOfPlayers = list[3].toInt()
                     val gamenameforlabel = list[2]
-                    findViewById<TextView>(R.id.gamename).setText("Du befindest dich im Spiel " + gamenameforlabel + ". Hier siehst du die anderen Spieler.")
+                    findViewById<TextView>(R.id.gamename).setText("You are currently registered in the game " + gamenameforlabel + ".")
 
                     //If host == my own name, im host, so i send the seed
                     if (list[1] == myName && thisgame.seed == "0") {

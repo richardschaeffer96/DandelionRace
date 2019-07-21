@@ -35,9 +35,9 @@ class PlayerInGameAdapter (val context: Context, private val dataSource: ArrayLi
 
         playername.text = player.name
         if (player.ready) {
-            playerready.text = "Spieler bereit"
+            playerready.text = "Player is ready"
         } else {
-            playerready.text = "Spieler nicht bereit"
+            playerready.text = "Player is not ready"
         }
 
 
