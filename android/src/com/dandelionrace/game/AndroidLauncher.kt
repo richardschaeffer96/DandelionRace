@@ -1,17 +1,20 @@
 package com.dandelionrace.game
 
+import android.app.ActionBar
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.view.ActionMode
+import android.view.View
 
 import com.badlogic.gdx.backends.android.AndroidApplication
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
+import com.dandelionrace.game.States.PlayState
 import com.dandelionrace.game.sprites.Item
 import com.dandelionrace.game.sprites.Tube
-import kotlin.streams.asSequence
 
-class AndroidLauncher : AndroidApplication() {
+class AndroidLauncher() : AndroidApplication() {
 
     private var tubeString: String = ""
     private var itemString: String = ""
@@ -25,14 +28,18 @@ class AndroidLauncher : AndroidApplication() {
     private val itemCount: Int = 8
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        mp = MediaPlayer.create(this,R.raw.rainbow_forest)
-        //mp.isLooping = true
-        //mp.setVolume(0.3f,0.3f)
-        //mp.start()
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val config = AndroidApplicationConfiguration()
+
+
+
+
+        mp = MediaPlayer.create(this,R.raw.rainbow_forest)
+        pointer = MediaPlayer.create(this,R.raw.checkpointreached)
+
 
         // get device dimensions
         val displayMetrics = DisplayMetrics()
@@ -89,12 +96,21 @@ class AndroidLauncher : AndroidApplication() {
     companion object {
         var isSingle: Boolean = false
         lateinit var mp:MediaPlayer
+        lateinit var pointer:MediaPlayer
     }
     //When back key is pressed return to mainscreen
     override fun onBackPressed (){
         //super.onBackPressed()
+        mp.stop()
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        mp.stop()
     }
 
     fun getRandomString(length: Int) : String {
@@ -103,5 +119,6 @@ class AndroidLauncher : AndroidApplication() {
                 .map { allowedChars.random() }
                 .joinToString("")
     }
+
 
 }
