@@ -38,7 +38,7 @@ class AndroidLauncher() : AndroidApplication() {
 
 
         mp = MediaPlayer.create(this,R.raw.rainbow_forest)
-        pointer = MediaPlayer.create(this,R.raw.checkpointreached)
+        pointer = MediaPlayer.create(this,R.raw.waterdrop)
 
 
         // get device dimensions
