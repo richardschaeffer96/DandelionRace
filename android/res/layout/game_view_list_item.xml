@@ -17,7 +17,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:padding="10dip"
-        android:textSize="16dip"
+        android:textSize="28sp"
+        android:fontFamily="@font/advancedpixel"
         android:textStyle="bold" >
 
     </TextView>
@@ -26,8 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_gravity="right"
-        android:textSize="16dip"
-        android:textStyle="bold" >
+        android:fontFamily="@font/advancedpixel"
+        android:textStyle="bold"
+        android:textSize="28sp" >
 
     </TextView>
 </LinearLayout>
