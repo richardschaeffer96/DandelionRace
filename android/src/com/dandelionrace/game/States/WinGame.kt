@@ -5,15 +5,12 @@ import android.support.v4.content.ContextCompat.startActivity
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.dandelionrace.game.dandelionrace
 import com.dandelionrace.game.lobby.EntryHallActivity
 import com.dandelionrace.game.sprites.Bird
 import android.support.v4.content.ContextCompat.startActivity
 import android.widget.ImageView
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSorter
 import com.badlogic.gdx.scenes.scene2d.ui.Button
-import com.dandelionrace.game.LoginActivity
-import com.dandelionrace.game.MainActivity
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import android.R.attr.button
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -25,7 +22,7 @@ import android.util.EventLog
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.dandelionrace.game.AndroidLauncher
+import com.dandelionrace.game.*
 import java.util.*
 
 
@@ -52,7 +49,7 @@ class WinGame(gsm: GameStateManager, winner: Boolean) : State(gsm) {
 
         stage = Stage()
         Gdx.input.inputProcessor = stage
-        val drawable = TextureRegionDrawable (TextureRegion(Texture("playBtn.png")))
+        val drawable = TextureRegionDrawable (TextureRegion(Texture("back.png")))
         playButton = ImageButton(drawable);
         stage.addActor(playButton);
 
