@@ -23,15 +23,13 @@ class AndroidLauncher : AndroidApplication() {
     lateinit var tubeArrayList: ArrayList<Tube>
     lateinit var itemArrayList: ArrayList<Item>
     private val itemCount: Int = 8
-    lateinit var mp:MediaPlayer
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mp = MediaPlayer.create(this,R.raw.rainbow_forest)
-        mp.isLooping = true
-        mp.setVolume(0.3f,0.3f)
-        mp.start()
+        //mp.isLooping = true
+        //mp.setVolume(0.3f,0.3f)
+        //mp.start()
 
         super.onCreate(savedInstanceState)
         val config = AndroidApplicationConfiguration()
@@ -90,6 +88,7 @@ class AndroidLauncher : AndroidApplication() {
 
     companion object {
         var isSingle: Boolean = false
+        lateinit var mp:MediaPlayer
     }
     //When back key is pressed return to mainscreen
     override fun onBackPressed (){

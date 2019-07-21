@@ -1,6 +1,7 @@
 package com.dandelionrace.game.States
 
 import android.hardware.SensorManager.GRAVITY_EARTH
+import android.media.MediaPlayer
 import android.os.AsyncTask
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector3
 import com.dandelionrace.game.AndroidLauncher
+import com.dandelionrace.game.R
 import com.dandelionrace.game.dandelionrace
 import com.dandelionrace.game.sprites.Bird
 import com.dandelionrace.game.sprites.GameItems
@@ -86,6 +88,10 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         secondBg = Texture("newbg.jpg")
         win = Texture("win.jpg")
         dandelion = Texture("dandelion.png")
+
+        AndroidLauncher.mp.isLooping = true
+        AndroidLauncher.mp.setVolume(0.3f,0.3f)
+        AndroidLauncher.mp.start()
 
         bgStartOld = -400f
         bgEndOld = dandelionrace.HEIGHT.toFloat() * 1.25f
@@ -273,7 +279,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             myPosY.setValue(bird.position.y);
 
             if(cam.position.x - (cam.viewportWidth/2) > tubes[counter].posTopTube.x + tubes[counter].topTube.width){
-                //counter = counter.inc()
+                counter = counter.inc()
                 System.out.println("COUNTER:"+counter)
             }
 
@@ -410,10 +416,12 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
                 if(enemyWon){
                     //myFinish.setValue(true)
+                    AndroidLauncher.mp.stop()
                     println("YOU LOST")
                     gsm.set(WinGame(gsm, false))
                     dispose();
                 }else{
+                    AndroidLauncher.mp.stop()
                     println("YOU WON")
                     myFinish.setValue(true)
                     gsm.set(WinGame(gsm, true))
