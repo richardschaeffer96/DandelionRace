@@ -7,7 +7,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.math.Vector3
 import com.dandelionrace.game.AndroidLauncher
 import com.dandelionrace.game.R
 import com.dandelionrace.game.dandelionrace
@@ -17,10 +16,9 @@ import com.dandelionrace.game.sprites.GameTubes
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.dandelionrace.game.sprites.*
-import org.w3c.dom.Text
 import kotlin.collections.ArrayList
 
-class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalitems: ArrayList<GameItems>, gameName: String, enemy: String) : State(gsm) {
+open class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalitems: ArrayList<GameItems>, gameName: String, enemy: String) : State(gsm) {
 
     private val TUBE_SPACING: Float = 125f
     //TUBE_COUNT: ANZAHL AN TUBES IM LEVEL
@@ -193,34 +191,6 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                                 enemyBird.birdAnimation = Animations(TextureRegion(enemyBird.bird), 2, 0.5f)
                             }
                             if(enemyEffect == "switch"){
-
-/*                            enemyPosX.addListenerForSingleValueEvent(object: ValueEventListener {
-                                override fun onDataChange(dataSnapshotX: DataSnapshot) {
-                                    val posX: Float = dataSnapshotX.getValue().toString().toFloat()
-                                    enemyPosY.addListenerForSingleValueEvent(object: ValueEventListener {
-                                        override fun onDataChange(dataSnapshotY: DataSnapshot) {
-                                            val posY: Float = dataSnapshotY.getValue().toString().toFloat()
-
-                                            enemyPosX.setValue(bird.position.x)
-                                            enemyPosY.setValue(bird.position.y)
-
-                                            bird.position.x = posX
-                                            bird.position.y = posY
-
-                                            myPosX.setValue(posX)
-                                            myPosY.setValue(posY)
-                                        }
-
-                                        override fun onCancelled(error: DatabaseError) {
-                                        }
-                                    })
-                                }
-
-                                override fun onCancelled(error: DatabaseError) {
-                                }
-                            })
-                            //no skin change, switch positions of player
-                            */
                             }
                         }
                     })
@@ -232,6 +202,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                         }
 
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
+
                                 enemyWon = dataSnapshot.getValue().toString().toBoolean()==true
 
                         }
@@ -283,24 +254,6 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                 System.out.println("COUNTER:"+counter)
             }
 
-            //System.out.println("Background ist zu Ende bei: " + bgEnd)
-            //System.out.println("Rechte Seite der Kamera ist bei: " + cam.position.x + (cam.viewportWidth/2))
-
-            /*ZWEITERSCREEN
-            if(cam.position.x + (cam.viewportWidth/2) >= bgEnd) {
-                bgStart = bgEnd
-                bgEnd = bgStart + bg.width.toFloat()
-                nextBg = true
-
-                /*OLD
-                bgStart = bgEnd
-                bgEnd = bgStart + bg.width.toFloat()
-                nextBg = true
-                */
-                System.out.println("BACKGROUND ZU ENDE")
-            }
-            */
-
             if(cam.position.x - (cam.viewportWidth/2) > bgEndOld){
                 bgStartOld = bgEnd
                 bgEndOld = bgStartOld + dandelionrace.HEIGHT.toFloat() * 1.25f
@@ -334,6 +287,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             for(item in items){
 
                 if(item.collides(bird.getBound())){
+                    AndroidLauncher.pointer.start()
                     item.posItem.set(-100f,-100f)
                     item.bounds.set(-100f,-100f,0f,0f)
                     //TODO: SET THE EFFECTS
@@ -393,32 +347,24 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
                 }
             }
-
-
-            /* !!! CODE FOR REPOSITION OF TUBES FOR DYNAMIC LEVEL !!!
-            for(tube in tubes){
-               // if(cam.position.x - (cam.viewportWidth/2) > tube.posTopTube.x + tube.topTube.width)
-                    tube.reposition(tube.posTopTube.x + ((Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT))
-                if(tube.collides(bird.getBound()))
-                   // gsm.set(PlayState(gsm))
-                    gsm.set(MenuState(gsm))
-            }
-            */
             cam.update()
 
             if(counter==tubes.size){
                 //TODO: SET WINNER AND LOOSER
-                /*
+
                 myFinish.setValue(true)
+                //AndroidLauncher().mp.stop()
+
                 gsm.set(WinGame(gsm, false))
                 dispose();
-                */
+
 
                 if(enemyWon){
                     //myFinish.setValue(true)
                     AndroidLauncher.mp.stop()
                     println("YOU LOST")
                     gsm.set(WinGame(gsm, false))
+
                     dispose();
                 }else{
                     AndroidLauncher.mp.stop()
@@ -434,26 +380,24 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
             }
         }
+
+
+
     }
 
     override fun render(sb: SpriteBatch) {
         sb.projectionMatrix.set(cam.combined)
         //test
         sb.begin()
-        //sb.draw(bg, cam.position.x - (cam.viewportWidth / 2 ), 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
-
-
 
         sb.draw(bg, bgStartOld, 0f, dandelionrace.HEIGHT.toFloat() * 1.25f, dandelionrace.HEIGHT.toFloat())
-        //if(nextBg){
+
         sb.draw(secondBg, bgStart, 0f, dandelionrace.HEIGHT.toFloat() * 1.25f, dandelionrace.HEIGHT.toFloat())
-        //}
+
 
         for(tube in tubes) {
             sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
             sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
-            //sb.draw(testBot, tube.boundsBot.x, tube.boundsBot.y, tube.boundsBot.width, tube.boundsBot.height)
-            //sb.draw(testTop, tube.boundsTop.x, tube.boundsTop.y, tube.boundsTop.width, tube.boundsTop.height)
             if(tube == tubes[tubes.size-1])
                 sb.draw(dandelion, tube.posBotTube.x+900, 0f)
         }
@@ -461,13 +405,7 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         for(item in items){
             sb.draw(item.itemPic, item.posItem.x, item.posItem.y)
         }
-        //sb.draw(bg, 0f, 0f, dandelionrace.WIDTH.toFloat(), dandelionrace.HEIGHT.toFloat())
         sb.draw(bird.birdAnimation.getFrame(), bird.position.x, bird.position.y)
-        //sb.draw(tube.topTube, tube.posTopTube.x, tube.posTopTube.y)
-
-
-        //sb.draw(tube.bottomTube, tube.posBotTube.x, tube.posBotTube.y)
-        //sb.draw(enemyBird.bird, enemyBird.position.x, enemyBird.position.y)
         if(AndroidLauncher.isSingle==false){
             sb.draw(enemyBird.birdAnimation.getFrame(), enemyBird.position.x, enemyBird.position.y)
         }
@@ -481,9 +419,11 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
         sb.end()
     }
 
+
     override fun dispose() {
 
     }
+
 
     class someTask(bird: Bird, obstacleH: Float) : AsyncTask<Void, Void, String>(){
 
@@ -502,22 +442,15 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
                 val yGrav = Gdx.input.accelerometerY / GRAVITY_EARTH
                 val zGrav = Gdx.input.accelerometerZ / GRAVITY_EARTH
 
-                // gForce will be close to 1 when there is no movement.
                 val gForce = Math.sqrt((xGrav * xGrav + yGrav * yGrav + zGrav * zGrav).toDouble()).toFloat()
 
                 if (gForce>1.7) {
                     System.out.println("SHAKE DETECTED")
                     new_bird.status = "free"
                     if(new_bird.trappedTube == "bot"){
-                        //new_bird.position = Vector3(new_bird.position.x, obstacleHeight - -50, 0f)
-                        //new_bird.position = Vector3(new_bird.position.x, new_bird.position.y + 200, 0f)
-                        //new_bird.trappedTube = ""
                         new_bird.bushjump()
                         new_bird.jump()
                     } else {
-                        //new_bird.position = Vector3(new_bird.position.x, new_bird.position.y - 400f, 0f)
-                        //new_bird.position = Vector3(new_bird.position.x, new_bird.position.y - 400f, 0f)
-                        //new_bird.trappedTube = ""
                         new_bird.invertjump()
                     }
 
@@ -525,35 +458,6 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
 
                 return "Free"
             } else {
-                /*
-
-                //RECOGNITION OF AUDIO
-
-                val audioBuffer = ShortArray(44100 * 1)
-
-                val recorder = Gdx.audio.newAudioRecorder(44100, true)
-                var blow_value: Int = 0
-                var blow_string: String
-
-                recorder.read(audioBuffer, 0, audioBuffer.size);
-                for (s in audioBuffer) {
-                    if (Math.abs(s.toInt()) > 500) {
-                        blow_value = Math.abs(s.toInt());
-                        //System.out.println("Blow Value= "+blow_value);
-                    }
-                }
-                //val audioDevice = Gdx.audio.newAudioDevice(44100, true)
-                //audioDevice.writeSamples(audioBuffer, 0, audioBuffer.size)
-                //audioDevice.dispose()
-                if (blow_value > 550) {
-                    new_bird.jump()
-                    //System.out.println("JUMP!!!!!!!!!!!!!!!!")
-                }
-                recorder.dispose()
-                blow_string = blow_value.toString()
-                //System.out.println("Blow STRING= "+blow_string);
-                return blow_string
-                */
                 return "Free"
 
             }
@@ -569,5 +473,6 @@ class PlayState(gsm: GameStateManager, finaltubes: ArrayList<GameTubes>, finalit
             // ...
         }
     }
-
 }
+
+
